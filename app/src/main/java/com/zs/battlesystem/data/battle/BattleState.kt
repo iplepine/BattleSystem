@@ -1,4 +1,4 @@
-package com.zs.battlesystem.manager
+package com.zs.battlesystem.data.battle
 
 object BattleState {
     const val READY = 0
