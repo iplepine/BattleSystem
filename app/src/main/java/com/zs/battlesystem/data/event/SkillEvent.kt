@@ -1,4 +1,4 @@
-package com.zs.battlesystem.data.battle.event
+package com.zs.battlesystem.data.event
 
 import android.os.Bundle
 

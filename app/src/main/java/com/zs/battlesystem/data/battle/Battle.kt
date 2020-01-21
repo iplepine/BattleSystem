@@ -1,11 +1,12 @@
 package com.zs.battlesystem.data.battle
 
-import com.zs.battlesystem.data.battle.event.BattleEvent
 import com.zs.battlesystem.data.battle.unit.BattleUnit
+import com.zs.battlesystem.data.common.GameObject
+import com.zs.battlesystem.data.event.BaseEvent
 import com.zs.battlesystem.data.user.User
 import io.reactivex.subjects.PublishSubject
 
-class Battle {
+class Battle : GameObject() {
     companion object {
         const val MAX_TUREN = 100
         const val GAME_SPEED = 1000 / 60L    // 1 프레임 당 시간 흐름
@@ -19,13 +20,13 @@ class Battle {
 
     var battleUnits = ArrayList<BattleUnit>()
 
-    val eventSubject = PublishSubject.create<BattleEvent>()
+    val eventSubject = PublishSubject.create<BaseEvent>()
 
     fun clear() {
         eventSubject.onComplete()
     }
 
-    fun update(time: Long) {
+    override fun updateTime(time: Long) {
         when (battleState) {
             // 유저의 인풋 기다리는 중 이라 전투 시간 멈춤
             BattleState.INPUT -> {
@@ -39,12 +40,18 @@ class Battle {
             // 유닛 행동 할 때까지 전투 시간 흐름
             BattleState.NONE -> {
                 if (0 < getNextUnit().delay) {
-                    waitingTime += time
+                    timePast(time)
                 } else {
                     battleState = BattleState.INPUT
                 }
             }
         }
+    }
+
+    private fun timePast(time: Long) {
+        waitingTime += time
+
+        battleUnits.forEach { it.updateTime(time) }
     }
 
     private fun updateInputTime(time: Long) {

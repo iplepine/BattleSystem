@@ -12,8 +12,8 @@ open class BaseUnit {
     var exp = 0L
     var name = "이름"
     var job = "직업"
-    var baseStat: BaseStat =
-        BaseStat()
+
+    var baseStat: BaseStat = BaseStat()
     var battleStat = BattleStat()
 
     var skills = ArrayList<Skill>().apply { add(NormalAttack) }

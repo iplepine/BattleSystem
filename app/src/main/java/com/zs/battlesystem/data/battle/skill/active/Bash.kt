@@ -1,8 +1,8 @@
 package com.zs.battlesystem.data.battle.skill.active
 
 import com.zs.battlesystem.data.battle.BattleFunction
-import com.zs.battlesystem.data.battle.event.BattleEvent
-import com.zs.battlesystem.data.battle.event.SkillEvent
+import com.zs.battlesystem.data.event.BaseEvent
+import com.zs.battlesystem.data.event.SkillEvent
 import com.zs.battlesystem.data.battle.skill.Skill
 import com.zs.battlesystem.data.battle.unit.BattleUnit
 import io.reactivex.subjects.PublishSubject
@@ -15,13 +15,15 @@ object Bash : Skill() {
         description = "힘을 모아 강하게 내려 친다"
         castingTime = 0
         effectTime = 0
-        delay = 0
+        afterDelay = 0
+
+        coolTime = 1000 * 10L   // 쿨타임 10초
     }
 
     override fun onEffect(
         user: BattleUnit,
         targets: Array<BattleUnit>,
-        eventSubject: PublishSubject<BattleEvent>
+        eventSubject: PublishSubject<BaseEvent>
     ) {
         require(targets.isNotEmpty())
 
@@ -32,8 +34,8 @@ object Bash : Skill() {
             battleEvent.data.putBoolean(SkillEvent.Result.EVADE, true)
 
             eventSubject.onNext(
-                BattleEvent(
-                    BattleEvent.Type.SKILL,
+                BaseEvent(
+                    BaseEvent.Type.BATTLE,
                     "공격을 회피하였습니다."
                 )
             )
@@ -54,6 +56,10 @@ object Bash : Skill() {
             battleEvent.data.putBoolean(SkillEvent.Result.BLOCK, true)
         }
 
-        eventSubject.onNext(battleEvent as BattleEvent)
+        eventSubject.onNext(battleEvent as BaseEvent)
+    }
+
+    override fun getExpectEffect(): Double {
+        return damageRatio
     }
 }

@@ -6,7 +6,7 @@ object BattleSimulator {
         var timeOver = false
 
         while (!battle.isFinish()) {
-            battle.update(Battle.GAME_SPEED)
+            battle.updateTime(Battle.GAME_SPEED)
             totalTime += Battle.GAME_SPEED
 
             if (1000 * 1000 * 1000 < totalTime) {

@@ -4,7 +4,7 @@ object UnitState {
     const val READY = 0
     const val CASTING = 1
     const val EFFECT = 2
-    const val DELAY = 3
+    const val AFTER_DELAY = 3
     const val STUN = 50
     const val DIE = -1
 }
