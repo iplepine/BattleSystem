@@ -1,6 +1,7 @@
 package com.zs.battlesystem.data.battle.unit
 
-import com.zs.battlesystem.data.battle.skill.BaseSkill
+import com.zs.battlesystem.data.battle.skill.Skill
+import com.zs.battlesystem.data.battle.skill.active.NormalAttack
 import com.zs.battlesystem.data.battle.skill.buff.Buff
 import com.zs.battlesystem.data.battle.skill.debuff.Debuff
 import com.zs.battlesystem.data.battle.unit.stat.BaseStat
@@ -15,7 +16,7 @@ open class BaseUnit {
         BaseStat()
     var battleStat = BattleStat()
 
-    var skills = ArrayList<BaseSkill>()
+    var skills = ArrayList<Skill>().apply { add(NormalAttack) }
     var buffs = ArrayList<Buff>()
     var debuffs = ArrayList<Debuff>()
 

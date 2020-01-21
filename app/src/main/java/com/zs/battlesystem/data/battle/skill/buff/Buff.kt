@@ -1,6 +1,6 @@
 package com.zs.battlesystem.data.battle.skill.buff
 
-import com.zs.battlesystem.data.battle.skill.BaseSkill
+import com.zs.battlesystem.data.battle.skill.Skill
 
-class Buff(name: String) : BaseSkill(name) {
+class Buff() : Skill() {
 }

@@ -6,4 +6,5 @@ object UnitState {
     const val EFFECT = 2
     const val DELAY = 3
     const val STUN = 50
+    const val DIE = -1
 }

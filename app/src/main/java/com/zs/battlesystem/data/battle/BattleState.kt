@@ -1,7 +1,13 @@
 package com.zs.battlesystem.data.battle
 
 object BattleState {
-    const val READY = 0
-    const val BATTLE = 1
-    const val FINISH = -1
+    const val NONE = 0
+    const val INPUT = 1
+    const val ACTION = 2
+
+    object Result {
+        const val WIN = 0
+        const val LOSE = -1
+        const val DRAW = 1
+    }
 }

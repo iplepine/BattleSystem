@@ -3,9 +3,11 @@ package com.zs.battlesystem.data.battle.unit.stat
 data class BattleStat(
     var hp: Int = 10,
     var mp: Int = 10,
-    var atk: Int = 1,
+    var minAtk: Int = 1,
+    var maxAtk: Int = 1,
     var def: Int = 1,
-    var matk: Int = 1,
+    var minMAtk: Int = 1,
+    var maxMAtk: Int = 1,
     var mdef: Int = 1,
     var speed: Int = 1,
     var hit: Int = 1,
