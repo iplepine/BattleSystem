@@ -4,6 +4,6 @@ import com.zs.battlesystem.data.battle.Battle
 
 class BattleAI(val battle: Battle) {
     fun onTurn() {
-        battle.isFinish()
+        battle.checkFinish()
     }
 }

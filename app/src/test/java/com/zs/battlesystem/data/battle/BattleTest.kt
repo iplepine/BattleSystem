@@ -23,11 +23,11 @@ class BattleTest {
     @Test
     fun getNextUnitTest() {
         val highDelay = BattleUnit(BaseUnit()).apply {
-            delay = 1000
+            turnDelay = 1000
         }
 
         val lowDelay = BattleUnit(BaseUnit()).apply {
-            delay = 500
+            turnDelay = 500
         }
 
         var battle = Battle().apply {

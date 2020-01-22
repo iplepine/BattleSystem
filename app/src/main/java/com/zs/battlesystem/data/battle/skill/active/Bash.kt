@@ -1,10 +1,9 @@
 package com.zs.battlesystem.data.battle.skill.active
 
 import com.zs.battlesystem.data.battle.BattleFunction
-import com.zs.battlesystem.data.event.BaseEvent
-import com.zs.battlesystem.data.event.SkillEvent
 import com.zs.battlesystem.data.battle.skill.Skill
 import com.zs.battlesystem.data.battle.unit.BattleUnit
+import com.zs.battlesystem.data.common.Logger
 import io.reactivex.subjects.PublishSubject
 
 object Bash : Skill() {
@@ -20,46 +19,55 @@ object Bash : Skill() {
         coolTime = 1000 * 10L   // 쿨타임 10초
     }
 
+    override fun getExpectEffect(): Double {
+        return damageRatio
+    }
+
     override fun onEffect(
         user: BattleUnit,
-        targets: Array<BattleUnit>,
-        eventSubject: PublishSubject<BaseEvent>
+        targets: List<BattleUnit>,
+        messageSubject: PublishSubject<String>?
     ) {
         require(targets.isNotEmpty())
 
-        val battleEvent = SkillEvent()
         val target = targets[0]
 
         if (BattleFunction.checkEvade(user, target)) {
-            battleEvent.data.putBoolean(SkillEvent.Result.EVADE, true)
-
-            eventSubject.onNext(
-                BaseEvent(
-                    BaseEvent.Type.BATTLE,
-                    "공격을 회피하였습니다."
-                )
-            )
+            val message = "공격을 회피하였습니다."
+            messageSubject?.onNext(message)
+            Logger.d(message)
             return
         }
 
-        var attack = BattleFunction.getDefaultAttackDamage(user) * damageRatio
-        if (BattleFunction.checkCritical(user, target)) {
+        var attack = (BattleFunction.getDefaultAttackDamage(user) * damageRatio).toInt()
+        val defence = target.base.battleStat.def
+
+        var isCritical = BattleFunction.checkCritical(user, target)
+        if (isCritical) {
             attack *= 2
-            battleEvent.data.putBoolean(SkillEvent.Result.CRITICAL, true)
+            isCritical = true
         }
 
-        val defence = target.base.battleStat.def
+        var isBlocked = defence < attack
         val damage = if (defence < attack) {
             attack - defence
         } else {
-            attack * (1 - BattleFunction.getDamageReductionRatio(attack.toInt(), defence))
-            battleEvent.data.putBoolean(SkillEvent.Result.BLOCK, true)
+            isBlocked = true
+            (attack * (1 - BattleFunction.getDamageReductionRatio(attack, defence))).toInt()
         }
 
-        eventSubject.onNext(battleEvent as BaseEvent)
-    }
+        target.onDamage(damage)
 
-    override fun getExpectEffect(): Double {
-        return damageRatio
+        val message = if (isBlocked) {
+            "BLOCK!! ${damage} 의 데미지를 입었다. "
+        } else {
+            if (isCritical) {
+                "CRITICAL!! ${damage} 의 데미지를 입었다."
+            } else {
+                "${damage} 의 데미지를 입었다."
+            }
+        }
+        messageSubject?.onNext(message)
+        Logger.d(message)
     }
 }

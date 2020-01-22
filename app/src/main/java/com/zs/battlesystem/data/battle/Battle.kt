@@ -2,31 +2,55 @@ package com.zs.battlesystem.data.battle
 
 import com.zs.battlesystem.data.battle.unit.BattleUnit
 import com.zs.battlesystem.data.common.GameObject
+import com.zs.battlesystem.data.common.Logger
 import com.zs.battlesystem.data.event.BaseEvent
 import com.zs.battlesystem.data.user.User
+import io.reactivex.Completable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 
 class Battle : GameObject() {
     companion object {
         const val MAX_TUREN = 100
-        const val GAME_SPEED = 1000 / 60L    // 1 프레임 당 시간 흐름
+        const val GAME_SPEED = 1000L// / 60L    // 1 프레임 당 시간 흐름
         const val MAX_WATING_TIME = 10 * 1000L    // 입력 대기 시간 10초
     }
 
-    var battleState = BattleState.INPUT
+    var isRunning = true
 
-    var battleTime = 0L
+    var battleState = BattleState.NONE
+
     var waitingTime = 0L
 
     var battleUnits = ArrayList<BattleUnit>()
 
     val eventSubject = PublishSubject.create<BaseEvent>()
+    val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
-    fun clear() {
-        eventSubject.onComplete()
+    val messageSubject = PublishSubject.create<String>()
+
+    fun init() {
+        eventSubject.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                onReceiveEvent(it)
+            }, {
+                onErrorEvent(it)
+            }, {
+                onCompleteEvent()
+            })
+    }
+
+    private fun clear() {
+        compositeDisposable.clear()
     }
 
     override fun updateTime(time: Long) {
+        if (!isRunning) {
+            return
+        }
         when (battleState) {
             // 유저의 인풋 기다리는 중 이라 전투 시간 멈춤
             BattleState.INPUT -> {
@@ -39,10 +63,11 @@ class Battle : GameObject() {
 
             // 유닛 행동 할 때까지 전투 시간 흐름
             BattleState.NONE -> {
-                if (0 < getNextUnit().delay) {
-                    timePast(time)
+                val activeUnit = getNextUnit()
+                if (activeUnit.turnDelay <= 0) {
+                    waitInput(activeUnit)
                 } else {
-                    battleState = BattleState.INPUT
+                    timePast(time)
                 }
             }
         }
@@ -50,11 +75,28 @@ class Battle : GameObject() {
 
     private fun timePast(time: Long) {
         waitingTime += time
-
         battleUnits.forEach { it.updateTime(time) }
     }
 
+    private fun waitInput(unit: BattleUnit) {
+        battleState = BattleState.INPUT
+
+        Completable.fromAction {
+            unit.onTurn(this)
+        }.subscribe {
+            onReceiveInput()
+        }
+    }
+
+    private fun onReceiveInput() {
+        battleState = BattleState.NONE
+    }
+
     private fun updateInputTime(time: Long) {
+        if (waitingTime % 1000 == 0L) {
+            Logger.d("waiting input ... ${waitingTime / 1000}")
+        }
+
         if (MAX_WATING_TIME < waitingTime) {
             passTurn()
         } else {
@@ -65,15 +107,19 @@ class Battle : GameObject() {
     private fun passTurn() {
         waitingTime = 0
         battleState = BattleState.NONE
+        Logger.d("pass turn")
+    }
+
+    fun findUnit(id: String): BattleUnit? {
+        return battleUnits.find { it.id == id }
     }
 
     fun getNextUnit(): BattleUnit {
-        require(battleUnits.isNotEmpty())
-        battleUnits.sortBy { it.delay }
+        battleUnits.filter { !it.isDie() }.sortedBy { it.turnDelay }
         return battleUnits[0]
     }
 
-    fun isFinish(): Boolean {
+    fun checkFinish(): Boolean {
         return checkWin() || checkLose()
     }
 
@@ -85,12 +131,12 @@ class Battle : GameObject() {
         var isDieAllEnemies = true
 
         battleUnits.forEach {
-            // 내 유닛일 때
+            // 내 유닛일 때, 모두가 죽었는지 체크
             if (User.isMine(it.owner) && !it.isDie()) {
                 isDieAllMyUnits = false
             }
 
-            // 내 유닛이 아닐 때
+            // 내 유닛이 아닐 때, 하나라도 살았는지 체크
             if (!User.isMine(it.owner) && !it.isDie()) {
                 return false
             }
@@ -110,5 +156,30 @@ class Battle : GameObject() {
         }
 
         return true
+    }
+
+    private fun onReceiveEvent(event: BaseEvent) {
+        if (battleState != BattleState.INPUT) {
+            return
+        }
+
+        battleState = BattleState.ACTION
+
+        when (event.type) {
+            BaseEvent.CONTROL -> {
+                // TODO 컨트롤에 대한 처리 해야하는데...
+                return
+            }
+            BaseEvent.BATTLE ->
+                onReceiveEvent(event)
+        }
+    }
+
+    private fun onErrorEvent(error: Throwable) {
+        Logger.e(error.toString())
+    }
+
+    private fun onCompleteEvent() {
+        clear()
     }
 }

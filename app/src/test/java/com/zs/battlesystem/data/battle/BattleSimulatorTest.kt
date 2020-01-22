@@ -5,7 +5,9 @@ import org.junit.Test
 
 class BattleSimulatorTest {
 
-    private val myUnit1 = BattleUnitFactory.createTestUnit("유닛 1").apply { owner = User.id }
+    private val myUnit1 = BattleUnitFactory.createTestUnit("유닛 1").apply {
+        owner = User.id
+    }
     private val myUnit2 = BattleUnitFactory.createTestUnit("유닛 2").apply { owner = User.id }
 
     private val enemyUnit1 = BattleUnitFactory.createTestUnit("적유닛 1")

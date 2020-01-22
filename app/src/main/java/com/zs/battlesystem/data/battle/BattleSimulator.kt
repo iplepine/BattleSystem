@@ -1,15 +1,17 @@
 package com.zs.battlesystem.data.battle
 
 object BattleSimulator {
+    const val TIMEOUT = 1000 * 100
+
     fun simulate(battle: Battle): String {
         var totalTime = 0L
         var timeOver = false
 
-        while (!battle.isFinish()) {
+        while (!battle.checkFinish()) {
             battle.updateTime(Battle.GAME_SPEED)
             totalTime += Battle.GAME_SPEED
 
-            if (1000 * 1000 * 1000 < totalTime) {
+            if (TIMEOUT < totalTime) {
                 timeOver = true
                 break
             }

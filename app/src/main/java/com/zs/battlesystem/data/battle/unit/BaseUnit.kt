@@ -16,7 +16,7 @@ open class BaseUnit {
     var baseStat: BaseStat = BaseStat()
     var battleStat = BattleStat()
 
-    var skills = ArrayList<Skill>().apply { add(NormalAttack) }
+    var skills: List<Skill> = ArrayList<Skill>().apply { add(NormalAttack) }
     var buffs = ArrayList<Buff>()
     var debuffs = ArrayList<Debuff>()
 
