@@ -8,8 +8,8 @@ class BattleFunctionTest {
 
     @Test
     fun checkCritical() {
-        unit1.base.battleStat.critical = 100
-        unit2.base.battleStat.critical = 0
+        unit1.base.stat.critical = 100
+        unit2.base.stat.critical = 0
 
         assert(BattleFunction.checkCritical(unit1, unit2))
         assert(!BattleFunction.checkCritical(unit2, unit1))
@@ -17,8 +17,8 @@ class BattleFunctionTest {
 
     @Test
     fun checkEvade() {
-        unit1.base.battleStat.evade = 0
-        unit2.base.battleStat.evade = 100
+        unit1.base.stat.evade = 0
+        unit2.base.stat.evade = 100
 
         assert(BattleFunction.checkEvade(unit1, unit2))
         assert(!BattleFunction.checkEvade(unit2, unit1))

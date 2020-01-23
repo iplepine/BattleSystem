@@ -24,11 +24,20 @@ open abstract class Skill {
         const val RANDOM = 3
     }
 
-    abstract fun onEffect(
+    protected abstract fun onEffect(
+        user: BattleUnit,
+        target: BattleUnit,
+        messageSubject: PublishSubject<String>?
+    )
+
+    fun onEffect(
         user: BattleUnit,
         targets: List<BattleUnit>,
         messageSubject: PublishSubject<String>?
-    )
+    ) {
+        val targets = findTarget(user, targets)
+        targets.forEach { onEffect(user, it, messageSubject) }
+    }
 
     open fun getExpectEffect(): Double {
         return 0.0
@@ -36,10 +45,20 @@ open abstract class Skill {
 
     open fun findTarget(user: BattleUnit, units: List<BattleUnit>): List<BattleUnit> {
         when (targetType) {
-            TargetType.SELF -> return arrayListOf(user)
-            TargetType.ENEMY -> return units.filter { it.isEnemy() }.shuffled().subList(0, targetCount)
-            TargetType.FRIEND -> return units.filter { it.isMine() && it != user }
-            TargetType.RANDOM -> return units.shuffled().subList(0, targetCount)
+            TargetType.SELF ->
+                return arrayListOf(user)
+
+            TargetType.ENEMY ->
+                return units.filter {
+                    it.isEnemy(user.owner) && !it.isDie()
+                }.shuffled()
+                    .subList(0, targetCount)
+
+            TargetType.FRIEND ->
+                return units.filter { it.isMine(user.owner) && it != user }
+
+            TargetType.RANDOM ->
+                return units.shuffled().subList(0, targetCount)
         }
 
         return ArrayList()

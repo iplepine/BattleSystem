@@ -1,10 +1,10 @@
 package com.zs.battlesystem.data.battle.unit.stat
 
-data class BattleStat(
+data class Stat(
     var hp: Int = 10,
     var mp: Int = 10,
     var minAtk: Int = 1,
-    var maxAtk: Int = 1,
+    var maxAtk: Int = 5,
     var def: Int = 1,
     var minMAtk: Int = 1,
     var maxMAtk: Int = 1,

@@ -1,5 +1,6 @@
 package com.zs.battlesystem.data.battle
 
+import com.zs.battlesystem.data.battle.skill.active.NormalAttack
 import com.zs.battlesystem.data.battle.unit.BaseUnit
 import com.zs.battlesystem.data.battle.unit.BattleUnit
 import com.zs.battlesystem.data.battle.unit.stat.UnitState
@@ -67,5 +68,16 @@ class BattleTest {
         enemyUnit2.state = UnitState.DIE
         assert(!battle.checkWin())
         assert(battle.checkLose())
+    }
+
+    @Test
+    fun dieTest() {
+        val deadlyUnit = BattleUnitFactory.createTestUnit("죽을 놈").apply {
+            stat.evade = 0
+            stat.hp = 1
+        }
+
+        myUnit1.useSkillImmediate(NormalAttack, arrayListOf(deadlyUnit))
+        assert(deadlyUnit.isDie())
     }
 }

@@ -12,8 +12,11 @@ object DefaultBattleUnitController {
         battle: Battle
     ) {
         Logger.d("(${this.javaClass.simpleName} 이 유닛을 조작합니다.)")
+
         val availableSkills = unit.base.skills.filter { it.coolDown <= 0 }
+
         Logger.d("사용 가능한 스킬 수 : ${availableSkills.size}")
+
         val skill = pickMostEffectiveSkill(availableSkills)
         skill?.also {
             unit.startCasting(skill, battle.battleUnits)

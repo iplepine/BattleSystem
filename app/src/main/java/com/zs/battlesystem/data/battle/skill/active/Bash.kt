@@ -25,13 +25,9 @@ object Bash : Skill() {
 
     override fun onEffect(
         user: BattleUnit,
-        targets: List<BattleUnit>,
+        target: BattleUnit,
         messageSubject: PublishSubject<String>?
     ) {
-        require(targets.isNotEmpty())
-
-        val target = targets[0]
-
         if (BattleFunction.checkEvade(user, target)) {
             val message = "공격을 회피하였습니다."
             messageSubject?.onNext(message)
@@ -40,7 +36,7 @@ object Bash : Skill() {
         }
 
         var attack = (BattleFunction.getDefaultAttackDamage(user) * damageRatio).toInt()
-        val defence = target.base.battleStat.def
+        val defence = target.base.stat.def
 
         var isCritical = BattleFunction.checkCritical(user, target)
         if (isCritical) {

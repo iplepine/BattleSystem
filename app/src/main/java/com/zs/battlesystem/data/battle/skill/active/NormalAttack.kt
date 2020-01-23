@@ -14,6 +14,9 @@ object NormalAttack : Skill() {
         afterDelay = 0
 
         coolDown = 0L
+
+        targetType = TargetType.ENEMY
+        targetCount = 1
     }
 
     override fun getExpectEffect(): Double {
@@ -22,22 +25,20 @@ object NormalAttack : Skill() {
 
     override fun onEffect(
         user: BattleUnit,
-        targets: List<BattleUnit>,
+        target: BattleUnit,
         messageSubject: PublishSubject<String>?
     ) {
-        require(targets.isNotEmpty())
-
-        val target = targets[0]
+        Logger.d("${user.base.name}이 ${target.base.name}에게 ${name}을 사용")
 
         if (BattleFunction.checkEvade(user, target)) {
-            val message = "공격을 회피하였습니다."
+            val message = "Miss!!"
             messageSubject?.onNext(message)
             Logger.d(message)
             return
         }
 
         var attack = BattleFunction.getDefaultAttackDamage(user)
-        val defence = target.base.battleStat.def
+        val defence = target.stat.def
 
         var isCritical = BattleFunction.checkCritical(user, target)
         if (isCritical) {
@@ -56,15 +57,17 @@ object NormalAttack : Skill() {
         target.onDamage(damage)
 
         val message = if (isBlocked) {
-            "BLOCK!! ${damage} 의 데미지를 입었다. "
+            "BLOCK!! $damage 의 데미지를 입었다. "
         } else {
             if (isCritical) {
-                "CRITICAL!! ${damage} 의 데미지를 입었다."
+                "CRITICAL!! $damage 의 데미지를 입었다."
             } else {
-                "${damage} 의 데미지를 입었다."
+                "$damage 의 데미지를 입었다."
             }
         }
         messageSubject?.onNext(message)
         Logger.d(message)
+
+        Logger.d("${target.base.name} 체력 : ${target.stat.hp}/${target.base.stat.hp}")
     }
 }

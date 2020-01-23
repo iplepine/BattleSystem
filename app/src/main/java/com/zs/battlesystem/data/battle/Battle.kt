@@ -63,11 +63,11 @@ class Battle : GameObject() {
 
             // 유닛 행동 할 때까지 전투 시간 흐름
             BattleState.NONE -> {
-                val activeUnit = getNextUnit()
-                if (activeUnit.turnDelay <= 0) {
-                    waitInput(activeUnit)
-                } else {
+                val activeUnit = getActiveUnit()
+                if (activeUnit == null) {
                     timePast(time)
+                } else {
+                    waitInput(activeUnit)
                 }
             }
         }
@@ -114,9 +114,18 @@ class Battle : GameObject() {
         return battleUnits.find { it.id == id }
     }
 
+    fun getActiveUnit(): BattleUnit? {
+        return battleUnits.filter {
+            !it.isDie() && it.turnDelay <= 0
+        }.shuffled()[0]
+    }
+
     fun getNextUnit(): BattleUnit {
-        battleUnits.filter { !it.isDie() }.sortedBy { it.turnDelay }
-        return battleUnits[0]
+        return battleUnits.filter {
+            !it.isDie()
+        }.sortedBy {
+            it.turnDelay
+        }[0]
     }
 
     fun checkFinish(): Boolean {
@@ -132,12 +141,12 @@ class Battle : GameObject() {
 
         battleUnits.forEach {
             // 내 유닛일 때, 모두가 죽었는지 체크
-            if (User.isMine(it.owner) && !it.isDie()) {
+            if (it.isMine(User.id) && !it.isDie()) {
                 isDieAllMyUnits = false
             }
 
             // 내 유닛이 아닐 때, 하나라도 살았는지 체크
-            if (!User.isMine(it.owner) && !it.isDie()) {
+            if (it.isEnemy(User.id) && !it.isDie()) {
                 return false
             }
         }

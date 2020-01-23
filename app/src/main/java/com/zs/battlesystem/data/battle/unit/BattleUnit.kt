@@ -6,7 +6,6 @@ import com.zs.battlesystem.data.battle.skill.Skill
 import com.zs.battlesystem.data.battle.unit.stat.UnitState
 import com.zs.battlesystem.data.common.GameObject
 import com.zs.battlesystem.data.common.Logger
-import com.zs.battlesystem.data.user.User
 import io.reactivex.subjects.PublishSubject
 import java.util.*
 import kotlin.math.max
@@ -24,33 +23,43 @@ class BattleUnit(val base: BaseUnit) : GameObject() {
     var stateDelay = 0L
     var state = UnitState.READY
 
+    var baseStat = base.baseStat.copy()
+    var stat = base.stat.copy()
+
     var reservedSkill: ReservedSkill? = null
 
     var battleUnitController: DefaultBattleUnitController? = DefaultBattleUnitController
 
-    fun isMine(): Boolean {
-        return User.isMine(owner)
+    fun isMine(id: String): Boolean {
+        return owner == id
     }
 
-    fun isEnemy(): Boolean {
-        return owner == "enemy"
+    fun isEnemy(id: String): Boolean {
+        return owner != id
     }
 
     fun isDie(): Boolean {
         return state == UnitState.DIE
     }
 
+    fun isReady(): Boolean {
+        return state == UnitState.READY
+    }
+
     override fun updateTime(time: Long) {
         turnDelay = max(0, turnDelay - time)
-        stateDelay = max(0L, stateDelay - time)
+        stateDelay = max(0, stateDelay - time)
 
-        if (stateDelay <= 0) {
-            when (state) {
-                UnitState.CASTING -> onFinishCasting()
-                UnitState.EFFECT -> onFinishEffect()
-                UnitState.AFTER_DELAY -> onFinishAfterDelay()
-                UnitState.STUN -> ready()
-                else -> ready()
+        while (turnDelay <= 0) {
+            if (stateDelay <= 0) {
+                when (state) {
+                    UnitState.DIE -> return
+                    UnitState.CASTING -> onFinishCasting()
+                    UnitState.EFFECT -> onFinishEffect()
+                    UnitState.AFTER_DELAY -> onFinishAfterDelay()
+                    UnitState.STUN -> ready()
+                    else -> ready()
+                }
             }
         }
     }
@@ -63,8 +72,14 @@ class BattleUnit(val base: BaseUnit) : GameObject() {
         reservedSkill = ReservedSkill(skill, target, messageSubject)
         state = UnitState.CASTING
         stateDelay = reservedSkill?.skill?.castingTime ?: DEFAULT_DELAY
+    }
 
-        Logger.d("${base.name}이 ${skill.name}을 사용")
+    fun useSkillImmediate(
+        skill: Skill,
+        target: List<BattleUnit>,
+        messageSubject: PublishSubject<String>? = null
+    ) {
+        skill.onEffect(this, target, messageSubject)
     }
 
     private fun onFinishCasting() {
@@ -89,6 +104,7 @@ class BattleUnit(val base: BaseUnit) : GameObject() {
     }
 
     private fun onFinishAfterDelay() {
+        reservedSkill = null
         ready()
     }
 
@@ -103,10 +119,13 @@ class BattleUnit(val base: BaseUnit) : GameObject() {
     }
 
     fun onDamage(damage: Int) {
-        if (damage < base.battleStat.hp) {
-            base.battleStat.hp -= damage
+        if (damage < stat.hp) {
+            stat.hp -= damage
         } else {
-            base.battleStat.hp = 0
+            stat.hp = 0
+        }
+
+        if (stat.hp <= 0) {
             state = UnitState.DIE
         }
     }
@@ -121,6 +140,10 @@ class BattleUnit(val base: BaseUnit) : GameObject() {
 
         Thread.sleep(1000)
         battleUnitController?.onReceiveUnitControl(this@BattleUnit, battle)
+        onFinishTurn()
+    }
+
+    fun onFinishTurn() {
     }
 
     class ReservedSkill(

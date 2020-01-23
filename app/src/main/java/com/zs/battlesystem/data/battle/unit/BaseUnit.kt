@@ -5,7 +5,7 @@ import com.zs.battlesystem.data.battle.skill.active.NormalAttack
 import com.zs.battlesystem.data.battle.skill.buff.Buff
 import com.zs.battlesystem.data.battle.skill.debuff.Debuff
 import com.zs.battlesystem.data.battle.unit.stat.BaseStat
-import com.zs.battlesystem.data.battle.unit.stat.BattleStat
+import com.zs.battlesystem.data.battle.unit.stat.Stat
 
 open class BaseUnit {
     var level = 0
@@ -14,7 +14,7 @@ open class BaseUnit {
     var job = "직업"
 
     var baseStat: BaseStat = BaseStat()
-    var battleStat = BattleStat()
+    var stat = Stat()
 
     var skills: List<Skill> = ArrayList<Skill>().apply { add(NormalAttack) }
     var buffs = ArrayList<Buff>()
