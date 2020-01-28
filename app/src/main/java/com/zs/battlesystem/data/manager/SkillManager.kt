@@ -8,8 +8,12 @@ object SkillManager {
     private val list = HashMap<String, Skill>()
 
     fun initSkills() {
-        list[NormalAttack.name] = NormalAttack
-        list[Bash.name] = Bash
+        putSkill(NormalAttack())
+        putSkill(Bash())
+    }
+
+    fun putSkill(skill: Skill) {
+        list[skill.name] = skill
     }
 
     fun getSkill(name: String): Skill? {

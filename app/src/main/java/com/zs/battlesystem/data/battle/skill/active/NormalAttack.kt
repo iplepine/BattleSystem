@@ -6,7 +6,7 @@ import com.zs.battlesystem.data.battle.unit.BattleUnit
 import com.zs.battlesystem.data.common.Logger
 import io.reactivex.subjects.PublishSubject
 
-object NormalAttack : Skill() {
+class NormalAttack : Skill() {
     init {
         name = "Normal Attack"
         castingTime = 0

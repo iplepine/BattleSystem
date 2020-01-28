@@ -25,6 +25,13 @@ open abstract class Skill {
         const val RANDOM = 3
     }
 
+    fun reduceCooldown(time: Long) {
+        coolDown -= time
+        if (coolDown < 0) {
+            coolDown = 0
+        }
+    }
+
     protected abstract fun onEffect(
         user: BattleUnit,
         target: BattleUnit,
@@ -38,6 +45,7 @@ open abstract class Skill {
     ) {
         val targets = findTarget(user, targets)
         targets.forEach { onEffect(user, it, messageSubject) }
+        coolDown = coolTime
     }
 
     open fun getExpectEffect(): Double {

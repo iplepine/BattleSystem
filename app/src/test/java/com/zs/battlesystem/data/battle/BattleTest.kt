@@ -57,7 +57,7 @@ class BattleTest {
             stat.hp = 1
         }
 
-        myUnit1.useSkillImmediate(NormalAttack, arrayListOf(deadlyUnit))
+        myUnit1.useSkillImmediate(NormalAttack(), arrayListOf(deadlyUnit))
         assert(deadlyUnit.isDie())
     }
 }

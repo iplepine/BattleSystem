@@ -1,5 +1,6 @@
 package com.zs.battlesystem.data.battle
 
+import com.zs.battlesystem.data.battle.skill.active.Bash
 import com.zs.battlesystem.data.user.User
 import org.junit.Test
 
@@ -7,8 +8,12 @@ class BattleSimulatorTest {
 
     private val myUnit1 = BattleUnitFactory.createTestUnit("Iplepine").apply {
         owner = User.id
+        base.skills.add(Bash())
     }
-    private val myUnit2 = BattleUnitFactory.createTestUnit("Seoty").apply { owner = User.id }
+    private val myUnit2 = BattleUnitFactory.createTestUnit("Seoty").apply {
+        owner = User.id
+        base.skills.add(Bash())
+    }
 
     private val enemyUnit1 = BattleUnitFactory.createTestUnit("enemy1")
     private val enemyUnit2 = BattleUnitFactory.createTestUnit("enemy2")

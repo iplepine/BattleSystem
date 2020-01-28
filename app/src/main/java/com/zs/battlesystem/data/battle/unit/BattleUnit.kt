@@ -51,6 +51,7 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
     }
 
     override fun updateTime(time: Long) {
+        // 여기서 얼마나 diff 만큼만 업데이트 시키도록 추가해야함
         val diff = state.updateTime(time)
         if (state.isEnd()) {
             updateState()
@@ -59,6 +60,8 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
         if (0 < diff) {
             updateTime(diff)
         }
+
+        base.skills.forEach { it.reduceCooldown(diff) }
     }
 
     private fun updateState() {

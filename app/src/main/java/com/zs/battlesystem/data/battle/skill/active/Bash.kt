@@ -6,8 +6,10 @@ import com.zs.battlesystem.data.battle.unit.BattleUnit
 import com.zs.battlesystem.data.common.Logger
 import io.reactivex.subjects.PublishSubject
 
-object Bash : Skill() {
-    private const val damageRatio = 2.0
+class Bash : Skill() {
+    companion object {
+        private const val damageRatio = 2.0
+    }
 
     init {
         name = "Bash"

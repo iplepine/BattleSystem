@@ -29,7 +29,7 @@ object DefaultBattleUnitController {
     private fun useSkill(unit: BattleUnit, battle: Battle) {
         val availableSkills = unit.base.skills.filter { it.coolDown <= 0 }
 
-        //Logger.d("Available skill count : ${availableSkills.size}")
+        Logger.d("Available skill count : ${availableSkills.size}")
 
         val skill = pickMostEffectiveSkill(availableSkills)
         skill?.also {
@@ -40,16 +40,7 @@ object DefaultBattleUnitController {
     }
 
     private fun pickMostEffectiveSkill(skills: List<Skill>): Skill? {
-        var bestEffect = 0.0
-        var bestSkill: Skill? = null
-        skills.forEach {
-            if (bestEffect < it.getExpectEffect()) {
-                bestEffect = it.getExpectEffect()
-                bestSkill = it
-            }
-        }
-
+        return skills.sortedByDescending { it.getExpectEffect() }[0]
         //Logger.d("The most effective skill : ${bestSkill?.name ?: "NONE"}")
-        return bestSkill
     }
 }
