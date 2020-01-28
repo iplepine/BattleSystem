@@ -115,9 +115,15 @@ class Battle : GameObject() {
     }
 
     fun getActiveUnit(): BattleUnit? {
-        return battleUnits.filter {
-            !it.isDie() && it.turnDelay <= 0
-        }.shuffled()[0]
+        val availableList = battleUnits.filter {
+            it.isReady()
+        }.shuffled()
+
+        return if (availableList.isEmpty()) {
+            null
+        } else {
+            availableList[0]
+        }
     }
 
     fun getNextUnit(): BattleUnit {
