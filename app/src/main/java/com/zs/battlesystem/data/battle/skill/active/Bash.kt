@@ -28,6 +28,8 @@ object Bash : Skill() {
         target: BattleUnit,
         messageSubject: PublishSubject<String>?
     ) {
+        Logger.d("${user.base.name} use $name to ${target.base.name}")
+
         if (BattleFunction.checkEvade(user, target)) {
             val message = "Miss!!"
             messageSubject?.onNext(message)

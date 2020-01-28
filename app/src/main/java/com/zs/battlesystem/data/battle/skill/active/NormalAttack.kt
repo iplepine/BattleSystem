@@ -28,7 +28,7 @@ object NormalAttack : Skill() {
         target: BattleUnit,
         messageSubject: PublishSubject<String>?
     ) {
-        Logger.d("${user.base.name}이 ${target.base.name}에게 ${name}을 사용")
+        Logger.d("${user.base.name} use [$name] to ${target.base.name}")
 
         if (BattleFunction.checkEvade(user, target)) {
             val message = "Miss!!"
@@ -68,6 +68,6 @@ object NormalAttack : Skill() {
         messageSubject?.onNext(message)
         Logger.d(message)
 
-        Logger.d("${target.base.name} HP : ${target.stat.hp}/${target.base.stat.hp}")
+        Logger.d("${target.base.name} HP : ${target.stat.hp}/${target.base.stat.hp}\n")
     }
 }

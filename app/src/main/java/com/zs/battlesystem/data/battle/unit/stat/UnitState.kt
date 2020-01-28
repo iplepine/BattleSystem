@@ -1,10 +1,10 @@
 package com.zs.battlesystem.data.battle.unit.stat
 
 object UnitState {
-    const val READY = 0
-    const val CASTING = 1
-    const val EFFECT = 2
-    const val AFTER_DELAY = 3
-    const val STUN = 50
-    const val DIE = -1
+    const val IDLE = "idle"
+    const val CASTING = "casting"
+    const val EFFECT = "effect"
+    const val AFTER_DELAY = "after delay"
+    const val STUN = "stun"
+    const val DIE = "die"
 }

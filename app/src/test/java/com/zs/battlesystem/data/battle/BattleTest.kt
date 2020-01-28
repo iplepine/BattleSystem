@@ -1,8 +1,6 @@
 package com.zs.battlesystem.data.battle
 
 import com.zs.battlesystem.data.battle.skill.active.NormalAttack
-import com.zs.battlesystem.data.battle.unit.BaseUnit
-import com.zs.battlesystem.data.battle.unit.BattleUnit
 import com.zs.battlesystem.data.battle.unit.stat.UnitState
 import com.zs.battlesystem.data.user.User
 import org.junit.Test
@@ -22,50 +20,32 @@ class BattleTest {
     }
 
     @Test
-    fun getNextUnitTest() {
-        val highDelay = BattleUnit(BaseUnit()).apply {
-            turnDelay = 1000
-        }
-
-        val lowDelay = BattleUnit(BaseUnit()).apply {
-            turnDelay = 500
-        }
-
-        var battle = Battle().apply {
-            battleUnits.add(highDelay)
-            battleUnits.add(lowDelay)
-        }
-
-        assert(battle.getNextUnit() == lowDelay)
-    }
-
-    @Test
     fun checkWinOrLoseTest() {
         // 아군과 적군 둘 다 살아남았을 때
         assert(!battle.checkWin())
         assert(!battle.checkLose())
 
         // 아군 하나 살아남았을 때
-        myUnit1.state = UnitState.DIE
-        myUnit2.state = UnitState.STUN
-        enemyUnit1.state = UnitState.DIE
-        enemyUnit2.state = UnitState.DIE
+        myUnit1.changeState(UnitState.DIE)
+        myUnit2.changeState(UnitState.STUN)
+        enemyUnit1.changeState(UnitState.DIE)
+        enemyUnit2.changeState(UnitState.DIE)
         assert(battle.checkWin())
         assert(!battle.checkLose())
 
         // 적군 하나 살아남았을 때
-        myUnit1.state = UnitState.DIE
-        myUnit2.state = UnitState.DIE
-        enemyUnit1.state = UnitState.READY
-        enemyUnit2.state = UnitState.DIE
+        myUnit1.changeState(UnitState.DIE)
+        myUnit2.changeState(UnitState.DIE)
+        enemyUnit1.changeState(UnitState.IDLE)
+        enemyUnit2.changeState(UnitState.DIE)
         assert(!battle.checkWin())
         assert(battle.checkLose())
 
         // 모두 죽었을 때
-        myUnit1.state = UnitState.DIE
-        myUnit2.state = UnitState.DIE
-        enemyUnit1.state = UnitState.DIE
-        enemyUnit2.state = UnitState.DIE
+        myUnit1.changeState(UnitState.DIE)
+        myUnit2.changeState(UnitState.DIE)
+        enemyUnit1.changeState(UnitState.DIE)
+        enemyUnit2.changeState(UnitState.DIE)
         assert(!battle.checkWin())
         assert(battle.checkLose())
     }

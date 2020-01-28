@@ -12,13 +12,15 @@ object BattleSimulator {
         while (!battle.checkFinish()) {
             battle.updateTime(Battle.GAME_SPEED)
 
+            if (battle.useRealTime) {
+                Thread.sleep(Battle.GAME_SPEED)
+            }
+
             totalTime += Battle.GAME_SPEED
             if (TIMEOUT < totalTime) {
                 timeOver = true
                 break
             }
-
-            Logger.d("")
         }
 
         val message = when {

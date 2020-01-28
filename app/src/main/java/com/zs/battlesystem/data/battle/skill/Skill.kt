@@ -2,6 +2,7 @@ package com.zs.battlesystem.data.battle.skill
 
 import com.zs.battlesystem.data.battle.unit.BattleUnit
 import io.reactivex.subjects.PublishSubject
+import kotlin.math.min
 
 open abstract class Skill {
     var name: String = ""
@@ -51,8 +52,7 @@ open abstract class Skill {
             TargetType.ENEMY ->
                 return units.filter {
                     it.isEnemy(user.owner) && !it.isDie()
-                }.shuffled()
-                    .subList(0, targetCount)
+                }?.run { shuffled().subList(0, min(size, targetCount)) }
 
             TargetType.FRIEND ->
                 return units.filter { it.isMine(user.owner) && it != user }

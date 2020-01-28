@@ -1,5 +1,5 @@
 package com.zs.battlesystem.data.common
 
-abstract class GameObject {
+abstract class MonoBehaviour {
     abstract fun updateTime(time: Long)
 }
