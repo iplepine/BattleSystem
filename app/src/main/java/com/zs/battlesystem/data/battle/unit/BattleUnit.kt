@@ -26,7 +26,7 @@ class BattleUnit(val base: BaseUnit) : GameObject() {
     var baseStat = base.baseStat.copy()
     var stat = base.stat.copy()
 
-    var reservedSkill: ReservedSkill? = null
+    var castingSkill: ReservedSkill? = null
 
     var battleUnitController: DefaultBattleUnitController? = DefaultBattleUnitController
 
@@ -69,9 +69,9 @@ class BattleUnit(val base: BaseUnit) : GameObject() {
         target: List<BattleUnit>,
         messageSubject: PublishSubject<String>? = null
     ) {
-        reservedSkill = ReservedSkill(skill, target, messageSubject)
+        castingSkill = ReservedSkill(skill, target, messageSubject)
         state = UnitState.CASTING
-        stateDelay = reservedSkill?.skill?.castingTime ?: DEFAULT_DELAY
+        stateDelay = castingSkill?.skill?.castingTime ?: DEFAULT_DELAY
     }
 
     fun useSkillImmediate(
@@ -88,11 +88,11 @@ class BattleUnit(val base: BaseUnit) : GameObject() {
 
     private fun startEffect() {
         state = UnitState.EFFECT
-        stateDelay = reservedSkill?.skill?.effectTime ?: DEFAULT_DELAY
+        stateDelay = castingSkill?.skill?.effectTime ?: DEFAULT_DELAY
     }
 
     private fun onFinishEffect() {
-        reservedSkill?.also {
+        castingSkill?.also {
             it.skill.onEffect(this, it.target, it.messageSubject)
         }
         startAfterDelay()
@@ -100,11 +100,11 @@ class BattleUnit(val base: BaseUnit) : GameObject() {
 
     private fun startAfterDelay() {
         state = UnitState.AFTER_DELAY
-        stateDelay = reservedSkill?.skill?.afterDelay ?: DEFAULT_DELAY
+        stateDelay = castingSkill?.skill?.afterDelay ?: DEFAULT_DELAY
     }
 
     private fun onFinishAfterDelay() {
-        reservedSkill = null
+        castingSkill = null
         ready()
     }
 
@@ -115,7 +115,7 @@ class BattleUnit(val base: BaseUnit) : GameObject() {
     fun onStun(time: Long) {
         state = UnitState.STUN
         turnDelay += time
-        reservedSkill = null
+        castingSkill = null
     }
 
     fun onDamage(damage: Int) {
