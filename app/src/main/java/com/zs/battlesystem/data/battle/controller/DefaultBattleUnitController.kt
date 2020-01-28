@@ -11,11 +11,11 @@ object DefaultBattleUnitController {
         unit: BattleUnit,
         battle: Battle
     ) {
-        Logger.d("(${this.javaClass.simpleName} 이 유닛을 조작합니다.)")
+        Logger.d("(${this.javaClass.simpleName} is controlling this unit.)")
 
         val availableSkills = unit.base.skills.filter { it.coolDown <= 0 }
 
-        Logger.d("사용 가능한 스킬 수 : ${availableSkills.size}")
+        Logger.d("Available skill count : ${availableSkills.size}")
 
         val skill = pickMostEffectiveSkill(availableSkills)
         skill?.also {
@@ -33,7 +33,7 @@ object DefaultBattleUnitController {
             }
         }
 
-        Logger.d("가장 효과적인 스킬 : ${bestSkill?.name ?: "없음"}")
+        Logger.d("The most effective skill : ${bestSkill?.name ?: "NONE"}")
         return bestSkill
     }
 }

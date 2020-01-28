@@ -10,7 +10,7 @@ object Bash : Skill() {
     private const val damageRatio = 2.0
 
     init {
-        name = "강타"
+        name = "Bash"
         description = "힘을 모아 강하게 내려 친다"
         castingTime = 0
         effectTime = 0
@@ -29,7 +29,7 @@ object Bash : Skill() {
         messageSubject: PublishSubject<String>?
     ) {
         if (BattleFunction.checkEvade(user, target)) {
-            val message = "공격을 회피하였습니다."
+            val message = "Miss!!"
             messageSubject?.onNext(message)
             Logger.d(message)
             return
@@ -55,12 +55,12 @@ object Bash : Skill() {
         target.onDamage(damage)
 
         val message = if (isBlocked) {
-            "BLOCK!! ${damage} 의 데미지를 입었다. "
+            "BLOCK!! ${damage}"
         } else {
             if (isCritical) {
-                "CRITICAL!! ${damage} 의 데미지를 입었다."
+                "CRITICAL!! ${damage}"
             } else {
-                "${damage} 의 데미지를 입었다."
+                "${damage}"
             }
         }
         messageSubject?.onNext(message)

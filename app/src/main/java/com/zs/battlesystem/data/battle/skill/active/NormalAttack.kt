@@ -8,7 +8,7 @@ import io.reactivex.subjects.PublishSubject
 
 object NormalAttack : Skill() {
     init {
-        name = "기본 공격"
+        name = "Normal Attack"
         castingTime = 0
         effectTime = 0
         afterDelay = 0
@@ -57,17 +57,17 @@ object NormalAttack : Skill() {
         target.onDamage(damage)
 
         val message = if (isBlocked) {
-            "BLOCK!! $damage 의 데미지를 입었다. "
+            "BLOCK!! $damage"
         } else {
             if (isCritical) {
-                "CRITICAL!! $damage 의 데미지를 입었다."
+                "CRITICAL!! $damage"
             } else {
-                "$damage 의 데미지를 입었다."
+                "$damage"
             }
         }
         messageSubject?.onNext(message)
         Logger.d(message)
 
-        Logger.d("${target.base.name} 체력 : ${target.stat.hp}/${target.base.stat.hp}")
+        Logger.d("${target.base.name} HP : ${target.stat.hp}/${target.base.stat.hp}")
     }
 }

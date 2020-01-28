@@ -22,12 +22,12 @@ object BattleSimulator {
         }
 
         val message = when {
-            timeOver -> "타임오버"
-            battle.checkWin() -> "승리"
-            else -> "패배"
+            timeOver -> "Time Over"
+            battle.checkWin() -> "Win"
+            else -> "Lose"
         }
 
-        Logger.d("전투종료 : $message")
+        Logger.d("finish a battle: $message")
 
         return message
     }

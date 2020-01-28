@@ -131,10 +131,10 @@ class BattleUnit(val base: BaseUnit) : GameObject() {
     }
 
     fun onTurn(battle: Battle) {
-        Logger.d("${base.name}의 턴!")
+        Logger.d("${base.name}'s turn!")
 
         if (battleUnitController == null) {
-            Logger.d("Unit Controller 가 없습니다.")
+            Logger.d("Unit Controller is null")
             return
         }
 
