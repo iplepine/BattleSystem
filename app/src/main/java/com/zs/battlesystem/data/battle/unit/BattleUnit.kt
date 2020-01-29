@@ -60,12 +60,12 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
         updateState()
 
         if (spentTime < time) {
-            updateTime(spentTime - time)
+            updateTime(time - spentTime)
         }
     }
 
     private fun timePast(time: Long) {
-        base.skills.forEach { it.reduceCooldown(time) }
+        base.skills.forEach { it.reduceCoolDown(time) }
     }
 
     private fun updateState() {
@@ -137,6 +137,7 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
     }
 
     private fun onFinishAfterDelay() {
+        castingSkill?.skill?.startCoolDown()
         castingSkill = null
         ready(calculateTurnDelay())
     }
@@ -204,6 +205,11 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
                 delay - time
             } else {
                 delay
+            }
+
+            // 상태 변경이 되지 않는 조건
+            if (spentTime <= 0) {
+                return time
             }
 
             delay -= spentTime
