@@ -1,8 +1,11 @@
 package com.zs.battlesystem.data.battle
 
+import com.zs.battlesystem.data.battle.skill.Skill
 import com.zs.battlesystem.data.battle.skill.active.NormalAttack
+import com.zs.battlesystem.data.battle.unit.BattleUnit
 import com.zs.battlesystem.data.battle.unit.stat.UnitState
 import com.zs.battlesystem.data.user.User
+import io.reactivex.subjects.PublishSubject
 import org.junit.Test
 
 class BattleTest {
@@ -59,5 +62,54 @@ class BattleTest {
 
         myUnit1.useSkillImmediate(NormalAttack(), arrayListOf(deadlyUnit))
         assert(deadlyUnit.isDie())
+    }
+
+    @Test
+    fun usingSkillTest() {
+        val testSkill = object : Skill() {
+            init {
+                name = "TestSkill"
+                coolTime = 5000L
+                castingTime = 1000L
+                effectTime = 1500L
+                afterDelay = 3000L
+            }
+
+            override fun onEffect(
+                user: BattleUnit,
+                target: BattleUnit,
+                messageSubject: PublishSubject<String>?
+            ) {
+            }
+        }
+
+        val unit = BattleUnitFactory.createTestUnit("user").apply {
+            base.skills.add(testSkill)
+        }
+
+        val enemy = BattleUnitFactory.createTestUnit("enemy").apply {
+        }
+
+        unit.startCasting(testSkill, arrayListOf(enemy))
+        assert(unit.state.name == UnitState.CASTING)
+        assert(testSkill.coolDown == 0L)
+
+        unit.updateTime(testSkill.castingTime)
+        assert(unit.state.name == UnitState.EFFECT)
+        assert(testSkill.coolDown == 0L)
+
+        unit.updateTime(testSkill.effectTime)
+        assert(unit.state.name == UnitState.AFTER_DELAY)
+        assert(testSkill.coolDown == 0L)
+
+        unit.updateTime(testSkill.afterDelay)
+        assert(unit.state.name == UnitState.IDLE)
+        assert(testSkill.coolDown == testSkill.coolTime)
+
+        unit.updateTime(testSkill.coolTime / 2)
+        assert(testSkill.coolDown == testSkill.coolTime / 2)
+
+        unit.updateTime(testSkill.coolTime / 2)
+        assert(testSkill.coolDown == 0L)
     }
 }
