@@ -1,27 +1,22 @@
 package com.zs.battlesystem.data.battle
 
+import com.zs.battlesystem.data.battle.controller.UserInputTimer
 import com.zs.battlesystem.data.battle.unit.BattleUnit
 import com.zs.battlesystem.data.common.Logger
 import com.zs.battlesystem.data.common.MonoBehaviour
 import com.zs.battlesystem.data.user.User
-import io.reactivex.disposables.CompositeDisposable
 
 class Battle : MonoBehaviour() {
     companion object {
-        const val MAX_TUREN = 100
         const val GAME_SPEED = 1000L// / 60L    // 1 프레임 당 시간 흐름
-        const val MAX_WATING_TIME = 10 * 1000L    // 입력 대기 시간 10초
     }
 
     var useRealTime = false
-    var isRunning = true
+    private var isRunning = true
 
     var battleState = BattleState.NONE
 
-    var waitingTime = 0L
-
     var battleUnits = ArrayList<BattleUnit>()
-    val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     override fun updateTime(time: Long) {
         if (!isRunning) {
@@ -63,22 +58,19 @@ class Battle : MonoBehaviour() {
 
     fun onFinishInput() {
         battleState = BattleState.NONE
-        waitingTime = 0
+        UserInputTimer.clear()
         Logger.d("- finish input -\n")
     }
 
     private fun updateInputTime(time: Long) {
-        waitingTime += time
-        if (MAX_WATING_TIME < waitingTime) {
+        UserInputTimer.timePast(time)
+        if (UserInputTimer.isTimeOver()) {
             passTurn()
-        }
-        if (waitingTime % 1000 == 0L) {
-            Logger.d("waiting input ... ${waitingTime / 1000}")
         }
     }
 
     private fun passTurn() {
-        waitingTime = 0
+        UserInputTimer.clear()
         battleState = BattleState.NONE
         Logger.d("pass turn")
     }
