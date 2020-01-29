@@ -51,26 +51,32 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
     }
 
     override fun updateTime(time: Long) {
-        // 여기서 얼마나 diff 만큼만 업데이트 시키도록 추가해야함
-        val diff = state.updateTime(time)
-        if (state.isEnd()) {
-            updateState()
+        if (time <= 0) {
+            return
         }
 
-        if (0 < diff) {
-            updateTime(diff)
-        }
+        val spentTime = state.spendTime(time)
+        timePast(spentTime)
+        updateState()
 
-        base.skills.forEach { it.reduceCooldown(diff) }
+        if (spentTime < time) {
+            updateTime(spentTime - time)
+        }
+    }
+
+    private fun timePast(time: Long) {
+        base.skills.forEach { it.reduceCooldown(time) }
     }
 
     private fun updateState() {
-        when (state.name) {
-            UnitState.DIE -> return
-            UnitState.CASTING -> onFinishCasting()
-            UnitState.EFFECT -> onFinishEffect()
-            UnitState.AFTER_DELAY -> onFinishAfterDelay()
-            UnitState.STUN -> ready(0)
+        if (state.isEnd()) {
+            when (state.name) {
+                UnitState.DIE -> return
+                UnitState.CASTING -> onFinishCasting()
+                UnitState.EFFECT -> onFinishEffect()
+                UnitState.AFTER_DELAY -> onFinishAfterDelay()
+                UnitState.STUN -> ready(0)
+            }
         }
     }
 
@@ -190,14 +196,18 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
     )
 
     class State(val name: String, var delay: Long = 0L) {
-        fun updateTime(time: Long): Long {
-            val diff = delay - time
-            delay = if (diff < 0) {
-                0
+        /**
+         * 사용한 시간 리턴
+         */
+        fun spendTime(time: Long): Long {
+            val spentTime = if (time < delay) {
+                delay - time
             } else {
-                diff
+                delay
             }
-            return diff
+
+            delay -= spentTime
+            return spentTime
         }
 
         fun isEnd(): Boolean {
