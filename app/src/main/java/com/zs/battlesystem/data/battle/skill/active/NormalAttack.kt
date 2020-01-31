@@ -3,6 +3,8 @@ package com.zs.battlesystem.data.battle.skill.active
 import com.zs.battlesystem.data.battle.BattleFunction
 import com.zs.battlesystem.data.battle.skill.Skill
 import com.zs.battlesystem.data.battle.unit.BattleUnit
+import com.zs.battlesystem.data.battle.stat.SecondStat.Companion.DEF
+import com.zs.battlesystem.data.battle.stat.SecondStat.Companion.HP
 import com.zs.battlesystem.data.common.Logger
 import io.reactivex.subjects.PublishSubject
 
@@ -38,7 +40,7 @@ class NormalAttack : Skill() {
         }
 
         var attack = BattleFunction.getDefaultAttackDamage(user)
-        val defence = target.stat.def
+        val defence = target.stat.secondStat.get(DEF)
 
         var isCritical = BattleFunction.checkCritical(user, target)
         if (isCritical) {
@@ -51,8 +53,8 @@ class NormalAttack : Skill() {
             attack - defence
         } else {
             isBlocked = true
-            (attack * (1 - BattleFunction.getDamageReductionRatio(attack, defence))).toInt()
-        }
+            attack * (1 - BattleFunction.getDamageReductionRatio(attack, defence))
+        }.toInt()
 
         target.onDamage(damage)
 
@@ -68,6 +70,11 @@ class NormalAttack : Skill() {
         messageSubject?.onNext(message)
         Logger.d(message)
 
-        Logger.d("${target.base.name} HP : ${target.stat.hp}/${target.base.stat.hp}\n")
+        Logger.d(
+            "${target.base.name} " +
+                    "HP : ${target.stat.secondStat.get(HP)}/${target.base.totalStat.secondStat.get(
+                        HP
+                    )}\n"
+        )
     }
 }

@@ -29,7 +29,7 @@ object DefaultBattleUnitController {
     private fun useSkill(unit: BattleUnit, battle: Battle) {
         val availableSkills = unit.base.skills.filter { it.coolDown <= 0 }
 
-        Logger.d("Available skill count : ${availableSkills.size}")
+        Logger.d("Available skill count : ${availableSkills.size}/${unit.base.skills.count()}")
 
         val skill = pickMostEffectiveSkill(availableSkills)
         skill?.also {

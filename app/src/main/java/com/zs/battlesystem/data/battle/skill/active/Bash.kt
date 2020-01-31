@@ -3,6 +3,7 @@ package com.zs.battlesystem.data.battle.skill.active
 import com.zs.battlesystem.data.battle.BattleFunction
 import com.zs.battlesystem.data.battle.skill.Skill
 import com.zs.battlesystem.data.battle.unit.BattleUnit
+import com.zs.battlesystem.data.battle.stat.SecondStat.Companion.DEF
 import com.zs.battlesystem.data.common.Logger
 import io.reactivex.subjects.PublishSubject
 
@@ -39,8 +40,8 @@ class Bash : Skill() {
             return
         }
 
-        var attack = (BattleFunction.getDefaultAttackDamage(user) * damageRatio).toInt()
-        val defence = target.base.stat.def
+        var attack = (BattleFunction.getDefaultAttackDamage(user) * damageRatio)
+        val defence = target.stat.secondStat.get(DEF)
 
         var isCritical = BattleFunction.checkCritical(user, target)
         if (isCritical) {
@@ -53,18 +54,18 @@ class Bash : Skill() {
             attack - defence
         } else {
             isBlocked = true
-            (attack * (1 - BattleFunction.getDamageReductionRatio(attack, defence))).toInt()
-        }
+            (attack * (1 - BattleFunction.getDamageReductionRatio(attack, defence)))
+        }.toInt()
 
         target.onDamage(damage)
 
         val message = if (isBlocked) {
-            "BLOCK!! ${damage}"
+            "BLOCK!! $damage"
         } else {
             if (isCritical) {
-                "CRITICAL!! ${damage}"
+                "CRITICAL!! $damage"
             } else {
-                "${damage}"
+                "$damage"
             }
         }
         messageSubject?.onNext(message)

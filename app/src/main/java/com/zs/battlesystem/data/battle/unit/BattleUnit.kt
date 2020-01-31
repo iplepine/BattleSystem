@@ -3,7 +3,9 @@ package com.zs.battlesystem.data.battle.unit
 import com.zs.battlesystem.data.battle.Battle
 import com.zs.battlesystem.data.battle.controller.DefaultBattleUnitController
 import com.zs.battlesystem.data.battle.skill.Skill
-import com.zs.battlesystem.data.battle.unit.stat.UnitState
+import com.zs.battlesystem.data.battle.stat.SecondStat.Companion.HP
+import com.zs.battlesystem.data.battle.stat.SecondStat.Companion.SPEED
+import com.zs.battlesystem.data.battle.stat.UnitState
 import com.zs.battlesystem.data.common.Logger
 import com.zs.battlesystem.data.common.MonoBehaviour
 import io.reactivex.subjects.PublishSubject
@@ -19,8 +21,7 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
 
     var state = State(UnitState.IDLE)
 
-    var baseStat = base.baseStat.copy()
-    var stat = base.stat.copy()
+    var stat = base.totalStat.copy()
 
     var castingSkill: ReservedSkill? = null
 
@@ -160,13 +161,13 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
     }
 
     fun onDamage(damage: Int) {
-        if (damage < stat.hp) {
-            stat.hp -= damage
+        if (damage < stat.secondStat.get(HP)) {
+            stat.secondStat.values[HP]?.minus(damage)
         } else {
-            stat.hp = 0
+            stat.secondStat.values[HP] = 0.0
         }
 
-        if (stat.hp <= 0) {
+        if (stat.secondStat.get(HP) <= 0.0) {
             changeState(State(UnitState.DIE))
         }
     }
@@ -184,7 +185,7 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
     }
 
     private fun calculateTurnDelay(): Long {
-        if (stat.speed == 0) {
+        if (stat.secondStat.get(SPEED) == 0.0) {
             return 1000L
         }
         return 1000L

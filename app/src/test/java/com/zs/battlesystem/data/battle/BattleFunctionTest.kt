@@ -1,5 +1,7 @@
 package com.zs.battlesystem.data.battle
 
+import com.zs.battlesystem.data.battle.stat.SecondStat.Companion.CRI
+import com.zs.battlesystem.data.battle.stat.SecondStat.Companion.EVADE
 import org.junit.Test
 
 class BattleFunctionTest {
@@ -8,8 +10,8 @@ class BattleFunctionTest {
 
     @Test
     fun checkCritical() {
-        unit1.base.stat.critical = 100
-        unit2.base.stat.critical = 0
+        unit1.stat.secondStat.values[CRI] = 100.0
+        unit2.stat.secondStat.values[CRI] = 0.0
 
         assert(BattleFunction.checkCritical(unit1, unit2))
         assert(!BattleFunction.checkCritical(unit2, unit1))
@@ -17,8 +19,8 @@ class BattleFunctionTest {
 
     @Test
     fun checkEvade() {
-        unit1.base.stat.evade = 0
-        unit2.base.stat.evade = 100
+        unit1.stat.secondStat.values[EVADE] = 0.0
+        unit2.stat.secondStat.values[EVADE] = 100.0
 
         assert(BattleFunction.checkEvade(unit1, unit2))
         assert(!BattleFunction.checkEvade(unit2, unit1))
@@ -26,9 +28,9 @@ class BattleFunctionTest {
 
     @Test
     fun getDamageReduceRation() {
-        assert(BattleFunction.getDamageReductionRatio(100, 0) == 0.0)
-        assert(BattleFunction.getDamageReductionRatio(100, 100) == 0.0)
-        assert(BattleFunction.getDamageReductionRatio(100, 500) >= 0.8)
-        assert(BattleFunction.getDamageReductionRatio(100, 1000) >= 0.9)
+        assert(BattleFunction.getDamageReductionRatio(100.0, 0.0) == 0.0)
+        assert(BattleFunction.getDamageReductionRatio(100.0, 100.0) == 0.0)
+        assert(BattleFunction.getDamageReductionRatio(100.0, 500.0) >= 0.8)
+        assert(BattleFunction.getDamageReductionRatio(100.0, 1000.0) >= 0.9)
     }
 }

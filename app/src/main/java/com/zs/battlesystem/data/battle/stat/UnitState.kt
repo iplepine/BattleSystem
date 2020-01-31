@@ -1,4 +1,4 @@
-package com.zs.battlesystem.data.battle.unit.stat
+package com.zs.battlesystem.data.battle.stat
 
 object UnitState {
     const val IDLE = "idle"

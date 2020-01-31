@@ -3,7 +3,9 @@ package com.zs.battlesystem.data.battle
 import com.zs.battlesystem.data.battle.skill.Skill
 import com.zs.battlesystem.data.battle.skill.active.NormalAttack
 import com.zs.battlesystem.data.battle.unit.BattleUnit
-import com.zs.battlesystem.data.battle.unit.stat.UnitState
+import com.zs.battlesystem.data.battle.stat.SecondStat.Companion.EVADE
+import com.zs.battlesystem.data.battle.stat.SecondStat.Companion.HP
+import com.zs.battlesystem.data.battle.stat.UnitState
 import com.zs.battlesystem.data.user.User
 import io.reactivex.subjects.PublishSubject
 import org.junit.Test
@@ -56,8 +58,8 @@ class BattleTest {
     @Test
     fun dieTest() {
         val deadlyUnit = BattleUnitFactory.createTestUnit("죽을 놈").apply {
-            stat.evade = 0
-            stat.hp = 1
+            stat.secondStat.values[EVADE] = 0.0
+            stat.secondStat.values[HP] = 1.0
         }
 
         myUnit1.useSkillImmediate(NormalAttack(), arrayListOf(deadlyUnit))
