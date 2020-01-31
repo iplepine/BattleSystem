@@ -22,13 +22,13 @@ data class SecondStat(
         const val MATK = "MATK"
         const val DEF = "DEF"
         const val MDEF = "MDEF"
-        const val SPEED = "SPEED"
         const val HIT = "HIT"
         const val EVADE = "EVADE"
+        const val SPEED = "SPEED"
         const val CRI = "CRI"
 
         val KEYS = arrayOf(
-            HP, MP, WILL, ATK, MATK, DEF, MDEF, SPEED, HIT, EVADE, CRI
+            HP, MP, WILL, ATK, MATK, DEF, MDEF, HIT, EVADE, SPEED, CRI
         )
 
         fun createFromBaseStat(baseStat: BaseStat, useRandom: Boolean = true): SecondStat {
@@ -43,7 +43,7 @@ data class SecondStat(
 
                     val statBonus = 1 + (baseStat - (StatManager.Const.BASE_STAT_MAX / 2)) / 10.0
 
-                    var upStat = factor * baseStat * statBonus
+                    var upStat = factor * baseStat// * statBonus
                     if (useRandom) {
                         upStat *= Math.random()
                     }
