@@ -61,19 +61,19 @@ data class SecondStat(
         return values[key] ?: 0.0
     }
 
-    fun add(stat: SecondStat) {
+    fun plus(stat: SecondStat) {
         KEYS.forEach {
             values[it] = get(it).plus(stat.get(it))
         }
     }
 
-    fun add(statValues: HashMap<String, Double>) {
+    fun plus(statValues: HashMap<String, Double>) {
         statValues.forEach {
             values[it.key] = get(it.key).plus(statValues[it.key]!!)
         }
     }
 
-    fun multiple(stat: SecondStat) {
+    fun times(stat: SecondStat) {
         KEYS.forEach {
             values[it] = get(it).times(stat.get(it))
         }

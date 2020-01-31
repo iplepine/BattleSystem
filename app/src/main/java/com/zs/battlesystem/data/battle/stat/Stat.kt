@@ -13,13 +13,22 @@ data class Stat(
         }
     }
 
+    fun deepCopy(): Stat {
+        return let {
+            Stat().also {
+                it.baseStat.values.putAll(baseStat.values)
+                it.secondStat.values.putAll(secondStat.values)
+            }
+        }
+    }
+
     fun add(stat: Stat) {
-        baseStat.add(stat.baseStat)
-        secondStat.add(stat.secondStat)
+        baseStat.plus(stat.baseStat)
+        secondStat.plus(stat.secondStat)
     }
 
     fun multiple(stat: Stat) {
-        baseStat.multiple(stat.baseStat)
-        secondStat.multiple(stat.secondStat)
+        baseStat.times(stat.baseStat)
+        secondStat.times(stat.secondStat)
     }
 }

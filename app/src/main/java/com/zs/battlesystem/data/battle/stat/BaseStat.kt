@@ -28,19 +28,19 @@ data class BaseStat(
         return values[key] ?: default
     }
 
-    fun add(stat: BaseStat) {
+    fun plus(stat: BaseStat) {
         KEYS.forEach {
             values[it] = get(it).plus(stat.get(it))
         }
     }
 
-    fun add(statValues: HashMap<String, Double>) {
+    fun plus(statValues: HashMap<String, Double>) {
         statValues.forEach {
             values[it.key] = get(it.key).plus(statValues[it.key]!!)
         }
     }
 
-    fun multiple(stat: BaseStat) {
+    fun times(stat: BaseStat) {
         KEYS.forEach {
             values[it] = get(it).times(stat.get(it))
         }

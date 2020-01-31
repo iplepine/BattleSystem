@@ -3,8 +3,12 @@ package com.zs.battlesystem.data.battle.unit
 import com.zs.battlesystem.data.battle.Battle
 import com.zs.battlesystem.data.battle.controller.DefaultBattleUnitController
 import com.zs.battlesystem.data.battle.skill.Skill
+import com.zs.battlesystem.data.battle.skill.buff.base.Buff
+import com.zs.battlesystem.data.battle.skill.buff.base.StatBuff
+import com.zs.battlesystem.data.battle.skill.debuff.Debuff
 import com.zs.battlesystem.data.battle.stat.SecondStat.Companion.HP
 import com.zs.battlesystem.data.battle.stat.SecondStat.Companion.SPEED
+import com.zs.battlesystem.data.battle.stat.Stat
 import com.zs.battlesystem.data.battle.stat.UnitState
 import com.zs.battlesystem.data.common.Logger
 import com.zs.battlesystem.data.common.MonoBehaviour
@@ -21,7 +25,10 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
 
     var state = State(UnitState.IDLE)
 
-    var stat = base.totalStat.copy()
+    var stat = base.totalStat.deepCopy()
+
+    val buffs = ArrayList<Buff>()
+    val debuffs = ArrayList<Debuff>()
 
     var castingSkill: ReservedSkill? = null
 
@@ -66,7 +73,40 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
     }
 
     private fun timePast(time: Long) {
-        base.skills.forEach { it.reduceCoolDown(time) }
+        updateSkills(time)
+        updateBuffs(time)
+    }
+
+    private fun updateSkills(time: Long) {
+        base.skills.forEach { it.updateTime(time) }
+    }
+
+    private fun updateBuffs(time: Long) {
+        val endBuffs = buffs.filter {
+            it.updateTime(time)
+            it.isEnd()
+        }
+
+        buffs.removeAll(endBuffs)
+    }
+
+    fun calculateStat() {
+        stat = base.totalStat.deepCopy()
+
+        val flatStat = Stat()
+        val percentStat = Stat.createInitializedStat(1.0, 1.0)
+
+        buffs.forEach { buff ->
+            (buff as? StatBuff)?.also {
+                flatStat.add(it.flatStat)
+                percentStat.add(it.percentStat)
+            }
+        }
+
+        stat.baseStat.plus(flatStat.baseStat)
+        stat.secondStat.plus(flatStat.secondStat)
+        stat.baseStat.times(percentStat.baseStat)
+        stat.secondStat.times(percentStat.secondStat)
     }
 
     private fun updateState() {
@@ -190,6 +230,7 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
         }
         return 1000L
     }
+
 
     class ReservedSkill(
         var skill: Skill,

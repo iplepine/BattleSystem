@@ -21,7 +21,7 @@ open abstract class Skill {
     object TargetType {
         const val SELF = 0
         const val ENEMY = 1
-        const val FRIEND = 2
+        const val ALLIES = 2
         const val RANDOM = 3
     }
 
@@ -29,7 +29,7 @@ open abstract class Skill {
         coolDown = coolTime
     }
 
-    fun reduceCoolDown(time: Long) {
+    open fun updateTime(time: Long) {
         coolDown -= time
         if (coolDown < 0) {
             coolDown = 0
@@ -65,8 +65,8 @@ open abstract class Skill {
                     it.isEnemy(user.owner) && !it.isDie()
                 }?.run { shuffled().subList(0, min(size, targetCount)) }
 
-            TargetType.FRIEND ->
-                return units.filter { it.isMine(user.owner) && it != user }
+            TargetType.ALLIES ->
+                return units.filter { it.isMine(user.owner) }
 
             TargetType.RANDOM ->
                 return units.shuffled().subList(0, targetCount)

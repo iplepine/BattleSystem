@@ -1,6 +1,6 @@
 package com.zs.battlesystem.data.battle.item
 
-object ItemType {
+object EquipType {
     const val HEAD = "head"
     const val ARMOR = "armor"
     const val HANDS = "hands"
