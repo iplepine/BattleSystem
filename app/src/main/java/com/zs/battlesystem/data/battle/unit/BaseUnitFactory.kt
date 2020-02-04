@@ -2,13 +2,14 @@ package com.zs.battlesystem.data.battle.unit
 
 import com.zs.battlesystem.data.battle.stat.BaseStat
 import com.zs.battlesystem.data.battle.stat.SecondStat
+import com.zs.battlesystem.data.common.RandomUtil
 import com.zs.battlesystem.data.const.ManNamePool
 import com.zs.battlesystem.data.const.WomanNamePool
 import kotlin.math.ceil
 
 object BaseUnitFactory {
-    private const val MAX_STAT = 18
-    private const val MIN_STAT = 6
+    private const val MAX_STAT = 18.0
+    private const val MIN_STAT = 6.0
 
     fun create(): BaseUnit {
         val name = let {
@@ -27,7 +28,7 @@ object BaseUnitFactory {
             this.name = name
             BaseStat.KEYS.forEach {
                 this.originalStat.baseStat.values[it] = ceil(
-                    (Math.random() * (MAX_STAT - MIN_STAT)) + MIN_STAT
+                    RandomUtil.rand(MIN_STAT, MAX_STAT)
                 )
             }
 

@@ -9,7 +9,7 @@ import com.zs.battlesystem.data.battle.stat.Stat
 import com.zs.battlesystem.data.manager.StatManager
 
 open class BaseUnit {
-    var level = 0
+    var level = 1
     var exp = 0L
     var name = "이름"
     var job = "직업"
@@ -23,7 +23,7 @@ open class BaseUnit {
     fun levelUp() {
         level++
         addLevelUpStats()
-        updateTotalStats()
+        calculateStat()
     }
 
     // 기본 증가값 + 현재 총 기본 스텟에 따른 증가값
@@ -32,19 +32,6 @@ open class BaseUnit {
             plus(StatManager.defaultLevelUpFactor)
             plus(SecondStat.createFromBaseStat(totalStat.baseStat))
         }
-    }
-
-    private fun updateTotalStats() {
-        val flatStat = Stat()
-        val percentStat = Stat.createInitializedStat(1.0, 1.0)
-
-        equipItems.forEach {
-            flatStat.add(it.value.flatStat)
-            percentStat.add(it.value.percentStat)
-        }
-
-        totalStat.add(flatStat)
-        totalStat.multiple(percentStat)
     }
 
     fun hasEquiped(type: String): Boolean {
@@ -76,6 +63,9 @@ open class BaseUnit {
     }
 
     override fun toString(): String {
-        return StringBuilder().append(name).append(" ").append(totalStat).toString()
+        return StringBuilder()
+            .append("Lv. $level $name ")
+            .append(totalStat)
+            .toString()
     }
 }
