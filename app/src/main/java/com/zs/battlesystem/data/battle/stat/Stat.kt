@@ -1,8 +1,8 @@
 package com.zs.battlesystem.data.battle.stat
 
 data class Stat(
-    val baseStat: BaseStat = BaseStat(HashMap()),
-    val secondStat: SecondStat = SecondStat(HashMap())
+    var baseStat: BaseStat = BaseStat(HashMap()),
+    var secondStat: SecondStat = SecondStat(HashMap())
 ) {
     companion object {
         fun createInitializedStat(baseInitialValue: Double, secondInitialValue: Double): Stat {

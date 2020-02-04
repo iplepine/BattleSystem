@@ -74,4 +74,8 @@ open class BaseUnit {
         totalStat.baseStat.times(percentStat.baseStat)
         totalStat.secondStat.times(percentStat.secondStat)
     }
+
+    override fun toString(): String {
+        return StringBuilder().append(name).append(" ").append(totalStat).toString()
+    }
 }
