@@ -12,13 +12,19 @@ open abstract class Skill {
     var effectTime: Long = 0L
     var afterDelay: Long = 0L
 
-    var coolTime = 0L   // 스킬의 쿨타임
-    var coolDown = 0L   // 남은 쿨 타임
+    var coolTime = 0L
+    var coolDown = 0L
 
     var targetType = TargetType.ENEMY
     var targetCount = 1
 
+    var effectCount: Int = 0
+    var maxEffectCount: Int = 1
+
+    var damageFactors: ArrayList<DamageFactor> = ArrayList()
+
     object TargetType {
+        const val NON_TARGET = -1
         const val SELF = 0
         const val ENEMY = 1
         const val ALLIES = 2
@@ -49,6 +55,14 @@ open abstract class Skill {
     ) {
         val targets = findTarget(user, targets)
         targets.forEach { onEffect(user, it, messageSubject) }
+    }
+
+    fun hasEffectFinished(): Boolean {
+        return maxEffectCount <= effectCount
+    }
+
+    fun clearEffectCount() {
+        effectCount = 0
     }
 
     open fun getExpectEffect(): Double {

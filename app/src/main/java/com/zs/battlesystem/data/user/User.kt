@@ -13,5 +13,4 @@ object User {
     fun isMine(id: String): Boolean {
         return this.id == id
     }
-    
 }

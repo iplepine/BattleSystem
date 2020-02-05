@@ -3,7 +3,7 @@ package com.zs.battlesystem.data.battle.skill.buff
 import com.zs.battlesystem.data.battle.skill.buff.base.StatBuff
 import com.zs.battlesystem.data.battle.stat.SecondStat.Companion.ATK
 
-class FlatAttackUp() : StatBuff() {
+class FlatAttackUp : StatBuff() {
     init {
         name = "Attack Up"
 

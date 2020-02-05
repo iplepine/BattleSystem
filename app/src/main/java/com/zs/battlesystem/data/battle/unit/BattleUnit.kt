@@ -1,5 +1,6 @@
 package com.zs.battlesystem.data.battle.unit
 
+import android.graphics.Point
 import com.zs.battlesystem.data.battle.Battle
 import com.zs.battlesystem.data.battle.controller.DefaultBattleUnitController
 import com.zs.battlesystem.data.battle.skill.Skill
@@ -29,6 +30,8 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
 
     val buffs = ArrayList<Buff>()
     val debuffs = ArrayList<Debuff>()
+
+    val position: Point = Point()
 
     var castingSkill: ReservedSkill? = null
 
@@ -164,10 +167,21 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
     }
 
     private fun onFinishEffect() {
-        castingSkill?.also {
-            it.skill.onEffect(this, it.target, it.messageSubject)
+        if (castingSkill == null) {
+            startAfterDelay()
+        } else {
+            castingSkill?.run {
+                skill.onEffect(this@BattleUnit, target, messageSubject)
+                skill.effectCount++
+
+                if (skill.hasEffectFinished()) {
+                    skill.clearEffectCount()
+                    startAfterDelay()
+                } else {
+                    startEffect()
+                }
+            }
         }
-        startAfterDelay()
     }
 
     private fun startAfterDelay() {
