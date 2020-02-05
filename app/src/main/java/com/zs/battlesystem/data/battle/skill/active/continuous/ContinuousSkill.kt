@@ -1,10 +1,10 @@
-package com.zs.battlesystem.data.battle.skill.buff.base
+package com.zs.battlesystem.data.battle.skill.active.continuous
 
 import com.zs.battlesystem.data.battle.skill.Skill
 import com.zs.battlesystem.data.battle.unit.BattleUnit
 import io.reactivex.subjects.PublishSubject
 
-abstract class Buff : Skill() {
+abstract class ContinuousSkill : Skill() {
     var duration: Long = 0L
     var remainingTime: Long = 0L
 
@@ -17,9 +17,10 @@ abstract class Buff : Skill() {
         target: BattleUnit,
         messageSubject: PublishSubject<String>?
     ) {
-        target.buffs.add(this)
         remainingTime = duration
     }
+
+    abstract fun onClear(target: List<BattleUnit>)
 
     override fun updateTime(time: Long) {
         super.updateTime(time)

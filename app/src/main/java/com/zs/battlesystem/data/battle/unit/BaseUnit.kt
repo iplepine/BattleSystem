@@ -3,7 +3,7 @@ package com.zs.battlesystem.data.battle.unit
 import com.zs.battlesystem.data.battle.item.EquipItem
 import com.zs.battlesystem.data.battle.skill.Skill
 import com.zs.battlesystem.data.battle.skill.active.NormalAttack
-import com.zs.battlesystem.data.battle.skill.buff.base.StatBuff
+import com.zs.battlesystem.data.battle.skill.active.continuous.buff.base.StatBuff
 import com.zs.battlesystem.data.battle.stat.SecondStat
 import com.zs.battlesystem.data.battle.stat.Stat
 import com.zs.battlesystem.data.manager.StatManager

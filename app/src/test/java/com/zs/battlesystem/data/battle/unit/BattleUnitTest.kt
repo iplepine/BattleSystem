@@ -1,8 +1,8 @@
 package com.zs.battlesystem.data.battle.unit
 
 import com.zs.battlesystem.data.battle.BattleUnitFactory
-import com.zs.battlesystem.data.battle.skill.buff.FlatAttackUp
-import com.zs.battlesystem.data.battle.skill.buff.PercentAttackUp
+import com.zs.battlesystem.data.battle.skill.active.continuous.buff.FlatAttackUp
+import com.zs.battlesystem.data.battle.skill.active.continuous.buff.PercentAttackUp
 import com.zs.battlesystem.data.battle.stat.SecondStat.Companion.ATK
 import com.zs.battlesystem.data.common.Logger
 import org.junit.Test

@@ -18,9 +18,6 @@ open abstract class Skill {
     var targetType = TargetType.ENEMY
     var targetCount = 1
 
-    var effectCount: Int = 0
-    var maxEffectCount: Int = 1
-
     var damageFactors: ArrayList<DamageFactor> = ArrayList()
 
     object TargetType {
@@ -55,14 +52,6 @@ open abstract class Skill {
     ) {
         val targets = findTarget(user, targets)
         targets.forEach { onEffect(user, it, messageSubject) }
-    }
-
-    fun hasEffectFinished(): Boolean {
-        return maxEffectCount <= effectCount
-    }
-
-    fun clearEffectCount() {
-        effectCount = 0
     }
 
     open fun getExpectEffect(): Double {

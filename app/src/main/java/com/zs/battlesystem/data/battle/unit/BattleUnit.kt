@@ -4,9 +4,10 @@ import android.graphics.Point
 import com.zs.battlesystem.data.battle.Battle
 import com.zs.battlesystem.data.battle.controller.DefaultBattleUnitController
 import com.zs.battlesystem.data.battle.skill.Skill
-import com.zs.battlesystem.data.battle.skill.buff.base.Buff
-import com.zs.battlesystem.data.battle.skill.buff.base.StatBuff
-import com.zs.battlesystem.data.battle.skill.debuff.Debuff
+import com.zs.battlesystem.data.battle.skill.active.continuous.ContinuousSkill
+import com.zs.battlesystem.data.battle.skill.active.continuous.buff.Buff
+import com.zs.battlesystem.data.battle.skill.active.continuous.buff.base.StatBuff
+import com.zs.battlesystem.data.battle.skill.active.continuous.debuff.Debuff
 import com.zs.battlesystem.data.battle.stat.SecondStat.Companion.HP
 import com.zs.battlesystem.data.battle.stat.SecondStat.Companion.SPEED
 import com.zs.battlesystem.data.battle.stat.Stat
@@ -28,8 +29,8 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
 
     var stat = base.totalStat.deepCopy()
 
-    val buffs = ArrayList<Buff>()
-    val debuffs = ArrayList<Debuff>()
+    val buffs = ArrayList<ContinuousSkill>()
+    val debuffs = ArrayList<ContinuousSkill>()
 
     val position: Point = Point()
 
@@ -167,21 +168,11 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
     }
 
     private fun onFinishEffect() {
-        if (castingSkill == null) {
-            startAfterDelay()
-        } else {
-            castingSkill?.run {
-                skill.onEffect(this@BattleUnit, target, messageSubject)
-                skill.effectCount++
-
-                if (skill.hasEffectFinished()) {
-                    skill.clearEffectCount()
-                    startAfterDelay()
-                } else {
-                    startEffect()
-                }
-            }
+        castingSkill?.run {
+            skill.onEffect(this@BattleUnit, target, messageSubject)
         }
+
+        startAfterDelay()
     }
 
     private fun startAfterDelay() {
@@ -203,6 +194,10 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
     }
 
     fun onStun(time: Long) {
+        castingSkill?.apply {
+            (skill as? ContinuousSkill)?.onClear(target)
+        }
+
         var delay = time
         if (isIdle()) {
             delay += state.delay
@@ -226,6 +221,14 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
         }
     }
 
+    fun addBuff(buff: Buff) {
+        buffs.add(buff)
+    }
+
+    fun addBuff(debuff: Debuff) {
+        buffs.add(debuff)
+    }
+
     fun onTurn(battle: Battle) {
         Logger.d("${base.name}'s turn!")
 
@@ -244,7 +247,6 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
         }
         return 1000L
     }
-
 
     class ReservedSkill(
         var skill: Skill,
