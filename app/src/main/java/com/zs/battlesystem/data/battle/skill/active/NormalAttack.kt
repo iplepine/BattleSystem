@@ -17,7 +17,6 @@ class NormalAttack : Skill() {
 
         coolDown = 0L
 
-        targetType = TargetType.ENEMY
         targetCount = 1
     }
 

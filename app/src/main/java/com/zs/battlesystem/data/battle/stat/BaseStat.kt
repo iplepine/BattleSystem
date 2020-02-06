@@ -22,6 +22,10 @@ data class BaseStat(
         const val LUCK = "LUCK"
 
         val KEYS = arrayOf(STR, DEX, INT, CON, WIS, CHA, LUCK)
+
+        fun isValidKey(key: String): Boolean {
+            return KEYS.contains(key)
+        }
     }
 
     fun get(key: String, default: Double = 0.0): Double {

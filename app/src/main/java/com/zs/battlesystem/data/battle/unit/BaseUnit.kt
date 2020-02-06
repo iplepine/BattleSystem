@@ -3,7 +3,6 @@ package com.zs.battlesystem.data.battle.unit
 import com.zs.battlesystem.data.battle.item.EquipItem
 import com.zs.battlesystem.data.battle.skill.Skill
 import com.zs.battlesystem.data.battle.skill.active.NormalAttack
-import com.zs.battlesystem.data.battle.skill.active.continuous.buff.base.StatBuff
 import com.zs.battlesystem.data.battle.stat.SecondStat
 import com.zs.battlesystem.data.battle.stat.Stat
 import com.zs.battlesystem.data.manager.StatManager
@@ -49,11 +48,9 @@ open class BaseUnit {
         val flatStat = Stat()
         val percentStat = Stat.createInitializedStat(1.0, 1.0)
 
-        equipItems.forEach { buff ->
-            (buff as? StatBuff)?.also {
-                flatStat.add(it.flatStat)
-                percentStat.add(it.percentStat)
-            }
+        equipItems.forEach {
+            flatStat.add(it.value.flatStat)
+            percentStat.add(it.value.percentStat)
         }
 
         totalStat.baseStat.plus(flatStat.baseStat)

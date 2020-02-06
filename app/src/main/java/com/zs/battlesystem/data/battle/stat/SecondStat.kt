@@ -31,6 +31,10 @@ data class SecondStat(
             HP, MP, WILL, ATK, MATK, DEF, MDEF, HIT, EVADE, SPEED, CRI
         )
 
+        fun isValidKey(key: String): Boolean {
+            return KEYS.contains(key)
+        }
+
         fun createFromBaseStat(baseStat: BaseStat, useRandom: Boolean = true): SecondStat {
             val secondStat = SecondStat()
             secondStat.values.forEach { second ->

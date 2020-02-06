@@ -31,4 +31,12 @@ data class Stat(
         baseStat.times(stat.baseStat)
         secondStat.times(stat.secondStat)
     }
+
+    fun addValue(key: String, amount: Double) {
+        if (BaseStat.isValidKey(key)) {
+            baseStat.values[key] = (baseStat.values[key] ?: 0.0) + amount
+        } else if (SecondStat.isValidKey(key)) {
+            secondStat.values[key] = (secondStat.values[key] ?: 0.0) + amount
+        }
+    }
 }

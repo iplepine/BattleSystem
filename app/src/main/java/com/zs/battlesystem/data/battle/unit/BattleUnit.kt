@@ -3,10 +3,9 @@ package com.zs.battlesystem.data.battle.unit
 import com.zs.battlesystem.data.battle.Battle
 import com.zs.battlesystem.data.battle.controller.DefaultBattleUnitController
 import com.zs.battlesystem.data.battle.skill.Skill
-import com.zs.battlesystem.data.battle.skill.active.continuous.ContinuousSkill
-import com.zs.battlesystem.data.battle.skill.active.continuous.buff.Buff
-import com.zs.battlesystem.data.battle.skill.active.continuous.buff.base.StatBuff
-import com.zs.battlesystem.data.battle.skill.active.continuous.debuff.Debuff
+import com.zs.battlesystem.data.battle.skill.continuous.buff.base.Buff
+import com.zs.battlesystem.data.battle.skill.continuous.buff.base.StatBuff
+import com.zs.battlesystem.data.battle.skill.continuous.debuff.base.DeBuff
 import com.zs.battlesystem.data.battle.stat.SecondStat.Companion.HP
 import com.zs.battlesystem.data.battle.stat.SecondStat.Companion.SPEED
 import com.zs.battlesystem.data.battle.stat.Stat
@@ -28,9 +27,10 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
 
     var stat = base.totalStat.deepCopy()
 
-    val buffs = ArrayList<ContinuousSkill>()
-    val debuffs = ArrayList<ContinuousSkill>()
-
+    val buffs =
+        ArrayList<com.zs.battlesystem.data.battle.skill.continuous.ContinuousEffect>()
+    val deBuffs =
+        ArrayList<com.zs.battlesystem.data.battle.skill.continuous.ContinuousEffect>()
 
     var castingSkill: ReservedSkill? = null
 
@@ -100,8 +100,11 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
 
         buffs.forEach { buff ->
             (buff as? StatBuff)?.also {
-                flatStat.add(it.flatStat)
-                percentStat.add(it.percentStat)
+                if (it.isFlat) {
+                    flatStat.addValue(buff.key, buff.amount)
+                } else {
+                    percentStat.addValue(buff.key, buff.amount)
+                }
             }
         }
 
@@ -193,7 +196,7 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
 
     fun onStun(time: Long) {
         castingSkill?.apply {
-            (skill as? ContinuousSkill)?.onClear(target)
+            // TODO 스턴 걸리면 현재 시전중인 정신집중 스킬 제거 해야함
         }
 
         var delay = time
@@ -223,8 +226,16 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
         buffs.add(buff)
     }
 
-    fun addBuff(debuff: Debuff) {
-        buffs.add(debuff)
+    fun clearBuff(buff: Buff) {
+        buffs.remove(buff)
+    }
+
+    fun addDeBuff(deBuff: DeBuff) {
+        deBuffs.add(deBuff)
+    }
+
+    fun clearDeBuff(deBuff: DeBuff) {
+        deBuffs.remove(deBuff)
     }
 
     fun onTurn(battle: Battle) {

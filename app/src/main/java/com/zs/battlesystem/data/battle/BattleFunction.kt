@@ -1,5 +1,6 @@
 package com.zs.battlesystem.data.battle
 
+import com.zs.battlesystem.data.battle.skill.Skill
 import com.zs.battlesystem.data.battle.stat.SecondStat.Companion.ATK
 import com.zs.battlesystem.data.battle.stat.SecondStat.Companion.CRI
 import com.zs.battlesystem.data.battle.stat.SecondStat.Companion.EVADE
@@ -29,5 +30,30 @@ object BattleFunction {
             val surplusDefence = defence - damage
             surplusDefence / (damage + surplusDefence)
         }
+    }
+
+    fun findTarget(
+        user: BattleUnit,
+        units: List<BattleUnit>,
+        targetType: Int,
+        targetCount: Int
+    ): List<BattleUnit> {
+        when (targetType) {
+            Skill.TargetType.SELF ->
+                return arrayListOf(user)
+
+            Skill.TargetType.ENEMY ->
+                return units.filter {
+                    it.isEnemy(user.owner) && !it.isDie()
+                }?.run { shuffled().subList(0, kotlin.math.min(size, targetCount)) }
+
+            Skill.TargetType.ALLIES ->
+                return units.filter { it.isMine(user.owner) }
+
+            Skill.TargetType.RANDOM ->
+                return units.shuffled().subList(0, targetCount)
+        }
+
+        return ArrayList()
     }
 }
