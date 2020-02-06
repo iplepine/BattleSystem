@@ -1,6 +1,5 @@
 package com.zs.battlesystem.data.battle.unit
 
-import android.graphics.Point
 import com.zs.battlesystem.data.battle.Battle
 import com.zs.battlesystem.data.battle.controller.DefaultBattleUnitController
 import com.zs.battlesystem.data.battle.skill.Skill
@@ -32,7 +31,6 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
     val buffs = ArrayList<ContinuousSkill>()
     val debuffs = ArrayList<ContinuousSkill>()
 
-    val position: Point = Point()
 
     var castingSkill: ReservedSkill? = null
 
