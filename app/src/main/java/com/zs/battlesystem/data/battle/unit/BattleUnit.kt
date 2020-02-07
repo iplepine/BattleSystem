@@ -269,7 +269,7 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
          */
         fun spendTime(time: Long): Long {
             val spentTime = if (time < delay) {
-                delay - time
+                time
             } else {
                 delay
             }
