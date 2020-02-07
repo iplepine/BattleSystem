@@ -2,8 +2,8 @@ package com.zs.battlesystem.data.battle.skill.active
 
 import com.zs.battlesystem.data.battle.BattleFunction
 import com.zs.battlesystem.data.battle.skill.Skill
-import com.zs.battlesystem.data.battle.unit.BattleUnit
 import com.zs.battlesystem.data.battle.stat.SecondStat.Companion.DEF
+import com.zs.battlesystem.data.battle.unit.BattleUnit
 import com.zs.battlesystem.data.common.Logger
 import io.reactivex.subjects.PublishSubject
 
@@ -49,15 +49,14 @@ class Bash : Skill() {
             isCritical = true
         }
 
-        var isBlocked = defence < attack
-        val damage = if (defence < attack) {
-            attack - defence
+        var isBlocked = attack < defence
+        val damage = if (isBlocked) {
+            attack * (1 - BattleFunction.getDamageReductionRatio(attack, defence))
         } else {
-            isBlocked = true
-            (attack * (1 - BattleFunction.getDamageReductionRatio(attack, defence)))
-        }.toInt()
+            attack - defence
+        }.toInt() * -1
 
-        target.onDamage(damage)
+        target.adjustHp(damage)
 
         val message = if (isBlocked) {
             "BLOCK!! $damage"
