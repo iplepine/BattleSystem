@@ -4,6 +4,7 @@ import com.zs.battlesystem.data.battle.skill.Skill
 import com.zs.battlesystem.data.battle.stat.SecondStat.Companion.ATK
 import com.zs.battlesystem.data.battle.stat.SecondStat.Companion.CRI
 import com.zs.battlesystem.data.battle.stat.SecondStat.Companion.EVADE
+import com.zs.battlesystem.data.battle.stat.SecondStat.Companion.HIT
 import com.zs.battlesystem.data.battle.unit.BattleUnit
 
 object BattleFunction {
@@ -12,7 +13,9 @@ object BattleFunction {
     }
 
     fun checkEvade(user: BattleUnit, target: BattleUnit): Boolean {
-        return Math.random() * 100 < target.stat.secondStat.get(EVADE)
+        val hit = user.stat.secondStat.get(HIT)
+        val evade = target.stat.secondStat.get(EVADE)
+        return hit + Math.random() * 100 < evade
     }
 
     fun getDefaultAttackDamage(
