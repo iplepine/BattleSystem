@@ -8,6 +8,7 @@ abstract class ContinuousEffect(
 ) {
     var remainingTime: Long = duration
     var delay: Long = 0L
+    var cancelable = true
 
     open fun onAdd(target: BattleUnit) {
         remainingTime = duration

@@ -12,12 +12,14 @@ open abstract class Skill {
     var afterDelay: Long = 0L
 
     var coolTime = 0L
-    var coolDown = 0L
-
     var targetType = TargetType.ENEMY
-    var targetCount = 1
+
 
     var damageFactors: ArrayList<DamageFactor> = ArrayList()
+
+    var coolDown = 0L
+
+    var targetCount = 1
 
     object TargetType {
         const val NON_TARGET = -1
