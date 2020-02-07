@@ -139,7 +139,7 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
         target: List<BattleUnit>,
         messageSubject: PublishSubject<String>? = null
     ) {
-        Logger.d("${base.name} start casting [${skill.name}]")
+        //Logger.d("${base.name} start casting [${skill.name}]")
         castingSkill = ReservedSkill(skill, target, messageSubject)
         changeState(State(UnitState.CASTING, castingSkill?.skill?.castingTime ?: DEFAULT_DELAY))
         if (state.isEnd()) {
@@ -157,7 +157,7 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
     }
 
     private fun onFinishCasting() {
-        Logger.d("${base.name} finish casting on [${castingSkill?.skill?.name}]")
+        //Logger.d("${base.name} finish casting on [${castingSkill?.skill?.name}]")
         startEffect()
     }
 
@@ -191,7 +191,7 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
 
     private fun ready(delay: Long) {
         changeState(State(UnitState.IDLE, delay))
-        Logger.d("${base.name} is waiting next turn!")
+        //Logger.d("${base.name} is waiting next turn!")
     }
 
     fun onStun(time: Long) {
@@ -210,15 +210,22 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
         castingSkill = null
     }
 
-    fun onDamage(damage: Int) {
-        if (damage < stat.secondStat.get(HP)) {
-            stat.secondStat.values[HP]?.minus(damage)
-        } else {
+    fun adjustHp(hpAmount: Int) {
+        if (stat.secondStat.get(HP) < hpAmount) {
             stat.secondStat.values[HP] = 0.0
+        } else {
+            stat.secondStat.values[HP] = (stat.secondStat.values[HP] ?: 0.0) + hpAmount
         }
 
         if (stat.secondStat.get(HP) <= 0.0) {
+            stat.secondStat.values[HP] = 0.0
             changeState(State(UnitState.DIE))
+            Logger.d("${base.name} died")
+        } else {
+            Logger.d(
+                "${base.name} " +
+                        "HP : ${stat.secondStat.get(HP).toInt()}/${base.totalStat.secondStat.get(HP).toInt()}\n"
+            )
         }
     }
 
@@ -245,7 +252,7 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
             Logger.d("Unit Controller is null")
             battle.onFinishInput()
         } else {
-            Logger.d("please, wait input\n")
+            //Logger.d("please, wait input\n")
             battleUnitController!!.controlUnit(this@BattleUnit, battle)
         }
     }

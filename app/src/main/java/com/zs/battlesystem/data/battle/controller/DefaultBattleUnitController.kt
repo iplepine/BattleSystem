@@ -1,6 +1,7 @@
 package com.zs.battlesystem.data.battle.controller
 
 import com.zs.battlesystem.data.battle.Battle
+import com.zs.battlesystem.data.battle.BattleFunction
 import com.zs.battlesystem.data.battle.skill.Skill
 import com.zs.battlesystem.data.battle.unit.BattleUnit
 import com.zs.battlesystem.data.common.Logger
@@ -33,7 +34,13 @@ object DefaultBattleUnitController {
 
         val skill = pickMostEffectiveSkill(availableSkills)
         skill?.also {
-            unit.startCasting(skill, battle.battleUnits)
+            val target = BattleFunction.findTarget(
+                unit,
+                battle.battleUnits,
+                skill.targetType,
+                skill.targetCount
+            )
+            unit.startCasting(skill, target)
         }
 
         battle.onFinishInput()

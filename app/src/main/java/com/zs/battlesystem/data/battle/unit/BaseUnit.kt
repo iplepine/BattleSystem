@@ -7,17 +7,21 @@ import com.zs.battlesystem.data.battle.stat.SecondStat
 import com.zs.battlesystem.data.battle.stat.Stat
 import com.zs.battlesystem.data.manager.StatManager
 
-open class BaseUnit {
+open class BaseUnit(name: String, stat: Stat = Stat()) {
     var level = 1
     var exp = 0L
-    var name = "이름"
+    var name = name
     var job = "직업"
 
-    var originalStat = Stat()
-    var totalStat = Stat()
+    var originalStat = stat
+    lateinit var totalStat: Stat
 
     var skills: ArrayList<Skill> = ArrayList<Skill>().apply { add(NormalAttack()) }
     var equipItems = HashMap<String, EquipItem>()
+
+    init {
+        calculateStat()
+    }
 
     fun levelUp() {
         level++

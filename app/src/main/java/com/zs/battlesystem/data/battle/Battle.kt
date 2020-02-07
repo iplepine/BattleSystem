@@ -59,7 +59,7 @@ class Battle : MonoBehaviour() {
     fun onFinishInput() {
         battleState = BattleState.NONE
         UserInputTimer.clear()
-        Logger.d("- finish input -\n")
+        //Logger.d("- finish input -\n")
     }
 
     private fun updateInputTime(time: Long) {
