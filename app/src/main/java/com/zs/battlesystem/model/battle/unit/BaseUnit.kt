@@ -1,32 +1,33 @@
 package com.zs.battlesystem.model.battle.unit
 
-import com.zs.battlesystem.model.item.EquipItem
 import com.zs.battlesystem.model.battle.skill.Skill
 import com.zs.battlesystem.model.battle.skill.active.NormalAttack
 import com.zs.battlesystem.model.battle.stat.SecondStat
 import com.zs.battlesystem.model.battle.stat.Stat
+import com.zs.battlesystem.model.item.EquipItem
 import com.zs.battlesystem.model.manager.StatManager
 
-open class BaseUnit(name: String, stat: Stat = Stat()) {
+open class BaseUnit(name: String, stat: Stat = Stat(), currentStat: Stat? = null) {
     var level = 1
     var exp = 0L
     var name = name
     var job = "직업"
 
-    var originalStat = stat
-    lateinit var totalStat: Stat
+    val originalStat = stat
+    val totalStat: Stat = calculateTotalStat()
+    val currentStat: Stat = currentStat ?: calculateTotalStat()
 
     var skills: ArrayList<Skill> = ArrayList<Skill>().apply { add(NormalAttack()) }
     var equipItems = HashMap<String, EquipItem>()
 
     init {
-        calculateStat()
+        calculateTotalStat()
     }
 
     fun levelUp() {
         level++
         addLevelUpStats()
-        calculateStat()
+        calculateTotalStat()
     }
 
     // 기본 증가값 + 현재 총 기본 스텟에 따른 증가값
@@ -43,24 +44,26 @@ open class BaseUnit(name: String, stat: Stat = Stat()) {
 
     fun equip(item: EquipItem) {
         equipItems[item.equipType] = item
-        calculateStat()
+        calculateTotalStat()
     }
 
-    fun calculateStat() {
-        totalStat = originalStat.deepCopy()
+    fun calculateTotalStat(): Stat {
+        val ret = originalStat.deepCopy()
 
         val flatStat = Stat()
         val percentStat = Stat.createInitializedStat(1.0, 1.0)
 
-        equipItems.forEach {
+        equipItems?.forEach {
             flatStat.add(it.value.flatStat)
             percentStat.add(it.value.percentStat)
         }
 
-        totalStat.baseStat.plus(flatStat.baseStat)
-        totalStat.secondStat.plus(flatStat.secondStat)
-        totalStat.baseStat.times(percentStat.baseStat)
-        totalStat.secondStat.times(percentStat.secondStat)
+        ret.baseStat.plus(flatStat.baseStat)
+        ret.secondStat.plus(flatStat.secondStat)
+        ret.baseStat.times(percentStat.baseStat)
+        ret.secondStat.times(percentStat.secondStat)
+
+        return ret
     }
 
     override fun toString(): String {
