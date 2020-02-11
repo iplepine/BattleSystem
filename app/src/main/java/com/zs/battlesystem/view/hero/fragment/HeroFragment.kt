@@ -1,4 +1,4 @@
-package com.zs.battlesystem.view.hero
+package com.zs.battlesystem.view.hero.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater

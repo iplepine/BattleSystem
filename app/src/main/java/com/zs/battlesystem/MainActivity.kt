@@ -5,7 +5,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
-import com.zs.battlesystem.view.hero.HeroFragment
+import com.zs.battlesystem.view.hero.fragment.HeroFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
