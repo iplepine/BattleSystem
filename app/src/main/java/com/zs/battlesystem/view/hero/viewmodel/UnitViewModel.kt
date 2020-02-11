@@ -6,7 +6,7 @@ import com.zs.battlesystem.model.common.Logger
 import com.zs.battlesystem.model.user.User
 import io.reactivex.subjects.PublishSubject
 
-class HeroViewModel : ViewModel() {
+class UnitViewModel : ViewModel() {
     val onClickUnitSubject = PublishSubject.create<BaseUnit>()
     val onClickUnitActionSubject = PublishSubject.create<BaseUnit>()
 

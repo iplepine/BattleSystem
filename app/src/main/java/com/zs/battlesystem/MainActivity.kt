@@ -5,7 +5,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
-import com.zs.battlesystem.view.hero.fragment.HeroFragment
+import com.zs.battlesystem.view.hero.fragment.UnitManageFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startFragment() {
-        val fragment = HeroFragment()
+        val fragment = UnitManageFragment()
         supportFragmentManager.beginTransaction().add(R.id.content, fragment).commit()
     }
 }
