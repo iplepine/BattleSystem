@@ -28,9 +28,9 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
     var stat = base.currentStat
 
     val buffs =
-        ArrayList<com.zs.battlesystem.model.battle.skill.continuous.ContinuousEffect>()
+        ArrayList<com.zs.battlesystem.model.battle.skill.continuous.StatusEffect>()
     val deBuffs =
-        ArrayList<com.zs.battlesystem.model.battle.skill.continuous.ContinuousEffect>()
+        ArrayList<com.zs.battlesystem.model.battle.skill.continuous.StatusEffect>()
 
     var castingSkill: ReservedSkill? = null
 

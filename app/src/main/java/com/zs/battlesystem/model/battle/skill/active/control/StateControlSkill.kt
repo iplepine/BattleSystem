@@ -1,12 +1,12 @@
 package com.zs.battlesystem.model.battle.skill.active.control
 
 import com.zs.battlesystem.model.battle.skill.Skill
-import com.zs.battlesystem.model.battle.skill.continuous.ContinuousEffect
+import com.zs.battlesystem.model.battle.skill.continuous.StatusEffect
 import com.zs.battlesystem.model.battle.unit.BattleUnit
 import io.reactivex.subjects.PublishSubject
 
 abstract class StateControlSkill : Skill() {
-    val effects = ArrayList<ContinuousEffect>()
+    val effects = ArrayList<StatusEffect>()
 
     init {
         initEffects()
@@ -14,7 +14,7 @@ abstract class StateControlSkill : Skill() {
 
     protected abstract fun initEffects()
 
-    protected fun addEffect(effect: ContinuousEffect) {
+    protected fun addEffect(effect: StatusEffect) {
         effects.add(effect)
     }
 

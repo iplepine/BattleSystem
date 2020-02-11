@@ -2,7 +2,7 @@ package com.zs.battlesystem.model.battle.skill.continuous
 
 import com.zs.battlesystem.model.battle.unit.BattleUnit
 
-abstract class ContinuousEffect(
+abstract class StatusEffect(
     val duration: Long,
     val effectDelay: Long = duration
 ) {

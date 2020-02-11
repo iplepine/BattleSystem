@@ -1,9 +1,9 @@
 package com.zs.battlesystem.model.battle.skill.continuous.debuff.base
 
-import com.zs.battlesystem.model.battle.skill.continuous.ContinuousEffect
+import com.zs.battlesystem.model.battle.skill.continuous.StatusEffect
 import com.zs.battlesystem.model.battle.unit.BattleUnit
 
-abstract class DeBuff(duration: Long, effectDelay: Long) : ContinuousEffect(
+abstract class DeBuff(duration: Long, effectDelay: Long) : StatusEffect(
     duration,
     effectDelay
 ) {
