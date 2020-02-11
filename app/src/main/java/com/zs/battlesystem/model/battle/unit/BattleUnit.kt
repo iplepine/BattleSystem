@@ -25,7 +25,7 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
 
     var state = State(UnitState.IDLE)
 
-    var stat = base.currentStat.deepCopy()
+    var stat = base.currentStat
 
     val buffs =
         ArrayList<com.zs.battlesystem.model.battle.skill.continuous.ContinuousEffect>()
