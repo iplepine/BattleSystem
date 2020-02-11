@@ -11,7 +11,9 @@ open class BaseUnit(name: String, stat: Stat = Stat(), currentStat: Stat? = null
     var level = 1
     var exp = 0L
     var name = name
-    var job = "직업"
+    var job = "Job class"
+
+    var action: UnitAction = UnitAction.IDLE
 
     val originalStat = stat
     val totalStat: Stat = calculateTotalStat()

@@ -5,13 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.zs.battlesystem.R
+import com.zs.battlesystem.model.battle.unit.BaseUnitFactory
+import com.zs.battlesystem.model.user.User
+import com.zs.battlesystem.view.hero.adapter.HeroAdapter
 import com.zs.battlesystem.view.hero.viewmodel.HeroViewModel
+import kotlinx.android.synthetic.main.fragment_hero.*
 
 class HeroFragment : Fragment() {
 
     val viewModel = HeroViewModel()
+    var adapter: HeroAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,18 +31,29 @@ class HeroFragment : Fragment() {
         init()
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
-
-    override fun onPause() {
-        super.onPause()
-    }
-
     private fun init() {
+        beforeTest()
+
         addSubscribers()
+        initRecyclerView()
+    }
+
+    private fun beforeTest() {
+        User.units.apply {
+            add(BaseUnitFactory.create("Iplepine"))
+            add(BaseUnitFactory.create("Seoty"))
+            add(BaseUnitFactory.create("PleaseReleaseMe"))
+        }
     }
 
     private fun addSubscribers() {
+    }
+
+    private fun initRecyclerView() {
+        context?.also {
+            recyclerView.layoutManager = LinearLayoutManager(context)
+            adapter = HeroAdapter(viewModel)
+            recyclerView.adapter = adapter
+        }
     }
 }

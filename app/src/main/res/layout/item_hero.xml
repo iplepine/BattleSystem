@@ -10,6 +10,9 @@
         android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:elevation="12dp"
+        app:cardCornerRadius="8dp"
+        app:cardUseCompatPadding="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -31,7 +34,7 @@
                 android:id="@+id/level"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
+                android:layout_margin="8dp"
                 android:text="Lv.1"
                 app:layout_constraintBottom_toBottomOf="@id/thumbnail"
                 app:layout_constraintRight_toRightOf="@id/thumbnail"></TextView>
@@ -40,18 +43,52 @@
                 android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="name"
                 app:layout_constraintLeft_toRightOf="@id/thumbnail"
                 app:layout_constraintRight_toLeftOf="@id/action"
                 app:layout_constraintTop_toTopOf="parent"></TextView>
 
-            <TextView
+            <ProgressBar
                 android:id="@+id/hpBar"
-                android:layout_width="wrap_content"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:progress="50"
+                app:layout_constraintBottom_toBottomOf="@id/hpBarText"
                 app:layout_constraintLeft_toRightOf="@id/thumbnail"
                 app:layout_constraintRight_toLeftOf="@id/action"
-                app:layout_constraintTop_toBottomOf="@id/name"
-                app:layout_constraintTop_toTopOf="parent"></TextView>
+                app:layout_constraintTop_toTopOf="@id/hpBarText"></ProgressBar>
+
+            <TextView
+                android:id="@+id/hpBarText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="100/100"
+                app:layout_constraintLeft_toRightOf="@id/thumbnail"
+                app:layout_constraintRight_toLeftOf="@id/action"
+                app:layout_constraintTop_toBottomOf="@id/name"></TextView>
+
+            <ProgressBar
+                android:id="@+id/mpBar"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:progress="50"
+                android:progressTint="#0000ff"
+                app:layout_constraintBottom_toBottomOf="@id/mpBarText"
+                app:layout_constraintLeft_toRightOf="@id/thumbnail"
+                app:layout_constraintRight_toLeftOf="@id/action"
+                app:layout_constraintTop_toTopOf="@id/mpBarText"></ProgressBar>
+
+            <TextView
+                android:id="@+id/mpBarText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="100/100"
+                app:layout_constraintLeft_toRightOf="@id/thumbnail"
+                app:layout_constraintRight_toLeftOf="@id/action"
+                app:layout_constraintTop_toBottomOf="@id/hpBar"></TextView>
 
             <ImageView
                 android:id="@+id/action"
@@ -65,10 +102,12 @@
                 android:id="@+id/time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
+                android:gravity="center"
                 android:text="40s"
                 app:layout_constraintBottom_toBottomOf="@id/action"
-                app:layout_constraintRight_toRightOf="@id/action"></TextView>
+                app:layout_constraintLeft_toLeftOf="@id/action"
+                app:layout_constraintRight_toRightOf="@id/action"
+                app:layout_constraintTop_toTopOf="@id/action"></TextView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
