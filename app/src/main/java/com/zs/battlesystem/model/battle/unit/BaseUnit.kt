@@ -6,8 +6,12 @@ import com.zs.battlesystem.model.battle.stat.SecondStat
 import com.zs.battlesystem.model.battle.stat.Stat
 import com.zs.battlesystem.model.item.EquipItem
 import com.zs.battlesystem.model.manager.StatManager
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 open class BaseUnit(name: String, stat: Stat = Stat(), currentStat: Stat? = null) {
+    var id = UUID.randomUUID().toString()
     var level = 1
     var exp = 0L
     var name = name

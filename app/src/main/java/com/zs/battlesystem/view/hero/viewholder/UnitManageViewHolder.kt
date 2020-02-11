@@ -34,14 +34,12 @@ class UnitManageViewHolder(parent: ViewGroup, private val viewModel: UnitViewMod
         itemView.cardView.setOnClickListener {
             unit?.also {
                 viewModel.onClickUnitSubject.onNext(it)
-                viewModel.onClickHero(it)
             }
         }
 
         actionView.setOnClickListener {
             unit?.also {
                 viewModel.onClickUnitActionSubject.onNext(it)
-                viewModel.onClickHeroAction(it)
             }
         }
     }
