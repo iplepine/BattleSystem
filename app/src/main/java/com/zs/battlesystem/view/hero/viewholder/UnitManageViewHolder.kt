@@ -10,12 +10,12 @@ import com.zs.battlesystem.model.battle.stat.SecondStat.Companion.MP
 import com.zs.battlesystem.model.battle.unit.BaseUnit
 import com.zs.battlesystem.model.battle.unit.UnitAction
 import com.zs.battlesystem.view.hero.viewmodel.UnitViewModel
-import kotlinx.android.synthetic.main.item_hero.view.*
+import kotlinx.android.synthetic.main.item_unit.view.*
 
 class UnitManageViewHolder(parent: ViewGroup, private val viewModel: UnitViewModel) :
     RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context).inflate(
-            R.layout.item_hero, parent, false
+            R.layout.item_unit, parent, false
         )
     ) {
     val thumbnail = itemView.thumbnail
