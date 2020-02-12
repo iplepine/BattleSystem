@@ -7,8 +7,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zs.battlesystem.R
 import com.zs.battlesystem.model.battle.unit.BaseUnit
-import com.zs.battlesystem.model.battle.unit.BaseUnitFactory
-import com.zs.battlesystem.model.user.User
 import com.zs.battlesystem.view.base.BaseFragment
 import com.zs.battlesystem.view.hero.adapter.UnitAdapter
 import com.zs.battlesystem.view.hero.viewmodel.UnitViewModel
@@ -33,16 +31,7 @@ class UnitManageFragment : BaseFragment() {
     }
 
     private fun init() {
-        beforeTest()
         initRecyclerView()
-    }
-
-    private fun beforeTest() {
-        User.units.apply {
-            add(BaseUnitFactory.create("Iplepine"))
-            add(BaseUnitFactory.create("Seoty"))
-            add(BaseUnitFactory.create("PleaseReleaseMe"))
-        }
     }
 
     override fun addSubscribers() {
