@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/unitManageFragment"
-        android:name="com.zs.battlesystem.view.hero.fragment.UnitManageFragment"
+        android:name="com.zs.battlesystem.view.unit.fragment.UnitManageFragment"
         android:label="Blank"
         tools:layout="@layout/fragment_unit_manage">
 
@@ -26,7 +26,7 @@
 
     <fragment
         android:id="@+id/unitDetailFragment"
-        android:name="com.zs.battlesystem.view.hero.fragment.UnitDetailFragment"
+        android:name="com.zs.battlesystem.view.unit.fragment.UnitDetailFragment"
         android:label="Blank"
         tools:layout="@layout/fragment_unit_detail" />
 

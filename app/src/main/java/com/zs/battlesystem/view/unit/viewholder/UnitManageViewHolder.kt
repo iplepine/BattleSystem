@@ -1,4 +1,4 @@
-package com.zs.battlesystem.view.hero.viewholder
+package com.zs.battlesystem.view.unit.viewholder
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +9,7 @@ import com.zs.battlesystem.model.battle.stat.SecondStat.Companion.HP
 import com.zs.battlesystem.model.battle.stat.SecondStat.Companion.MP
 import com.zs.battlesystem.model.battle.unit.BaseUnit
 import com.zs.battlesystem.model.battle.unit.UnitAction
-import com.zs.battlesystem.view.hero.viewmodel.UnitViewModel
+import com.zs.battlesystem.view.unit.viewmodel.UnitViewModel
 import kotlinx.android.synthetic.main.item_unit.view.*
 
 class UnitManageViewHolder(parent: ViewGroup, private val viewModel: UnitViewModel) :

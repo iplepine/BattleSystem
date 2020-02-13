@@ -1,4 +1,4 @@
-package com.zs.battlesystem.view.hero.viewmodel
+package com.zs.battlesystem.view.unit.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

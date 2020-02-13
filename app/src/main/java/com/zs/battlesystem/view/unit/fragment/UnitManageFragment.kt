@@ -1,4 +1,4 @@
-package com.zs.battlesystem.view.hero.fragment
+package com.zs.battlesystem.view.unit.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,8 +10,8 @@ import com.zs.battlesystem.R
 import com.zs.battlesystem.model.battle.unit.BaseUnit
 import com.zs.battlesystem.model.common.Logger
 import com.zs.battlesystem.view.base.BaseFragment
-import com.zs.battlesystem.view.hero.adapter.UnitAdapter
-import com.zs.battlesystem.view.hero.viewmodel.UnitViewModel
+import com.zs.battlesystem.view.unit.adapter.UnitAdapter
+import com.zs.battlesystem.view.unit.viewmodel.UnitViewModel
 import kotlinx.android.synthetic.main.fragment_unit_manage.*
 
 class UnitManageFragment : BaseFragment() {

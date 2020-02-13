@@ -1,9 +1,9 @@
-package com.zs.battlesystem.view.hero.adapter
+package com.zs.battlesystem.view.unit.adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.zs.battlesystem.view.hero.viewholder.UnitManageViewHolder
-import com.zs.battlesystem.view.hero.viewmodel.UnitViewModel
+import com.zs.battlesystem.view.unit.viewholder.UnitManageViewHolder
+import com.zs.battlesystem.view.unit.viewmodel.UnitViewModel
 
 class UnitAdapter(private val viewModel: UnitViewModel) : RecyclerView.Adapter<UnitManageViewHolder>() {
 
