@@ -1,5 +1,7 @@
 package com.zs.battlesystem.model.common
 
+import android.util.Log
+
 object Logger {
     var logLevel = LogLevel.ALL
 
@@ -11,7 +13,19 @@ object Logger {
     }
 
     private fun log(log: String) {
-        println(log)
+        Log.d("TTEST", getLogTagWithMethod())
+        Log.d("TTEST", log)
+
+        //println("$tag $log")
+    }
+
+    private fun getLogTagWithMethod(): String {
+        val stack = Throwable().fillInStackTrace()
+        val trace = stack.stackTrace[3]
+
+        return trace.run {
+            "$className.$methodName ($fileName:$lineNumber)"
+        }
     }
 
     fun d(log: String) {
