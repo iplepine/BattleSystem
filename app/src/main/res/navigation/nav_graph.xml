@@ -1,5 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/unitManageFragment">
+
+    <fragment
+        android:id="@+id/questFragment"
+        android:name="com.zs.battlesystem.view.quest.fragment.QuestFragment"
+        android:label="Blank"
+        tools:layout="@layout/fragment_quest" />
+
+    <fragment
+        android:id="@+id/unitManageFragment"
+        android:name="com.zs.battlesystem.view.hero.fragment.UnitManageFragment"
+        android:label="Blank"
+        tools:layout="@layout/fragment_unit_manage">
+
+        <action
+            android:id="@+id/action_unitManageFragment_to_unitDetailFragment"
+            app:destination="@id/unitDetailFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:popEnterAnim="@anim/fragment_fade_enter" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/unitDetailFragment"
+        android:name="com.zs.battlesystem.view.hero.fragment.UnitDetailFragment"
+        android:label="Blank"
+        tools:layout="@layout/fragment_unit_detail" />
 
 </navigation>

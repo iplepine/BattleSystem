@@ -3,6 +3,8 @@ package com.zs.battlesystem.view.hero.viewmodel
 import androidx.lifecycle.ViewModel
 import com.zs.battlesystem.model.battle.unit.BaseUnit
 import com.zs.battlesystem.model.user.User
+import io.reactivex.subjects.AsyncSubject
+import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 
 class UnitViewModel : ViewModel() {

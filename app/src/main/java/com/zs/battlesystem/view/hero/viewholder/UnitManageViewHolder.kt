@@ -73,7 +73,7 @@ class UnitManageViewHolder(parent: ViewGroup, private val viewModel: UnitViewMod
         mpBarText.text = "$currentMp / $maxMp"
 
         // thumbnail
-        thumbnail.setImageResource(R.drawable.knight_idle_anim_f0)
+        //thumbnail.setImageResource(R.drawable.knight_idle_anim_f0)
 
         // action
         bindUnitAction(unit.action)

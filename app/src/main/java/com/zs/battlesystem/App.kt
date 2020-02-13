@@ -4,10 +4,10 @@ import android.app.Application
 import com.zs.battlesystem.model.battle.unit.BaseUnitFactory
 import com.zs.battlesystem.model.user.User
 
+
 class App : Application() {
     override fun onCreate() {
         super.onCreate()
-
         initTest()
     }
 

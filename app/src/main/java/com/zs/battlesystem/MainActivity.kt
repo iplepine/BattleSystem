@@ -5,7 +5,6 @@ import android.view.Menu
 import android.view.MenuItem
 import com.google.android.material.snackbar.Snackbar
 import com.zs.battlesystem.view.base.BaseActivity
-import com.zs.battlesystem.view.hero.fragment.UnitManageFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
@@ -19,8 +18,6 @@ class MainActivity : BaseActivity() {
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
-
-        startFragment()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -37,10 +34,5 @@ class MainActivity : BaseActivity() {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    private fun startFragment() {
-        val fragment = UnitManageFragment()
-        supportFragmentManager.beginTransaction().add(R.id.content, fragment).commit()
     }
 }

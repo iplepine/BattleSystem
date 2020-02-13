@@ -1,6 +1,7 @@
 package com.zs.battlesystem.view.base
 
 import androidx.fragment.app.Fragment
+import com.zs.battlesystem.model.common.Logger
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
@@ -8,12 +9,16 @@ open class BaseFragment : Fragment() {
 
     val compositeDisposable = CompositeDisposable()
 
-    protected fun addFragment(fragment: Fragment) {
-        (activity as? BaseActivity)?.addFragment(fragment)
+    override fun onResume() {
+        super.onResume()
+        addSubscribers()
+        Logger.d(javaClass.simpleName + " onResume")
     }
 
-    protected fun replaceFragment(fragment: Fragment) {
-        (activity as? BaseActivity)?.replaceFragment(fragment)
+    override fun onPause() {
+        super.onPause()
+        clearSubscribers()
+        Logger.d(javaClass.simpleName + " onPause")
     }
 
     protected fun addDisposable(disposable: Disposable) {
@@ -25,19 +30,5 @@ open class BaseFragment : Fragment() {
 
     open fun clearSubscribers() {
         compositeDisposable.clear()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        addSubscribers()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        clearSubscribers()
-    }
-
-    open fun onBackPressed(): Boolean {
-        return false
     }
 }

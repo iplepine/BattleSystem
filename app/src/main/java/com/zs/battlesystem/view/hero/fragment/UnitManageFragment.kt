@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zs.battlesystem.R
 import com.zs.battlesystem.model.battle.unit.BaseUnit
+import com.zs.battlesystem.model.common.Logger
 import com.zs.battlesystem.view.base.BaseFragment
 import com.zs.battlesystem.view.hero.adapter.UnitAdapter
 import com.zs.battlesystem.view.hero.viewmodel.UnitViewModel
@@ -34,14 +36,20 @@ class UnitManageFragment : BaseFragment() {
         initRecyclerView()
     }
 
+    var count = 0
+
     override fun addSubscribers() {
+        count++
         addDisposable(viewModel.onClickUnitSubject.subscribe { unit ->
             showUnitDetails(unit)
+            Logger.d("subscriber $count")
         })
 
         addDisposable(viewModel.onClickUnitActionSubject.subscribe { unit ->
             showActionFragment(unit)
         })
+
+        Logger.d("add Subscribers, ${compositeDisposable.size()}")
     }
 
     private fun initRecyclerView() {
@@ -53,7 +61,8 @@ class UnitManageFragment : BaseFragment() {
     }
 
     private fun showUnitDetails(unit: BaseUnit) {
-        addFragment(UnitDetailFragment.newInstance(unit))
+        //addFragment(UnitDetailFragment.newInstance(unit))
+        findNavController().navigate(R.id.action_unitManageFragment_to_unitDetailFragment)
     }
 
     private fun showActionFragment(unit: BaseUnit) {
