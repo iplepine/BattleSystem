@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zs.battlesystem.R
@@ -61,8 +62,10 @@ class UnitManageFragment : BaseFragment() {
     }
 
     private fun showUnitDetails(unit: BaseUnit) {
-        //addFragment(UnitDetailFragment.newInstance(unit))
-        findNavController().navigate(R.id.action_unitManageFragment_to_unitDetailFragment)
+        findNavController().navigate(
+            R.id.action_unitManageFragment_to_unitDetailFragment,
+            bundleOf("unitId" to unit.id)
+        )
     }
 
     private fun showActionFragment(unit: BaseUnit) {

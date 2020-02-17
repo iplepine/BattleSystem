@@ -21,7 +21,13 @@
             android:id="@+id/action_unitManageFragment_to_unitDetailFragment"
             app:destination="@id/unitDetailFragment"
             app:enterAnim="@anim/fragment_open_enter"
-            app:popEnterAnim="@anim/fragment_fade_enter" />
+            app:popEnterAnim="@anim/fragment_fade_enter">
+
+            <argument
+                android:name="unitId"
+                app:argType="string" />
+
+        </action>
     </fragment>
 
     <fragment

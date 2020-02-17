@@ -51,53 +51,18 @@
         android:id="@+id/baseStatLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:columnCount="3"
+        android:columnCount="4"
         android:useDefaultMargins="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/hpBarText">
+        app:layout_constraintTop_toBottomOf="@id/hpBarText"></GridLayout>
 
-        <TextView
-            android:id="@+id/str"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:text="0"
-            android:textAlignment="textEnd"></TextView>
-
-        <TextView
-            android:id="@+id/dex"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:text="0"
-            android:textAlignment="textEnd"></TextView>
-
-        <TextView
-            android:id="@+id/lnt"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:text="0"
-            android:textAlignment="textEnd"></TextView>
-
-        <TextView
-            android:id="@+id/con"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:text="0"
-            android:textAlignment="textEnd"></TextView>
-
-        <TextView
-            android:id="@+id/wis"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:text="0"
-            android:textAlignment="textEnd"></TextView>
-
-        <TextView
-            android:id="@+id/cha"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:text="0"
-            android:textAlignment="textEnd"></TextView>
-
-    </GridLayout>
+    <GridLayout
+        android:id="@+id/secondStatLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:columnCount="4"
+        android:useDefaultMargins="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/baseStatLayout"></GridLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
