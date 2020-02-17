@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/inventoryFragment"
+        android:icon="@android:drawable/ic_dialog_info"
+        android:title="@string/bottom_menu_inventory" />
+
+    <item
+        android:id="@+id/questFragment"
+        android:icon="@android:drawable/ic_dialog_info"
+        android:title="@string/bottom_menu_quest" />
+    <item
+        android:id="@+id/unitManageFragment"
+        android:icon="@android:drawable/ic_dialog_info"
+        android:title="@string/bottom_menu_unit" />
+
+    <item
+        android:id="@+id/storeFragment"
+        android:icon="@android:drawable/ic_dialog_info"
+        android:title="@string/bottom_menu_store" />
+
+</menu>

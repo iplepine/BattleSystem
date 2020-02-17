@@ -8,13 +8,13 @@
     <fragment
         android:id="@+id/questFragment"
         android:name="com.zs.battlesystem.view.quest.fragment.QuestFragment"
-        android:label="Blank"
+        android:label="@string/bottom_menu_quest"
         tools:layout="@layout/fragment_quest" />
 
     <fragment
         android:id="@+id/unitManageFragment"
         android:name="com.zs.battlesystem.view.unit.fragment.UnitManageFragment"
-        android:label="Blank"
+        android:label="@string/bottom_menu_unit"
         tools:layout="@layout/fragment_unit_manage">
 
         <action
@@ -31,9 +31,20 @@
     </fragment>
 
     <fragment
+        android:id="@+id/inventoryFragment"
+        android:name="com.zs.battlesystem.view.inventory.fragment.InventoryFragment"
+        android:label="@string/bottom_menu_store"
+        tools:layout="@layout/fragment_inventory" />
+
+    <fragment
+        android:id="@+id/storeFragment"
+        android:name="com.zs.battlesystem.view.store.fragment.StoreFragment"
+        android:label="@string/bottom_menu_store"
+        tools:layout="@layout/fragment_store" />
+
+    <fragment
         android:id="@+id/unitDetailFragment"
         android:name="com.zs.battlesystem.view.unit.fragment.UnitDetailFragment"
-        android:label="Blank"
         tools:layout="@layout/fragment_unit_detail" />
 
 </navigation>

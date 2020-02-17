@@ -1,6 +1,7 @@
 package com.zs.battlesystem.view.unit.fragment
 
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,16 +29,8 @@ import com.zs.battlesystem.view.base.BaseFragment
 import com.zs.battlesystem.view.unit.viewmodel.UnitDetailViewModel
 import kotlinx.android.synthetic.main.fragment_unit_detail.*
 
+
 class UnitDetailFragment : BaseFragment() {
-    companion object {
-        fun newInstance(unit: BaseUnit): UnitDetailFragment {
-            return UnitDetailFragment().apply {
-                arguments = Bundle().apply {
-                    putString("unitId", unit.id)
-                }
-            }
-        }
-    }
 
     private val viewModel = UnitDetailViewModel()
 
@@ -63,7 +56,7 @@ class UnitDetailFragment : BaseFragment() {
     private fun init() {
         handleArguments()
         initStatViews(baseStatSequence, baseStatViews, baseStatLayout)
-        initStatViews(secondStatSequence, secondStatViews, secondStatLayout)
+        initStatViews(secondStatSequence, secondStatViews, baseStatLayout)
 
         viewModel.unit.observe(viewLifecycleOwner, Observer { updateUnitInfo(it) })
     }
@@ -93,8 +86,15 @@ class UnitDetailFragment : BaseFragment() {
                     addView(title)
 
                     val value = TextView(context)
-                    addView(value)
+                    value.minWidth = TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP,
+                        120f,
+                        resources.displayMetrics
+                    ).toInt()
 
+                    value.textAlignment = TextView.TEXT_ALIGNMENT_TEXT_END
+
+                    addView(value)
                     views[it] = value
                 }
             }
