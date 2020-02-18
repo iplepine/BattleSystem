@@ -52,4 +52,8 @@ dependencies {
 
     // Testing Navigation
     androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
+
+
+    // db
+    implementation 'com.google.firebase:firebase-database:19.1.0'
 }

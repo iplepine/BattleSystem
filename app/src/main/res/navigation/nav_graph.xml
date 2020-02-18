@@ -7,13 +7,13 @@
 
     <fragment
         android:id="@+id/questFragment"
-        android:name="com.zs.battlesystem.view.quest.fragment.QuestFragment"
+        android:name="com.zs.mol.view.quest.fragment.QuestFragment"
         android:label="@string/bottom_menu_quest"
         tools:layout="@layout/fragment_quest" />
 
     <fragment
         android:id="@+id/unitManageFragment"
-        android:name="com.zs.battlesystem.view.unit.fragment.UnitManageFragment"
+        android:name="com.zs.mol.view.unit.fragment.UnitManageFragment"
         android:label="@string/bottom_menu_unit"
         tools:layout="@layout/fragment_unit_manage">
 
@@ -32,19 +32,19 @@
 
     <fragment
         android:id="@+id/inventoryFragment"
-        android:name="com.zs.battlesystem.view.inventory.fragment.InventoryFragment"
+        android:name="com.zs.mol.view.inventory.fragment.InventoryFragment"
         android:label="@string/bottom_menu_store"
         tools:layout="@layout/fragment_inventory" />
 
     <fragment
         android:id="@+id/storeFragment"
-        android:name="com.zs.battlesystem.view.store.fragment.StoreFragment"
+        android:name="com.zs.mol.view.store.fragment.StoreFragment"
         android:label="@string/bottom_menu_store"
         tools:layout="@layout/fragment_store" />
 
     <fragment
         android:id="@+id/unitDetailFragment"
-        android:name="com.zs.battlesystem.view.unit.fragment.UnitDetailFragment"
+        android:name="com.zs.mol.view.unit.fragment.UnitDetailFragment"
         tools:layout="@layout/fragment_unit_detail" />
 
 </navigation>
