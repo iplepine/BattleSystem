@@ -1,28 +1,29 @@
 package com.zs.mol.model.user
 
-import com.google.firebase.database.FirebaseDatabase
+import com.google.gson.Gson
 import com.zs.mol.model.battle.unit.BaseUnit
 
-object User {
-    val id = "mine"
+class User(val id: String) {
+    companion object {
+        fun fromSaveData(data: String): User? {
+            return try {
+                Gson().fromJson<User>(data, User.javaClass)
+            } catch (e: Exception) {
+                null
+            }
+        }
+    }
 
     var level = 1
     var gold: Long = 0
 
     val units = ArrayList<BaseUnit>()
 
-    fun isMine(id: String): Boolean {
-        return this.id == id
+    fun toSaveData(): Map<String, Object> {
+        return HashMap()
     }
 
-    fun loadUserData() {
-
-    }
-
-    fun saveUserData() {
-        val database = FirebaseDatabase.getInstance()
-        val myRef = database.getReference("message")
-
-        myRef.setValue("Hello, World!")
+    fun toJson(): String {
+        return Gson().toJson(this)
     }
 }

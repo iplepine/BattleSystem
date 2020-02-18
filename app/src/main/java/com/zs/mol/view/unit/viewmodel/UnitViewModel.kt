@@ -2,7 +2,7 @@ package com.zs.mol.view.unit.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.zs.mol.model.battle.unit.BaseUnit
-import com.zs.mol.model.user.User
+import com.zs.mol.model.user.UserManager
 import io.reactivex.subjects.PublishSubject
 
 class UnitViewModel : ViewModel() {
@@ -10,10 +10,10 @@ class UnitViewModel : ViewModel() {
     val onClickUnitActionSubject: PublishSubject<BaseUnit> = PublishSubject.create<BaseUnit>()
 
     fun getHeroCount(): Int {
-        return User.units.size
+        return UserManager.getUnits().size
     }
 
     fun getHero(index: Int): BaseUnit {
-        return User.units[index]
+        return UserManager.getUnits().get(index)
     }
 }

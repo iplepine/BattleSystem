@@ -24,7 +24,7 @@ import com.zs.mol.model.battle.stat.SecondStat.Companion.MATK
 import com.zs.mol.model.battle.stat.SecondStat.Companion.MDEF
 import com.zs.mol.model.battle.stat.SecondStat.Companion.SPEED
 import com.zs.mol.model.battle.unit.BaseUnit
-import com.zs.mol.model.user.User
+import com.zs.mol.model.user.UserManager
 import com.zs.mol.view.base.BaseFragment
 import com.zs.mol.view.unit.viewmodel.UnitDetailViewModel
 import kotlinx.android.synthetic.main.fragment_unit_detail.*
@@ -64,7 +64,7 @@ class UnitDetailFragment : BaseFragment() {
     private fun handleArguments() {
         arguments?.apply {
             getString("unitId")?.also { id ->
-                viewModel.unit.value = User.units.find { unit -> unit.id == id }
+                viewModel.unit.value = UserManager.user.value?.units?.find { unit -> unit.id == id }
             }
         }
     }

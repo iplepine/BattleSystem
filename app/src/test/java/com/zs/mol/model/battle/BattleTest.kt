@@ -7,13 +7,15 @@ import com.zs.mol.model.battle.stat.SecondStat.Companion.EVADE
 import com.zs.mol.model.battle.stat.SecondStat.Companion.HP
 import com.zs.mol.model.battle.stat.UnitState
 import com.zs.mol.model.battle.unit.BattleUnit
-import com.zs.mol.model.user.User
+import com.zs.mol.model.user.UserManager
 import io.reactivex.subjects.PublishSubject
 import org.junit.Test
 
 class BattleTest {
-    private val myUnit1 = BattleUnitFactory.createTestUnit("유닛 1").apply { owner = User.id }
-    private val myUnit2 = BattleUnitFactory.createTestUnit("유닛 2").apply { owner = User.id }
+    private val myUnit1 =
+        BattleUnitFactory.createTestUnit("유닛 1").apply { owner = UserManager.getUserId() }
+    private val myUnit2 =
+        BattleUnitFactory.createTestUnit("유닛 2").apply { owner = UserManager.getUserId() }
 
     private val enemyUnit1 = BattleUnitFactory.createTestUnit("적유닛 1")
     private val enemyUnit2 = BattleUnitFactory.createTestUnit("적유닛 2")
