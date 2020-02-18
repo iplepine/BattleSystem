@@ -1,11 +1,13 @@
 package com.zs.battlesystem.model.battle
 
 import com.zs.battlesystem.model.battle.skill.Skill
+import com.zs.battlesystem.model.battle.stat.SecondStat
 import com.zs.battlesystem.model.battle.stat.SecondStat.Companion.ATK
 import com.zs.battlesystem.model.battle.stat.SecondStat.Companion.CRI
 import com.zs.battlesystem.model.battle.stat.SecondStat.Companion.EVADE
 import com.zs.battlesystem.model.battle.stat.SecondStat.Companion.HIT
 import com.zs.battlesystem.model.battle.unit.BattleUnit
+import kotlin.math.min
 
 object BattleFunction {
     fun checkCritical(user: BattleUnit, target: BattleUnit): Boolean {
@@ -58,5 +60,12 @@ object BattleFunction {
         }
 
         return ArrayList()
+    }
+
+    fun calculateUnitTurnDelay(unit: BattleUnit): Long {
+        return min(
+            BattleUnit.MINIMUM_DELAY, (BattleUnit.DEFAULT_DELAY - unit.stat.secondStat.get(
+                SecondStat.SPEED
+            )).toLong())
     }
 }

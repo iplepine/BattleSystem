@@ -1,13 +1,13 @@
 package com.zs.battlesystem.model.battle.unit
 
 import com.zs.battlesystem.model.battle.Battle
+import com.zs.battlesystem.model.battle.BattleFunction
 import com.zs.battlesystem.model.battle.controller.DefaultBattleUnitController
 import com.zs.battlesystem.model.battle.skill.Skill
 import com.zs.battlesystem.model.battle.skill.continuous.buff.base.Buff
 import com.zs.battlesystem.model.battle.skill.continuous.buff.base.StatBuff
 import com.zs.battlesystem.model.battle.skill.continuous.debuff.base.DeBuff
 import com.zs.battlesystem.model.battle.stat.SecondStat.Companion.HP
-import com.zs.battlesystem.model.battle.stat.SecondStat.Companion.SPEED
 import com.zs.battlesystem.model.battle.stat.Stat
 import com.zs.battlesystem.model.battle.stat.UnitState
 import com.zs.battlesystem.model.common.Logger
@@ -17,7 +17,8 @@ import java.util.*
 
 class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
     companion object {
-        const val DEFAULT_DELAY = 1000L
+        const val DEFAULT_DELAY = 2000L
+        const val MINIMUM_DELAY = 500L
     }
 
     val id: String = UUID.randomUUID().toString()
@@ -141,7 +142,7 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
     ) {
         //Logger.d("${base.name} start casting [${skill.name}]")
         castingSkill = ReservedSkill(skill, target, messageSubject)
-        changeState(State(UnitState.CASTING, castingSkill?.skill?.castingTime ?: DEFAULT_DELAY))
+        changeState(State(UnitState.CASTING, castingSkill?.skill?.castingTime ?: 0))
         if (state.isEnd()) {
             updateState()
         }
@@ -162,7 +163,7 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
     }
 
     private fun startEffect() {
-        changeState(State(UnitState.EFFECT, castingSkill?.skill?.effectTime ?: DEFAULT_DELAY))
+        changeState(State(UnitState.EFFECT, castingSkill?.skill?.effectTime ?: 0))
         if (state.isEnd()) {
             updateState()
         }
@@ -177,7 +178,7 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
     }
 
     private fun startAfterDelay() {
-        changeState(State(UnitState.AFTER_DELAY, castingSkill?.skill?.afterDelay ?: DEFAULT_DELAY))
+        changeState(State(UnitState.AFTER_DELAY, castingSkill?.skill?.afterDelay ?: 0))
         if (state.isEnd()) {
             updateState()
         }
@@ -186,7 +187,7 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
     private fun onFinishAfterDelay() {
         castingSkill?.skill?.startCoolDown()
         castingSkill = null
-        ready(calculateTurnDelay())
+        ready(BattleFunction.calculateUnitTurnDelay(this))
     }
 
     private fun ready(delay: Long) {
@@ -255,13 +256,6 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
             //Logger.d("please, wait input\n")
             battleUnitController!!.controlUnit(this@BattleUnit, battle)
         }
-    }
-
-    private fun calculateTurnDelay(): Long {
-        if (stat.secondStat.get(SPEED) == 0.0) {
-            return 1000L
-        }
-        return 1000L
     }
 
     class ReservedSkill(
