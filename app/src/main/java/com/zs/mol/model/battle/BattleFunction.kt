@@ -40,7 +40,7 @@ object BattleFunction {
     fun findTarget(
         user: BattleUnit,
         units: List<BattleUnit>,
-        targetType: Int,
+        targetType: Skill.TargetType,
         targetCount: Int
     ): List<BattleUnit> {
         when (targetType) {

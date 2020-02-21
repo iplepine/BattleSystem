@@ -1,6 +1,5 @@
 package com.zs.mol.model.battle
 
-import com.zs.mol.model.battle.stat.Stat
 import com.zs.mol.model.battle.unit.BaseUnitFactory
 import com.zs.mol.model.battle.unit.BattleUnit
 
@@ -11,8 +10,4 @@ object BattleUnitFactory {
         return BattleUnit(baseUnit)
     }
 
-    fun createTestUnit(name: String, stat: Stat): BattleUnit {
-        val baseUnit = BaseUnitFactory.create(name, stat)
-        return BattleUnit(baseUnit)
-    }
 }

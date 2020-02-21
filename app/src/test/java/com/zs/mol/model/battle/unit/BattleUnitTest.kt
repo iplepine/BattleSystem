@@ -1,6 +1,7 @@
 package com.zs.mol.model.battle.unit
 
 import com.zs.mol.model.battle.BattleUnitFactory
+import com.zs.mol.model.battle.skill.UnitSkill
 import com.zs.mol.model.battle.skill.active.control.StateControlSkill
 import com.zs.mol.model.battle.skill.continuous.buff.base.StatBuff
 import com.zs.mol.model.battle.stat.SecondStat.Companion.ATK
@@ -15,7 +16,7 @@ class BattleUnitTest {
 
         unit.base.totalStat.secondStat.values[ATK] = defaultStat
 
-        val skill = object : StateControlSkill() {
+        val skill = object : StateControlSkill(0) {
 
             override fun initEffects() {
                 addEffect(StatBuff(ATK, 0.2, false, 300))
@@ -23,11 +24,12 @@ class BattleUnitTest {
                 addEffect(StatBuff(ATK, 1.0, false, 300))
             }
         }
+
         val target = arrayListOf(unit)
 
         var expect = (defaultStat + 100) * (1 + 1.2)
 
-        unit.startCasting(skill, target)
+        unit.startCasting(UnitSkill(skill), target)
         unit.calculateStat()
         assert(unit.stat.secondStat.get(ATK) == expect)
 

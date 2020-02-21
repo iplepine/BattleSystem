@@ -5,18 +5,15 @@ import com.zs.mol.model.battle.skill.active.Bash
 import com.zs.mol.model.battle.skill.active.NormalAttack
 
 object SkillManager {
-    private val list = HashMap<String, Skill>()
+    private val skills: HashMap<Int, Skill> = HashMap()
 
-    fun initSkills() {
-        putSkill(NormalAttack())
-        putSkill(Bash())
+    fun getSkill(id: Int): Skill? {
+        return skills[id]
     }
 
-    fun putSkill(skill: Skill) {
-        list[skill.name] = skill
-    }
-
-    fun getSkill(name: String): Skill? {
-        return list[name]
+    init {
+        skills[NormalAttack.id] = NormalAttack
+        skills[Bash.id] = Bash
+        skills[NormalAttack.id] = NormalAttack
     }
 }

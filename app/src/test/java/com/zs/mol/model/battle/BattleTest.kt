@@ -1,12 +1,13 @@
 package com.zs.mol.model.battle
 
 import com.zs.mol.model.battle.skill.Skill
-import com.zs.mol.model.battle.skill.active.NormalAttack
+import com.zs.mol.model.battle.skill.UnitSkill
 import com.zs.mol.model.battle.stat.SecondStat.Companion.ATK
 import com.zs.mol.model.battle.stat.SecondStat.Companion.EVADE
 import com.zs.mol.model.battle.stat.SecondStat.Companion.HP
 import com.zs.mol.model.battle.stat.UnitState
 import com.zs.mol.model.battle.unit.BattleUnit
+import com.zs.mol.model.db.SkillDB
 import com.zs.mol.model.user.UserManager
 import io.reactivex.subjects.PublishSubject
 import org.junit.Test
@@ -66,19 +67,21 @@ class BattleTest {
             stat.secondStat.values[ATK] = 10.0
         }
 
-        sucider.useSkillImmediate(NormalAttack(), arrayListOf(sucider))
+        sucider.useSkillImmediate(UnitSkill(SkillDB.NormalAttack), arrayListOf(sucider))
         assert(sucider.isDie())
     }
 
     @Test
     fun usingSkillTest() {
-        val testSkill = object : Skill() {
+        val testSkill = object : Skill(0) {
             init {
-                name = "TestSkill"
-                coolTime = 5000L
-                castingTime = 1000L
-                effectTime = 1500L
-                afterDelay = 3000L
+                skillData.apply {
+                    name = "TestSkill"
+                    coolTime = 5000L
+                    castingTime = 1000L
+                    effectTime = 1500L
+                    afterDelay = 3000L
+                }
             }
 
             override fun onEffect(
@@ -90,32 +93,32 @@ class BattleTest {
         }
 
         val unit = BattleUnitFactory.createTestUnit("user").apply {
-            base.skills.add(testSkill)
+            addSkill(UnitSkill(testSkill))
         }
 
         val enemy = BattleUnitFactory.createTestUnit("enemy").apply {
         }
 
-        unit.startCasting(testSkill, arrayListOf(enemy))
+        unit.startCasting(UnitSkill(testSkill), arrayListOf(enemy))
         assert(unit.state.name == UnitState.CASTING)
-        assert(testSkill.coolDown == 0L)
+        assert(unit.skills[0].getCoolDown() == 0L)
 
-        unit.updateTime(testSkill.castingTime)
+        unit.updateTime(testSkill.skillData.castingTime)
         assert(unit.state.name == UnitState.EFFECT)
-        assert(testSkill.coolDown == 0L)
+        assert(unit.skills[0].getCoolDown() == 0L)
 
-        unit.updateTime(testSkill.effectTime)
+        unit.updateTime(testSkill.skillData.effectTime)
         assert(unit.state.name == UnitState.AFTER_DELAY)
-        assert(testSkill.coolDown == 0L)
+        assert(unit.skills[0].getCoolDown() == 0L)
 
-        unit.updateTime(testSkill.afterDelay)
+        unit.updateTime(testSkill.skillData.afterDelay)
         assert(unit.state.name == UnitState.IDLE)
-        assert(testSkill.coolDown == testSkill.coolTime)
+        assert(unit.skills[0].getCoolDown() == testSkill.skillData.coolTime)
 
-        unit.updateTime(testSkill.coolTime / 2)
-        assert(testSkill.coolDown == testSkill.coolTime / 2)
+        unit.updateTime(testSkill.skillData.coolTime / 2)
+        assert(unit.skills[0].getCoolDown() == testSkill.skillData.coolTime / 2)
 
-        unit.updateTime(testSkill.coolTime / 2)
-        assert(testSkill.coolDown == 0L)
+        unit.updateTime(testSkill.skillData.coolTime / 2)
+        assert(unit.skills[0].getCoolDown() == 0L)
     }
 }

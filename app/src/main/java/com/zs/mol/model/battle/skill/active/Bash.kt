@@ -5,25 +5,16 @@ import com.zs.mol.model.battle.skill.Skill
 import com.zs.mol.model.battle.stat.SecondStat.Companion.DEF
 import com.zs.mol.model.battle.unit.BattleUnit
 import com.zs.mol.model.common.Logger
+import com.zs.mol.model.db.SkillDB
 import io.reactivex.subjects.PublishSubject
 
-class Bash : Skill() {
-    companion object {
-        private const val damageRatio = 2.0
+object Bash : Skill(SkillDB.Bash) {
+    override fun getExpectEffect(): Int {
+        return 2
     }
 
-    init {
-        name = "Bash"
-        description = "힘을 모아 강하게 내려 친다"
-        castingTime = 0
-        effectTime = 0
-        afterDelay = 0
-
-        coolTime = 1000 * 10L   // 쿨타임 10초
-    }
-
-    override fun getExpectEffect(): Double {
-        return damageRatio
+    override fun calculateDamage(unit: BattleUnit): Double {
+        return super.calculateDamage(unit) * 2
     }
 
     override fun onEffect(
@@ -31,7 +22,7 @@ class Bash : Skill() {
         target: BattleUnit,
         messageSubject: PublishSubject<String>?
     ) {
-        Logger.d("${user.base.name} use $name to ${target.base.name}")
+        Logger.d("${user.base.name} use ${skillData.name} to ${target.base.name}")
 
         if (BattleFunction.checkEvade(user, target)) {
             val message = "Miss!!"
@@ -40,7 +31,7 @@ class Bash : Skill() {
             return
         }
 
-        var attack = (BattleFunction.getDefaultAttackDamage(user) * damageRatio)
+        var attack = calculateDamage(user)
         val defence = target.stat.secondStat.get(DEF)
 
         var isCritical = BattleFunction.checkCritical(user, target)

@@ -1,11 +1,11 @@
 package com.zs.mol
 
-import android.app.Application
+import androidx.multidex.MultiDexApplication
 import com.zs.mol.model.battle.unit.BaseUnitFactory
 import com.zs.mol.model.user.UserManager
 
 
-class App : Application() {
+class App : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
         initTest()

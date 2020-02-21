@@ -5,22 +5,12 @@ import com.zs.mol.model.battle.skill.Skill
 import com.zs.mol.model.battle.stat.SecondStat.Companion.DEF
 import com.zs.mol.model.battle.unit.BattleUnit
 import com.zs.mol.model.common.Logger
+import com.zs.mol.model.db.SkillDB
 import io.reactivex.subjects.PublishSubject
 
-class NormalAttack : Skill() {
-    init {
-        name = "Normal Attack"
-        castingTime = 0
-        effectTime = 0
-        afterDelay = 0
-
-        coolDown = 0L
-
-        targetCount = 1
-    }
-
-    override fun getExpectEffect(): Double {
-        return 1.0
+object NormalAttack : Skill(SkillDB.NormalAttack) {
+    override fun getExpectEffect(): Int {
+        return 1
     }
 
     override fun onEffect(
@@ -28,7 +18,7 @@ class NormalAttack : Skill() {
         target: BattleUnit,
         messageSubject: PublishSubject<String>?
     ) {
-        Logger.d("${user.base.name} use [$name] to ${target.base.name}")
+        Logger.d("${user.base.name} use [${skillData.name}] to ${target.base.name}")
 
         if (BattleFunction.checkEvade(user, target)) {
             val message = "Miss!!"
@@ -37,7 +27,7 @@ class NormalAttack : Skill() {
             return
         }
 
-        var attack = BattleFunction.getDefaultAttackDamage(user)
+        var attack = calculateDamage(user)
         val defence = target.stat.secondStat.get(DEF)
 
         Logger.d("attack : ${attack.toInt()}, defence : ${defence.toInt()}")

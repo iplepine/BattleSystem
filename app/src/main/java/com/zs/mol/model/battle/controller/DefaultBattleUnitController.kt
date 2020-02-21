@@ -2,7 +2,7 @@ package com.zs.mol.model.battle.controller
 
 import com.zs.mol.model.battle.Battle
 import com.zs.mol.model.battle.BattleFunction
-import com.zs.mol.model.battle.skill.Skill
+import com.zs.mol.model.battle.skill.UnitSkill
 import com.zs.mol.model.battle.unit.BattleUnit
 import com.zs.mol.model.common.Logger
 import kotlinx.coroutines.GlobalScope
@@ -28,17 +28,18 @@ object DefaultBattleUnitController {
     }
 
     private fun useSkill(unit: BattleUnit, battle: Battle) {
-        val availableSkills = unit.base.skills.filter { it.coolDown <= 0 }
+        val availableSkills =
+            unit.skills.filter { it.skill != null && it.status.coolDown <= 0 }
 
-        Logger.d("Available skill count : ${availableSkills.size}/${unit.base.skills.count()}")
+        Logger.d("Available skill count : ${availableSkills.size}/${unit.skills.count()}")
 
         val skill = pickMostEffectiveSkill(availableSkills)
         skill?.also {
             val target = BattleFunction.findTarget(
                 unit,
                 battle.battleUnits,
-                skill.targetType,
-                skill.targetCount
+                skill.skill.skillData.targetType,
+                skill.skill.skillData.targetCount
             )
             unit.startCasting(skill, target)
         }
@@ -46,8 +47,8 @@ object DefaultBattleUnitController {
         battle.onFinishInput()
     }
 
-    private fun pickMostEffectiveSkill(skills: List<Skill>): Skill? {
-        return skills.sortedByDescending { it.getExpectEffect() }[0]
+    private fun pickMostEffectiveSkill(skills: List<UnitSkill>): UnitSkill? {
+        return skills.sortedByDescending { it.skill.getExpectEffect() }[0]
         //Logger.d("The most effective skill : ${bestSkill?.name ?: "NONE"}")
     }
 }

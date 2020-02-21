@@ -5,7 +5,7 @@ import com.zs.mol.model.battle.skill.continuous.StatusEffect
 import com.zs.mol.model.battle.unit.BattleUnit
 import io.reactivex.subjects.PublishSubject
 
-abstract class StateControlSkill : Skill() {
+abstract class StateControlSkill(id: Int) : Skill(id) {
     val effects = ArrayList<StatusEffect>()
 
     init {

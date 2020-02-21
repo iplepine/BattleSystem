@@ -1,9 +1,8 @@
 package com.zs.mol.model.battle.unit
 
-import com.zs.mol.model.battle.skill.Skill
-import com.zs.mol.model.battle.skill.active.NormalAttack
 import com.zs.mol.model.battle.stat.SecondStat
 import com.zs.mol.model.battle.stat.Stat
+import com.zs.mol.model.db.SkillDB
 import com.zs.mol.model.item.EquipItem
 import com.zs.mol.model.manager.StatManager
 import java.util.*
@@ -23,11 +22,19 @@ open class BaseUnit(name: String, stat: Stat = Stat(), currentStat: Stat? = null
     val totalStat: Stat = calculateTotalStat()
     val currentStat: Stat = currentStat ?: calculateTotalStat()
 
-    var skills: ArrayList<Skill> = ArrayList<Skill>().apply { add(NormalAttack()) }
-    var equipItems = HashMap<String, EquipItem>()
+    var skills: ArrayList<Int> = ArrayList<Int>().apply { SkillDB.NormalAttack }
+
+    private var equipItems = HashMap<String, EquipItem>()
 
     init {
         calculateTotalStat()
+    }
+
+    override fun toString(): String {
+        return StringBuilder()
+            .append("Lv. $level $name ")
+            .append(totalStat)
+            .toString()
     }
 
     fun levelUp() {
@@ -72,10 +79,11 @@ open class BaseUnit(name: String, stat: Stat = Stat(), currentStat: Stat? = null
         return ret
     }
 
-    override fun toString(): String {
-        return StringBuilder()
-            .append("Lv. $level $name ")
-            .append(totalStat)
-            .toString()
+    fun addSkill(id: Int) {
+
+    }
+
+    fun removeSkill(id: Int) {
+        skills.remove(id)
     }
 }

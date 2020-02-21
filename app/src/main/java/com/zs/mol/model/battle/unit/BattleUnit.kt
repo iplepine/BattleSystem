@@ -3,7 +3,8 @@ package com.zs.mol.model.battle.unit
 import com.zs.mol.model.battle.Battle
 import com.zs.mol.model.battle.BattleFunction
 import com.zs.mol.model.battle.controller.DefaultBattleUnitController
-import com.zs.mol.model.battle.skill.Skill
+import com.zs.mol.model.battle.skill.UnitSkill
+import com.zs.mol.model.battle.skill.continuous.StatusEffect
 import com.zs.mol.model.battle.skill.continuous.buff.base.Buff
 import com.zs.mol.model.battle.skill.continuous.buff.base.StatBuff
 import com.zs.mol.model.battle.skill.continuous.debuff.base.DeBuff
@@ -12,8 +13,12 @@ import com.zs.mol.model.battle.stat.Stat
 import com.zs.mol.model.battle.stat.UnitState
 import com.zs.mol.model.common.Logger
 import com.zs.mol.model.common.MonoBehaviour
+import com.zs.mol.model.db.SkillDB
 import io.reactivex.subjects.PublishSubject
 import java.util.*
+import kotlin.collections.ArrayList
+
+// G5PJN6
 
 class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
     companion object {
@@ -28,14 +33,19 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
 
     var stat = base.currentStat
 
-    val buffs =
-        ArrayList<com.zs.mol.model.battle.skill.continuous.StatusEffect>()
-    val deBuffs =
-        ArrayList<com.zs.mol.model.battle.skill.continuous.StatusEffect>()
+    val buffs = ArrayList<StatusEffect>()
+    val deBuffs = ArrayList<StatusEffect>()
 
     var castingSkill: ReservedSkill? = null
 
+    val skills: ArrayList<UnitSkill> =
+        base.skills.filter { SkillDB.validId(it) }.map { UnitSkill(it) } as ArrayList<UnitSkill>
+
     var battleUnitController: DefaultBattleUnitController? = DefaultBattleUnitController
+
+    fun addSkill(skill: UnitSkill) {
+        skills.add(skill)
+    }
 
     fun isMine(id: String): Boolean {
         return owner == id
@@ -81,7 +91,7 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
     }
 
     private fun updateSkills(time: Long) {
-        base.skills.forEach { it.updateTime(time) }
+        skills.forEach { it.updateTime(time) }
     }
 
     private fun updateBuffs(time: Long) {
@@ -136,25 +146,25 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
     }
 
     fun startCasting(
-        skill: Skill,
+        skill: UnitSkill,
         target: List<BattleUnit>,
         messageSubject: PublishSubject<String>? = null
     ) {
         //Logger.d("${base.name} start casting [${skill.name}]")
         castingSkill = ReservedSkill(skill, target, messageSubject)
-        changeState(State(UnitState.CASTING, castingSkill?.skill?.castingTime ?: 0))
+        changeState(State(UnitState.CASTING, castingSkill?.skill?.getCastingTime() ?: 0))
         if (state.isEnd()) {
             updateState()
         }
     }
 
     fun useSkillImmediate(
-        skill: Skill,
+        skill: UnitSkill,
         target: List<BattleUnit>,
         messageSubject: PublishSubject<String>? = null
     ) {
         skill.onEffect(this, target, messageSubject)
-        Logger.d("${base.name} use [${skill.name}] immediately")
+        Logger.d("${base.name} use [${skill.getName()}] immediately")
     }
 
     private fun onFinishCasting() {
@@ -163,7 +173,7 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
     }
 
     private fun startEffect() {
-        changeState(State(UnitState.EFFECT, castingSkill?.skill?.effectTime ?: 0))
+        changeState(State(UnitState.EFFECT, castingSkill?.skill?.getEffectTime() ?: 0))
         if (state.isEnd()) {
             updateState()
         }
@@ -178,7 +188,7 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
     }
 
     private fun startAfterDelay() {
-        changeState(State(UnitState.AFTER_DELAY, castingSkill?.skill?.afterDelay ?: 0))
+        changeState(State(UnitState.AFTER_DELAY, castingSkill?.skill?.getAfterDelay() ?: 0))
         if (state.isEnd()) {
             updateState()
         }
@@ -259,7 +269,7 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
     }
 
     class ReservedSkill(
-        var skill: Skill,
+        var skill: UnitSkill,
         var target: List<BattleUnit>,
         var messageSubject: PublishSubject<String>? = null
     )
