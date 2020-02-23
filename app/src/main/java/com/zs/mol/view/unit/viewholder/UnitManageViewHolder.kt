@@ -5,10 +5,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.zs.mol.R
-import com.zs.mol.model.battle.stat.SecondStat.Companion.HP
-import com.zs.mol.model.battle.stat.SecondStat.Companion.MP
-import com.zs.mol.model.battle.unit.BaseUnit
-import com.zs.mol.model.battle.unit.UnitAction
+import com.zs.mol.model.stat.SecondStat.Companion.HP
+import com.zs.mol.model.stat.SecondStat.Companion.MP
+import com.zs.mol.model.unit.BaseUnit
+import com.zs.mol.model.unit.UnitAction
 import com.zs.mol.view.unit.viewmodel.UnitViewModel
 import kotlinx.android.synthetic.main.item_unit.view.*
 

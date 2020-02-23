@@ -1,6 +1,6 @@
 package com.zs.mol.model.pojo
 
-import com.zs.mol.model.battle.skill.Skill
+import com.zs.mol.model.skill.Skill
 
 data class SkillData(
     var name: String = "",

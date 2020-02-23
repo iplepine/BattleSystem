@@ -1,6 +1,6 @@
 package com.zs.mol.model.db
 
-import com.zs.mol.model.battle.skill.Skill
+import com.zs.mol.model.skill.Skill
 import com.zs.mol.model.pojo.SkillData
 
 object SkillDB {

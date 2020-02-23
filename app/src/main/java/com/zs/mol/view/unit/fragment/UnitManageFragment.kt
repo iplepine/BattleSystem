@@ -8,7 +8,7 @@ import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zs.mol.R
-import com.zs.mol.model.battle.unit.BaseUnit
+import com.zs.mol.model.unit.BaseUnit
 import com.zs.mol.model.common.Logger
 import com.zs.mol.view.base.MainFragment
 import com.zs.mol.view.unit.adapter.UnitAdapter

@@ -2,8 +2,8 @@ package com.zs.mol.model.battle.controller
 
 import com.zs.mol.model.battle.Battle
 import com.zs.mol.model.battle.BattleFunction
-import com.zs.mol.model.battle.skill.UnitSkill
-import com.zs.mol.model.battle.unit.BattleUnit
+import com.zs.mol.model.skill.UnitSkill
+import com.zs.mol.model.unit.BattleUnit
 import com.zs.mol.model.common.Logger
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay

@@ -1,6 +1,6 @@
 package com.zs.mol.model.user
 
-import com.zs.mol.model.battle.unit.BaseUnitFactory
+import com.zs.mol.model.unit.BaseUnitFactory
 import org.junit.Test
 
 class UserTest {

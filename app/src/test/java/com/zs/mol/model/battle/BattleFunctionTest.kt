@@ -1,7 +1,7 @@
 package com.zs.mol.model.battle
 
-import com.zs.mol.model.battle.stat.SecondStat.Companion.CRI
-import com.zs.mol.model.battle.stat.SecondStat.Companion.EVADE
+import com.zs.mol.model.stat.SecondStat.Companion.CRI
+import com.zs.mol.model.stat.SecondStat.Companion.EVADE
 import com.zs.mol.model.common.Logger
 import org.junit.Test
 

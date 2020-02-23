@@ -1,7 +1,7 @@
 package com.zs.mol.model.battle
 
 import com.zs.mol.model.battle.controller.UserInputTimer
-import com.zs.mol.model.battle.unit.BattleUnit
+import com.zs.mol.model.unit.BattleUnit
 import com.zs.mol.model.common.Logger
 import com.zs.mol.model.common.MonoBehaviour
 import com.zs.mol.model.user.UserManager

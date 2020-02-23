@@ -1,8 +1,8 @@
 package com.zs.mol.model.manager
 
-import com.zs.mol.model.battle.skill.Skill
-import com.zs.mol.model.battle.skill.active.Bash
-import com.zs.mol.model.battle.skill.active.NormalAttack
+import com.zs.mol.model.skill.Skill
+import com.zs.mol.model.skill.active.Bash
+import com.zs.mol.model.skill.active.NormalAttack
 
 object SkillManager {
     private val skills: HashMap<Int, Skill> = HashMap()

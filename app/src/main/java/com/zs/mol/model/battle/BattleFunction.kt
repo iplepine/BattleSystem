@@ -1,12 +1,12 @@
 package com.zs.mol.model.battle
 
-import com.zs.mol.model.battle.skill.Skill
-import com.zs.mol.model.battle.stat.SecondStat
-import com.zs.mol.model.battle.stat.SecondStat.Companion.ATK
-import com.zs.mol.model.battle.stat.SecondStat.Companion.CRI
-import com.zs.mol.model.battle.stat.SecondStat.Companion.EVADE
-import com.zs.mol.model.battle.stat.SecondStat.Companion.HIT
-import com.zs.mol.model.battle.unit.BattleUnit
+import com.zs.mol.model.skill.Skill
+import com.zs.mol.model.stat.SecondStat
+import com.zs.mol.model.stat.SecondStat.Companion.ATK
+import com.zs.mol.model.stat.SecondStat.Companion.CRI
+import com.zs.mol.model.stat.SecondStat.Companion.EVADE
+import com.zs.mol.model.stat.SecondStat.Companion.HIT
+import com.zs.mol.model.unit.BattleUnit
 import kotlin.math.min
 
 object BattleFunction {

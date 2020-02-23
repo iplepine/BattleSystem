@@ -1,7 +1,7 @@
 package com.zs.mol.model.battle
 
-import com.zs.mol.model.battle.unit.BaseUnitFactory
-import com.zs.mol.model.battle.unit.BattleUnit
+import com.zs.mol.model.unit.BaseUnitFactory
+import com.zs.mol.model.unit.BattleUnit
 
 object BattleUnitFactory {
 

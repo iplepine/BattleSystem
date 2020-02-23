@@ -1,7 +1,7 @@
 package com.zs.mol
 
 import androidx.multidex.MultiDexApplication
-import com.zs.mol.model.battle.unit.BaseUnitFactory
+import com.zs.mol.model.unit.BaseUnitFactory
 import com.zs.mol.model.user.UserManager
 
 

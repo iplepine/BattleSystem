@@ -1,7 +1,7 @@
 package com.zs.mol.model.user
 
 import androidx.lifecycle.MutableLiveData
-import com.zs.mol.model.battle.unit.BaseUnit
+import com.zs.mol.model.unit.BaseUnit
 
 object UserManager {
     val user = MutableLiveData<User>()

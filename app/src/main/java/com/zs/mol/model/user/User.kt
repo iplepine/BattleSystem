@@ -1,7 +1,7 @@
 package com.zs.mol.model.user
 
 import com.google.gson.Gson
-import com.zs.mol.model.battle.unit.BaseUnit
+import com.zs.mol.model.unit.BaseUnit
 
 class User(val id: String) {
     companion object {

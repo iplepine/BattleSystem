@@ -67,4 +67,7 @@ dependencies {
 
     // multidex
     implementation 'androidx.multidex:multidex:2.0.1'
+
+    // gson
+    implementation 'com.google.code.gson:gson:2.8.6'
 }

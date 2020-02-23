@@ -1,12 +1,12 @@
 package com.zs.mol.model.battle
 
-import com.zs.mol.model.battle.skill.Skill
-import com.zs.mol.model.battle.skill.UnitSkill
-import com.zs.mol.model.battle.stat.SecondStat.Companion.ATK
-import com.zs.mol.model.battle.stat.SecondStat.Companion.EVADE
-import com.zs.mol.model.battle.stat.SecondStat.Companion.HP
-import com.zs.mol.model.battle.stat.UnitState
-import com.zs.mol.model.battle.unit.BattleUnit
+import com.zs.mol.model.skill.Skill
+import com.zs.mol.model.skill.UnitSkill
+import com.zs.mol.model.stat.SecondStat.Companion.ATK
+import com.zs.mol.model.stat.SecondStat.Companion.EVADE
+import com.zs.mol.model.stat.SecondStat.Companion.HP
+import com.zs.mol.model.stat.UnitState
+import com.zs.mol.model.unit.BattleUnit
 import com.zs.mol.model.db.SkillDB
 import com.zs.mol.model.user.UserManager
 import io.reactivex.subjects.PublishSubject
