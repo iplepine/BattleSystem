@@ -1,16 +1,12 @@
 package com.zs.mol.model.battle
 
-import com.zs.mol.model.user.UserManager
+import com.zs.mol.model.unit.BattleUnitFactory
 import org.junit.Test
 
 class BattleSimulatorTest {
 
-    private val myUnit1 = BattleUnitFactory.createTestUnit("Iplepine").apply {
-        owner = UserManager.getUserId()
-    }
-    private val myUnit2 = BattleUnitFactory.createTestUnit("Seoty").apply {
-        owner = UserManager.getUserId()
-    }
+    private val myUnit1 = BattleUnitFactory.createTestUnit("Iplepine", "guest")
+    private val myUnit2 = BattleUnitFactory.createTestUnit("Seoty", "guest")
 
     private val enemyUnit1 = BattleUnitFactory.createTestUnit("enemy1")
     private val enemyUnit2 = BattleUnitFactory.createTestUnit("enemy2")

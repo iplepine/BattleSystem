@@ -1,7 +1,7 @@
 package com.zs.mol.model.user
 
 import com.google.gson.Gson
-import com.zs.mol.model.unit.BaseUnit
+import com.zs.mol.model.unit.BattleUnit
 
 class User(val id: String) {
     companion object {
@@ -14,10 +14,8 @@ class User(val id: String) {
         }
     }
 
-    var level = 1
-    var gold: Long = 0
-
-    val units = ArrayList<BaseUnit>()
+    var userStatus = UserStatus(1, 0)
+    val units = ArrayList<BattleUnit>()
 
     fun toSaveData(): Map<String, Object> {
         return HashMap()

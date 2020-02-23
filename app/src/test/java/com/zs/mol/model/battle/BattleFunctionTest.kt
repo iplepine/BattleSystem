@@ -3,6 +3,7 @@ package com.zs.mol.model.battle
 import com.zs.mol.model.stat.SecondStat.Companion.CRI
 import com.zs.mol.model.stat.SecondStat.Companion.EVADE
 import com.zs.mol.model.common.Logger
+import com.zs.mol.model.unit.BattleUnitFactory
 import org.junit.Test
 
 class BattleFunctionTest {

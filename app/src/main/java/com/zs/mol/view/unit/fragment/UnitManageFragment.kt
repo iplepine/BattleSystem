@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.zs.mol.R
 import com.zs.mol.model.unit.BaseUnit
 import com.zs.mol.model.common.Logger
+import com.zs.mol.model.unit.BattleUnit
 import com.zs.mol.view.base.MainFragment
 import com.zs.mol.view.unit.adapter.UnitAdapter
 import com.zs.mol.view.unit.viewmodel.UnitViewModel
@@ -61,14 +62,14 @@ class UnitManageFragment : MainFragment() {
         }
     }
 
-    private fun showUnitDetails(unit: BaseUnit) {
+    private fun showUnitDetails(unit: BattleUnit) {
         findNavController().navigate(
             R.id.action_unitManageFragment_to_unitDetailFragment,
             bundleOf("unitId" to unit.id)
         )
     }
 
-    private fun showActionFragment(unit: BaseUnit) {
+    private fun showActionFragment(unit: BattleUnit) {
 
     }
 }

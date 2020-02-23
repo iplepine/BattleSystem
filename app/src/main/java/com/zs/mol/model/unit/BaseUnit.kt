@@ -1,10 +1,11 @@
 package com.zs.mol.model.unit
 
-import com.zs.mol.model.stat.SecondStat
-import com.zs.mol.model.stat.Stat
-import com.zs.mol.model.db.SkillDB
 import com.zs.mol.model.item.EquipItem
 import com.zs.mol.model.manager.StatManager
+import com.zs.mol.model.skill.UnitSkill
+import com.zs.mol.model.skill.active.NormalAttack
+import com.zs.mol.model.stat.SecondStat
+import com.zs.mol.model.stat.Stat
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -15,6 +16,7 @@ open class BaseUnit(name: String, stat: Stat = Stat(), currentStat: Stat? = null
     var exp = 0L
     var name = name
     var job = "Job class"
+    var owner = "enemy"
 
     var action: UnitAction = UnitAction.IDLE
 
@@ -22,7 +24,9 @@ open class BaseUnit(name: String, stat: Stat = Stat(), currentStat: Stat? = null
     val totalStat: Stat = calculateTotalStat()
     val currentStat: Stat = currentStat ?: calculateTotalStat()
 
-    var skills: ArrayList<Int> = ArrayList<Int>().apply { SkillDB.NormalAttack }
+    var skills: ArrayList<UnitSkill> = ArrayList<UnitSkill>().apply {
+        add(UnitSkill(NormalAttack))
+    }
 
     private var equipItems = HashMap<String, EquipItem>()
 
@@ -84,6 +88,9 @@ open class BaseUnit(name: String, stat: Stat = Stat(), currentStat: Stat? = null
     }
 
     fun removeSkill(id: Int) {
-        skills.remove(id)
+        val removeSkills = skills.filter {
+            it.skill.id == id
+        }
+        skills.removeAll(removeSkills)
     }
 }

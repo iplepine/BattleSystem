@@ -2,7 +2,8 @@ package com.zs.mol
 
 import androidx.multidex.MultiDexApplication
 import com.zs.mol.model.unit.BaseUnitFactory
-import com.zs.mol.model.user.UserManager
+import com.zs.mol.model.unit.BattleUnit
+import com.zs.mol.model.user.UserRepository
 
 
 class App : MultiDexApplication() {
@@ -12,10 +13,10 @@ class App : MultiDexApplication() {
     }
 
     private fun initTest() {
-        UserManager.user.value?.units?.apply {
-            add(BaseUnitFactory.create("Iplepine"))
-            add(BaseUnitFactory.create("Seoty"))
-            add(BaseUnitFactory.create("PleaseReleaseMe"))
+        UserRepository.user.units?.apply {
+            add(BattleUnit(BaseUnitFactory.create("Iplepine")))
+            add(BattleUnit(BaseUnitFactory.create("Seoty")))
+            add(BattleUnit(BaseUnitFactory.create("PleaseReleaseMe")))
         }
     }
 }

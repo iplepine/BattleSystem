@@ -3,6 +3,8 @@ package com.zs.mol.model.unit
 import com.zs.mol.model.battle.Battle
 import com.zs.mol.model.battle.BattleFunction
 import com.zs.mol.model.battle.controller.DefaultBattleUnitController
+import com.zs.mol.model.common.Logger
+import com.zs.mol.model.common.MonoBehaviour
 import com.zs.mol.model.skill.UnitSkill
 import com.zs.mol.model.skill.continuous.StatusEffect
 import com.zs.mol.model.skill.continuous.buff.base.Buff
@@ -11,14 +13,7 @@ import com.zs.mol.model.skill.continuous.debuff.base.DeBuff
 import com.zs.mol.model.stat.SecondStat.Companion.HP
 import com.zs.mol.model.stat.Stat
 import com.zs.mol.model.stat.UnitState
-import com.zs.mol.model.common.Logger
-import com.zs.mol.model.common.MonoBehaviour
-import com.zs.mol.model.db.SkillDB
 import io.reactivex.subjects.PublishSubject
-import java.util.*
-import kotlin.collections.ArrayList
-
-// G5PJN6
 
 class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
     companion object {
@@ -26,8 +21,8 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
         const val MINIMUM_DELAY = 500L
     }
 
-    val id: String = UUID.randomUUID().toString()
-    var owner = "enemy"
+    val id = base.id
+    var owner = base.owner
 
     var state = State(UnitState.IDLE)
 
@@ -38,8 +33,7 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
 
     var castingSkill: ReservedSkill? = null
 
-    val skills: ArrayList<UnitSkill> =
-        base.skills.filter { SkillDB.validId(it) }.map { UnitSkill(it) } as ArrayList<UnitSkill>
+    val skills = base.skills
 
     var battleUnitController: DefaultBattleUnitController? = DefaultBattleUnitController
 
@@ -150,7 +144,7 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
         target: List<BattleUnit>,
         messageSubject: PublishSubject<String>? = null
     ) {
-        //Logger.d("${base.name} start casting [${skill.name}]")
+        Logger.d("${base.name} start casting [${skill.getName()}]")
         castingSkill = ReservedSkill(skill, target, messageSubject)
         changeState(State(UnitState.CASTING, castingSkill?.skill?.getCastingTime() ?: 0))
         if (state.isEnd()) {
@@ -168,7 +162,7 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
     }
 
     private fun onFinishCasting() {
-        //Logger.d("${base.name} finish casting on [${castingSkill?.skill?.name}]")
+        Logger.d("${base.name} finish casting on [${castingSkill?.skill?.getName()}]")
         startEffect()
     }
 
@@ -202,7 +196,7 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
 
     private fun ready(delay: Long) {
         changeState(State(UnitState.IDLE, delay))
-        //Logger.d("${base.name} is waiting next turn!")
+        Logger.d("${base.name} is waiting next turn!")
     }
 
     fun onStun(time: Long) {

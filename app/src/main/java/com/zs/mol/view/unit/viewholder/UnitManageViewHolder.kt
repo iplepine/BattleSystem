@@ -8,6 +8,7 @@ import com.zs.mol.R
 import com.zs.mol.model.stat.SecondStat.Companion.HP
 import com.zs.mol.model.stat.SecondStat.Companion.MP
 import com.zs.mol.model.unit.BaseUnit
+import com.zs.mol.model.unit.BattleUnit
 import com.zs.mol.model.unit.UnitAction
 import com.zs.mol.view.unit.viewmodel.UnitViewModel
 import kotlinx.android.synthetic.main.item_unit.view.*
@@ -28,7 +29,7 @@ class UnitManageViewHolder(parent: ViewGroup, private val viewModel: UnitViewMod
     val actionView = itemView.action
     val timeView = itemView.time
 
-    var unit: BaseUnit? = null
+    var unit: BattleUnit? = null
 
     init {
         itemView.cardView.setOnClickListener {
@@ -44,15 +45,15 @@ class UnitManageViewHolder(parent: ViewGroup, private val viewModel: UnitViewMod
         }
     }
 
-    fun bind(unit: BaseUnit) {
+    fun bind(unit: BattleUnit) {
         this.unit = unit
 
-        level.text = String.format("Lv.%02d", unit.level)
-        name.text = unit.name
+        level.text = String.format("Lv.%02d", unit.base.level)
+        name.text = unit.base.name
 
         // hp
-        val maxHp = unit.totalStat.secondStat.get(HP).toInt()
-        val currentHp = unit.currentStat.secondStat.get(HP).toInt()
+        val maxHp = unit.base.totalStat.secondStat.get(HP).toInt()
+        val currentHp = unit.base.currentStat.secondStat.get(HP).toInt()
 
         if (maxHp == 0) {
             hpBar.progress = 0
@@ -62,8 +63,8 @@ class UnitManageViewHolder(parent: ViewGroup, private val viewModel: UnitViewMod
         hpBarText.text = "$currentHp / $maxHp"
 
         // mp
-        val maxMp = unit.totalStat.secondStat.get(MP).toInt()
-        val currentMp = unit.currentStat.secondStat.get(MP).toInt()
+        val maxMp = unit.base.totalStat.secondStat.get(MP).toInt()
+        val currentMp = unit.base.currentStat.secondStat.get(MP).toInt()
 
         if (maxMp == 0) {
             mpBar.progress = 0
@@ -76,7 +77,7 @@ class UnitManageViewHolder(parent: ViewGroup, private val viewModel: UnitViewMod
         //thumbnail.setImageResource(R.drawable.knight_idle_anim_f0)
 
         // action
-        bindUnitAction(unit.action)
+        bindUnitAction(unit.base.action)
     }
 
     private fun bindUnitAction(action: UnitAction) {

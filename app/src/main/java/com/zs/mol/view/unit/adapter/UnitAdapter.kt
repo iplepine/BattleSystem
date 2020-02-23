@@ -12,10 +12,10 @@ class UnitAdapter(private val viewModel: UnitViewModel) : RecyclerView.Adapter<U
     }
 
     override fun getItemCount(): Int {
-        return viewModel.getHeroCount()
+        return viewModel.getUnitCount()
     }
 
     override fun onBindViewHolder(holder: UnitManageViewHolder, position: Int) {
-        holder.bind(viewModel.getHero(position))
+        holder.bind(viewModel.getUnit(position))
     }
 }
