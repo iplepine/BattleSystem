@@ -29,7 +29,7 @@ object DefaultBattleUnitController {
 
     private fun useSkill(unit: BattleUnit, battle: Battle) {
         val availableSkills =
-            unit.skills.filter { it.skill != null && it.status.coolDown <= 0 }
+            unit.skills.filter { it.getSkill() != null && it.status.coolDown <= 0 }
 
         Logger.d("Available skill count : ${availableSkills.size}/${unit.skills.count()}")
 
@@ -38,8 +38,8 @@ object DefaultBattleUnitController {
             val target = BattleFunction.findTarget(
                 unit,
                 battle.battleUnits,
-                skill.skill.skillData.targetType,
-                skill.skill.skillData.targetCount
+                skill.getSkill().skillData.targetType,
+                skill.getSkill().skillData.targetCount
             )
             unit.startCasting(skill, target)
         }
@@ -48,7 +48,7 @@ object DefaultBattleUnitController {
     }
 
     private fun pickMostEffectiveSkill(skills: List<UnitSkill>): UnitSkill? {
-        return skills.sortedByDescending { it.skill.getExpectEffect() }[0]
+        return skills.sortedByDescending { it.getSkill().getExpectEffect() }[0]
         //Logger.d("The most effective skill : ${bestSkill?.name ?: "NONE"}")
     }
 }

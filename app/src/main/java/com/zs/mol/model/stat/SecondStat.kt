@@ -2,9 +2,9 @@ package com.zs.mol.model.stat
 
 import com.zs.mol.model.manager.StatManager
 
-data class SecondStat(
+class SecondStat(
     val values: HashMap<String, Double> = HashMap(),
-    private val initialValue: Double = 0.0
+    initialValue: Double = 0.0
 ) {
     init {
         if (values.isEmpty()) {

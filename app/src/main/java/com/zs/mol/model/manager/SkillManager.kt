@@ -16,4 +16,8 @@ object SkillManager {
         skills[Bash.id] = Bash
         skills[NormalAttack.id] = NormalAttack
     }
+
+    fun putSkill(key: Int, skill: Skill) {
+        skills[key] = skill
+    }
 }

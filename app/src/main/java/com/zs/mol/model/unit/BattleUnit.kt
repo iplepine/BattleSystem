@@ -217,7 +217,8 @@ class BattleUnit(owner: String, id: String = UUID.randomUUID().toString()) : Bas
         if (currentStat.secondStat.get(HP) < hpAmount) {
             currentStat.secondStat.values[HP] = 0.0
         } else {
-            currentStat.secondStat.values[HP] = (currentStat.secondStat.values[HP] ?: 0.0) + hpAmount
+            currentStat.secondStat.values[HP] =
+                (currentStat.secondStat.values[HP] ?: 0.0) + hpAmount
         }
 
         if (currentStat.secondStat.get(HP) <= 0.0) {
@@ -227,7 +228,9 @@ class BattleUnit(owner: String, id: String = UUID.randomUUID().toString()) : Bas
         } else {
             Logger.d(
                 "$name " +
-                        "HP : ${currentStat.secondStat.get(HP).toInt()}/${totalStat.secondStat.get(HP).toInt()}\n"
+                        "HP : ${currentStat.secondStat.get(HP).toInt()}/${totalStat.secondStat.get(
+                            HP
+                        ).toInt()}\n"
             )
         }
     }

@@ -1,6 +1,7 @@
 package com.zs.mol.model.battle
 
 import com.zs.mol.model.db.SkillDB
+import com.zs.mol.model.manager.SkillManager
 import com.zs.mol.model.skill.Skill
 import com.zs.mol.model.skill.UnitSkill
 import com.zs.mol.model.stat.SecondStat.Companion.ATK
@@ -92,7 +93,8 @@ class BattleTest {
             }
         }
 
-        val unitSkill = UnitSkill(testSkill)
+        SkillManager.putSkill(testSkill.id, testSkill)
+        val unitSkill = UnitSkill(testSkill.id)
         val unit = BattleUnitFactory.createMyUnit("user").apply {
             addSkill(unitSkill)
         }

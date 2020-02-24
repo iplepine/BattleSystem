@@ -1,6 +1,8 @@
 package com.zs.mol.model.user
 
+import com.google.gson.Gson
 import com.zs.mol.model.unit.BattleUnit
+
 
 object UserManager {
     var user = User("guest")
@@ -27,5 +29,9 @@ object UserManager {
 
     fun isMyUnit(id: String): Boolean {
         return user.id === id
+    }
+
+    fun getUserGson(): Gson {
+        return Gson()
     }
 }

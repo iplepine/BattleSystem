@@ -1,8 +1,8 @@
 package com.zs.mol.model.stat
 
-data class BaseStat(
+class BaseStat(
     val values: HashMap<String, Double> = HashMap(),
-    var initialValue: Double = 0.0
+    initialValue: Double = 0.0
 ) {
     init {
         if (values.isEmpty()) {

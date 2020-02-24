@@ -1,9 +1,9 @@
 package com.zs.mol.model.skill
 
 import com.zs.mol.model.battle.BattleFunction
-import com.zs.mol.model.unit.BattleUnit
 import com.zs.mol.model.db.SkillDB
 import com.zs.mol.model.pojo.SkillData
+import com.zs.mol.model.unit.BattleUnit
 import io.reactivex.subjects.PublishSubject
 
 open abstract class Skill(val id: Int) {

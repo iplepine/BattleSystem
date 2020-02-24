@@ -1,5 +1,6 @@
 package com.zs.mol.model.unit
 
+import com.zs.mol.model.manager.SkillManager
 import com.zs.mol.model.skill.UnitSkill
 import com.zs.mol.model.skill.active.control.StateControlSkill
 import com.zs.mol.model.skill.continuous.buff.base.StatBuff
@@ -28,7 +29,8 @@ class BattleUnitTest {
 
         var expect = (defaultStat + 100) * (1 + 1.2)
 
-        val unitSkill = UnitSkill(skill)
+        SkillManager.putSkill(skill.id, skill)
+        val unitSkill = UnitSkill(skill.id)
 
         unit.startCasting(unitSkill, target)
         unit.calculateStat()

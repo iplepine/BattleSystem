@@ -18,7 +18,7 @@ open class BaseUnit(val owner: String = "enemy", val id: String) {
     var currentStat: Stat = calculateTotalStat()
 
     var skills: ArrayList<UnitSkill> = ArrayList<UnitSkill>().apply {
-        add(UnitSkill(NormalAttack))
+        add(UnitSkill(NormalAttack.id))
     }
 
     var equipItems = HashMap<String, EquipItem>()
@@ -84,7 +84,7 @@ open class BaseUnit(val owner: String = "enemy", val id: String) {
 
     fun removeSkill(id: Int) {
         val removeSkills = skills.filter {
-            it.skill.id == id
+            it.id == id
         }
         skills.removeAll(removeSkills)
     }

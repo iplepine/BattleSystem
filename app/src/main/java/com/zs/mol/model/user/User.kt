@@ -1,13 +1,12 @@
 package com.zs.mol.model.user
 
-import com.google.gson.Gson
 import com.zs.mol.model.unit.BattleUnit
 
 class User(val id: String) {
     companion object {
         fun fromSaveData(data: String): User? {
             return try {
-                Gson().fromJson<User>(data, User.javaClass)
+                UserManager.getUserGson().fromJson<User>(data, User.javaClass)
             } catch (e: Exception) {
                 null
             }
@@ -24,6 +23,6 @@ class User(val id: String) {
     }
 
     fun toJson(): String {
-        return Gson().toJson(this)
+        return UserManager.getUserGson().toJson(this)
     }
 }
