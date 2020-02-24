@@ -2,7 +2,7 @@ package com.zs.mol.model.user
 
 import com.zs.mol.model.unit.BattleUnit
 
-object UserRepository {
+object UserManager {
     var user = User("guest")
 
     fun newUser(id: String) {
@@ -11,6 +11,10 @@ object UserRepository {
 
     fun getUserId(): String {
         return user.id ?: "guest"
+    }
+
+    fun getEnemyId(): String {
+        return "enemy"
     }
 
     fun getUnits(): List<BattleUnit> {

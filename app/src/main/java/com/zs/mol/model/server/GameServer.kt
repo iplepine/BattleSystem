@@ -4,7 +4,7 @@ import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.zs.mol.model.server.GameServer.CollectionName.USERS
 import com.zs.mol.model.user.User
-import com.zs.mol.model.user.UserRepository
+import com.zs.mol.model.user.UserManager
 
 object GameServer {
     val TAG = "Server"
@@ -19,7 +19,7 @@ object GameServer {
             .add("")
             .addOnSuccessListener { documentReference ->
                 Log.d(TAG, "DocumentSnapshot written with ID: ${documentReference.id}")
-                UserRepository.newUser(documentReference.id)
+                UserManager.newUser(documentReference.id)
             }
             .addOnFailureListener { e ->
                 Log.e(TAG, "Error adding document", e)

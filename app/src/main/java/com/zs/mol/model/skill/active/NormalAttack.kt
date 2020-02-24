@@ -18,7 +18,7 @@ object NormalAttack : Skill(SkillDB.NormalAttack) {
         target: BattleUnit,
         messageSubject: PublishSubject<String>?
     ) {
-        Logger.d("${user.base.name} use [${skillData.name}] to ${target.base.name}")
+        Logger.d("${user.name} use [${skillData.name}] to ${target.name}")
 
         if (BattleFunction.checkEvade(user, target)) {
             val message = "Miss!!"
@@ -28,7 +28,7 @@ object NormalAttack : Skill(SkillDB.NormalAttack) {
         }
 
         var attack = calculateDamage(user)
-        val defence = target.stat.secondStat.get(DEF)
+        val defence = target.currentStat.secondStat.get(DEF)
 
         Logger.d("attack : ${attack.toInt()}, defence : ${defence.toInt()}")
 

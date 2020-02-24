@@ -1,7 +1,6 @@
 package com.zs.mol.model.user
 
-import com.zs.mol.model.unit.BaseUnitFactory
-import com.zs.mol.model.unit.BattleUnit
+import com.zs.mol.model.unit.BattleUnitFactory
 import org.junit.Test
 
 class UserTest {
@@ -10,9 +9,9 @@ class UserTest {
         val user = User("test_user")
 
         user.units.apply {
-            add(BattleUnit(BaseUnitFactory.create("Iplepine")))
-            add(BattleUnit(BaseUnitFactory.create("Seoty")))
-            add(BattleUnit(BaseUnitFactory.create("PleaseReleaseMe")))
+            add(BattleUnitFactory.createMyUnit("Iplepine"))
+            add(BattleUnitFactory.createMyUnit("Seoty"))
+            add(BattleUnitFactory.createMyUnit("PleaseReleaseMe"))
         }
 
         println(user.toJson())

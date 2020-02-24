@@ -6,29 +6,24 @@ import com.zs.mol.model.skill.UnitSkill
 import com.zs.mol.model.skill.active.NormalAttack
 import com.zs.mol.model.stat.SecondStat
 import com.zs.mol.model.stat.Stat
-import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
-open class BaseUnit(name: String, stat: Stat = Stat(), currentStat: Stat? = null) {
-    var id = UUID.randomUUID().toString()
+open class BaseUnit(val owner: String = "enemy", val id: String) {
     var level = 1
     var exp = 0L
-    var name = name
-    var job = "Job class"
-    var owner = "enemy"
+    var name = "Noname"
+    var job = "Novice"
 
-    var action: UnitAction = UnitAction.IDLE
-
-    val originalStat = stat
-    val totalStat: Stat = calculateTotalStat()
-    val currentStat: Stat = currentStat ?: calculateTotalStat()
+    var originalStat = Stat()
+    var totalStat: Stat = calculateTotalStat()
+    var currentStat: Stat = calculateTotalStat()
 
     var skills: ArrayList<UnitSkill> = ArrayList<UnitSkill>().apply {
         add(UnitSkill(NormalAttack))
     }
 
-    private var equipItems = HashMap<String, EquipItem>()
+    var equipItems = HashMap<String, EquipItem>()
+
+    var action = UnitAction.IDLE
 
     init {
         calculateTotalStat()

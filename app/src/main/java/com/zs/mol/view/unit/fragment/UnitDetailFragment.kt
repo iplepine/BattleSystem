@@ -24,7 +24,7 @@ import com.zs.mol.model.stat.SecondStat.Companion.MATK
 import com.zs.mol.model.stat.SecondStat.Companion.MDEF
 import com.zs.mol.model.stat.SecondStat.Companion.SPEED
 import com.zs.mol.model.unit.BattleUnit
-import com.zs.mol.model.user.UserRepository
+import com.zs.mol.model.user.UserManager
 import com.zs.mol.view.base.BaseFragment
 import com.zs.mol.view.unit.viewmodel.UnitDetailViewModel
 import kotlinx.android.synthetic.main.fragment_unit_detail.*
@@ -64,7 +64,7 @@ class UnitDetailFragment : BaseFragment() {
     private fun handleArguments() {
         arguments?.apply {
             getString("unitId")?.also { id ->
-                viewModel.unit.value = UserRepository.user.units?.find { unit -> unit.id == id }
+                viewModel.unit.value = UserManager.user.units?.find { unit -> unit.id == id }
             }
         }
     }
@@ -102,19 +102,19 @@ class UnitDetailFragment : BaseFragment() {
     }
 
     private fun updateUnitInfo(unit: BattleUnit) {
-        name.text = unit.base.name
+        name.text = unit.name
         hpBarText.text = String.format(
             "HP : %d/%d",
-            unit.base.currentStat.secondStat.get(HP)?.toInt(),
-            unit.base.totalStat.secondStat.get(HP)?.toInt()
+            unit.currentStat.secondStat.get(HP)?.toInt(),
+            unit.totalStat.secondStat.get(HP)?.toInt()
         )
 
         baseStatSequence.forEach {
-            baseStatViews[it]?.text = unit.base.currentStat.baseStat.get(it).toInt().toString()
+            baseStatViews[it]?.text = unit.currentStat.baseStat.get(it).toInt().toString()
         }
 
         secondStatSequence.forEach {
-            secondStatViews[it]?.text = unit.base.currentStat.secondStat.get(it).toInt().toString()
+            secondStatViews[it]?.text = unit.currentStat.secondStat.get(it).toInt().toString()
         }
     }
 }

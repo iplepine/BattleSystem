@@ -22,7 +22,7 @@ object Bash : Skill(SkillDB.Bash) {
         target: BattleUnit,
         messageSubject: PublishSubject<String>?
     ) {
-        Logger.d("${user.base.name} use ${skillData.name} to ${target.base.name}")
+        Logger.d("${user.name} use ${skillData.name} to ${target.name}")
 
         if (BattleFunction.checkEvade(user, target)) {
             val message = "Miss!!"
@@ -32,7 +32,7 @@ object Bash : Skill(SkillDB.Bash) {
         }
 
         var attack = calculateDamage(user)
-        val defence = target.stat.secondStat.get(DEF)
+        val defence = target.currentStat.secondStat.get(DEF)
 
         var isCritical = BattleFunction.checkCritical(user, target)
         if (isCritical) {

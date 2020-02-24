@@ -11,19 +11,19 @@ import kotlin.math.min
 
 object BattleFunction {
     fun checkCritical(user: BattleUnit, target: BattleUnit): Boolean {
-        return Math.random() * 100 < user.stat.secondStat.get(CRI)
+        return Math.random() * 100 < user.currentStat.secondStat.get(CRI)
     }
 
     fun checkEvade(user: BattleUnit, target: BattleUnit): Boolean {
-        val hit = user.stat.secondStat.get(HIT)
-        val evade = target.stat.secondStat.get(EVADE)
+        val hit = user.currentStat.secondStat.get(HIT)
+        val evade = target.currentStat.secondStat.get(EVADE)
         return hit + Math.random() * 100 < evade
     }
 
     fun getDefaultAttackDamage(
         user: BattleUnit
     ): Double {
-        val attack = user.stat.secondStat.get(ATK)
+        val attack = user.currentStat.secondStat.get(ATK)
 
         return (Math.random() * attack + attack / 5)
     }
@@ -64,7 +64,7 @@ object BattleFunction {
 
     fun calculateUnitTurnDelay(unit: BattleUnit): Long {
         return min(
-            BattleUnit.MINIMUM_DELAY, (BattleUnit.DEFAULT_DELAY - unit.stat.secondStat.get(
+            BattleUnit.MINIMUM_DELAY, (BattleUnit.DEFAULT_DELAY - unit.currentStat.secondStat.get(
                 SecondStat.SPEED
             )).toLong())
     }

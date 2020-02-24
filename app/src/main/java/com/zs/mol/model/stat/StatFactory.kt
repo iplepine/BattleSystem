@@ -1,20 +1,14 @@
-package com.zs.mol.model.unit
+package com.zs.mol.model.stat
 
-import com.zs.mol.model.stat.BaseStat
-import com.zs.mol.model.stat.SecondStat
-import com.zs.mol.model.stat.Stat
 import com.zs.mol.model.common.RandomUtil
 import com.zs.mol.model.const.ManNamePool
 import com.zs.mol.model.const.WomanNamePool
+import com.zs.mol.model.unit.BaseUnit
 import kotlin.math.ceil
 
-object BaseUnitFactory {
+object StatFactory {
     private const val MAX_STAT = 18.0
     private const val MIN_STAT = 6.0
-
-    fun create(name: String = randomName(), stat: Stat = randomStat()): BaseUnit {
-        return BaseUnit(name, stat)
-    }
 
     fun randomName(): String {
         return if (Math.random() < 0.5) {
@@ -32,7 +26,10 @@ object BaseUnitFactory {
         return Stat().apply {
             BaseStat.KEYS.forEach {
                 baseStat.values[it] = ceil(
-                    RandomUtil.rand(MIN_STAT, MAX_STAT)
+                    RandomUtil.rand(
+                        MIN_STAT,
+                        MAX_STAT
+                    )
                 )
 
                 secondStat = SecondStat.createFromBaseStat(baseStat)

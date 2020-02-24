@@ -10,10 +10,10 @@ class BattleUnitTest {
 
     @Test
     fun buffTest() {
-        val unit = BattleUnitFactory.createTestUnit("BuffTester")
+        val unit = BattleUnitFactory.createMyUnit("BuffTester")
         val defaultStat = 100.0
 
-        unit.base.totalStat.secondStat.values[ATK] = defaultStat
+        unit.totalStat.secondStat.values[ATK] = defaultStat
 
         val skill = object : StateControlSkill(0) {
 
@@ -32,16 +32,16 @@ class BattleUnitTest {
 
         unit.startCasting(unitSkill, target)
         unit.calculateStat()
-        assert(unit.stat.secondStat.get(ATK) == expect)
+        assert(unit.currentStat.secondStat.get(ATK) == expect)
 
         expect = (defaultStat + 100)
         unit.updateTime(300L)
         unit.calculateStat()
-        assert(unit.stat.secondStat.get(ATK) == expect)
+        assert(unit.currentStat.secondStat.get(ATK) == expect)
 
         expect = defaultStat
         unit.updateTime(300L)
         unit.calculateStat()
-        assert(unit.stat.secondStat.get(ATK) == expect)
+        assert(unit.currentStat.secondStat.get(ATK) == expect)
     }
 }

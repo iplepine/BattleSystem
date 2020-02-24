@@ -14,12 +14,12 @@ import org.junit.Test
 
 class BattleTest {
     private val myUnit1 =
-        BattleUnitFactory.createTestUnit("유닛 1", "guest")
+        BattleUnitFactory.createMyUnit("유닛 1")
     private val myUnit2 =
-        BattleUnitFactory.createTestUnit("유닛 2", "guest")
+        BattleUnitFactory.createMyUnit("유닛 2")
 
-    private val enemyUnit1 = BattleUnitFactory.createTestUnit("적유닛 1", "enemy")
-    private val enemyUnit2 = BattleUnitFactory.createTestUnit("적유닛 2", "enemy")
+    private val enemyUnit1 = BattleUnitFactory.createEnemy("적유닛 1")
+    private val enemyUnit2 = BattleUnitFactory.createEnemy("적유닛 2")
 
     private val battle = Battle().apply {
         battleUnits.add(myUnit1)
@@ -61,10 +61,10 @@ class BattleTest {
 
     @Test
     fun dieTest() {
-        val sucider = BattleUnitFactory.createTestUnit("죽을 놈").apply {
-            stat.secondStat.values[EVADE] = 0.0
-            stat.secondStat.values[HP] = 1.0
-            stat.secondStat.values[ATK] = 10.0
+        val sucider = BattleUnitFactory.createEnemy("죽을 놈").apply {
+            currentStat.secondStat.values[EVADE] = 0.0
+            currentStat.secondStat.values[HP] = 1.0
+            currentStat.secondStat.values[ATK] = 10.0
         }
 
         sucider.useSkillImmediate(UnitSkill(SkillDB.NormalAttack), arrayListOf(sucider))
@@ -93,12 +93,11 @@ class BattleTest {
         }
 
         val unitSkill = UnitSkill(testSkill)
-        val unit = BattleUnitFactory.createTestUnit("user").apply {
+        val unit = BattleUnitFactory.createMyUnit("user").apply {
             addSkill(unitSkill)
         }
 
-        val enemy = BattleUnitFactory.createTestUnit("enemy").apply {
-        }
+        val enemy = BattleUnitFactory.createEnemy("enemy")
 
         unit.startCasting(unitSkill, arrayListOf(enemy))
         assert(unit.state.name == UnitState.CASTING)

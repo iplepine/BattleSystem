@@ -7,13 +7,13 @@ import com.zs.mol.model.unit.BattleUnitFactory
 import org.junit.Test
 
 class BattleFunctionTest {
-    private val unit1 = BattleUnitFactory.createTestUnit("유닛 1")
-    private val unit2 = BattleUnitFactory.createTestUnit("유닛 2")
+    private val unit1 = BattleUnitFactory.createMyUnit("유닛 1")
+    private val unit2 = BattleUnitFactory.createEnemy("유닛 2")
 
     @Test
     fun checkCritical() {
-        unit1.stat.secondStat.values[CRI] = 100.0
-        unit2.stat.secondStat.values[CRI] = 0.0
+        unit1.currentStat.secondStat.values[CRI] = 100.0
+        unit2.currentStat.secondStat.values[CRI] = 0.0
 
         assert(BattleFunction.checkCritical(unit1, unit2))
         assert(!BattleFunction.checkCritical(unit2, unit1))
@@ -21,8 +21,8 @@ class BattleFunctionTest {
 
     @Test
     fun checkEvade() {
-        unit1.stat.secondStat.values[EVADE] = 0.0
-        unit2.stat.secondStat.values[EVADE] = 100.0
+        unit1.currentStat.secondStat.values[EVADE] = 0.0
+        unit2.currentStat.secondStat.values[EVADE] = 100.0
 
         assert(BattleFunction.checkEvade(unit1, unit2))
         assert(!BattleFunction.checkEvade(unit2, unit1))

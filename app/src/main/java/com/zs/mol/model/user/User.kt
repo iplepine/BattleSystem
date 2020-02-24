@@ -18,7 +18,9 @@ class User(val id: String) {
     val units = ArrayList<BattleUnit>()
 
     fun toSaveData(): Map<String, Object> {
-        return HashMap()
+        return HashMap<String, Object>().apply {
+
+        }
     }
 
     fun toJson(): String {

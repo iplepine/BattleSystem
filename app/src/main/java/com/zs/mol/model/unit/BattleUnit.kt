@@ -14,26 +14,24 @@ import com.zs.mol.model.stat.SecondStat.Companion.HP
 import com.zs.mol.model.stat.Stat
 import com.zs.mol.model.stat.UnitState
 import io.reactivex.subjects.PublishSubject
+import java.util.*
+import kotlin.collections.ArrayList
 
-class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
+class BattleUnit(owner: String, id: String = UUID.randomUUID().toString()) : BaseUnit(owner, id),
+    MonoBehaviour {
+
     companion object {
         const val DEFAULT_DELAY = 2000L
         const val MINIMUM_DELAY = 500L
     }
 
-    val id = base.id
-    var owner = base.owner
-
+    val location = Location(0.0, 0.0)
     var state = State(UnitState.IDLE)
-
-    var stat = base.currentStat
 
     val buffs = ArrayList<StatusEffect>()
     val deBuffs = ArrayList<StatusEffect>()
 
     var castingSkill: ReservedSkill? = null
-
-    val skills = base.skills
 
     var battleUnitController: DefaultBattleUnitController? = DefaultBattleUnitController
 
@@ -98,7 +96,7 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
     }
 
     fun calculateStat() {
-        stat = base.totalStat.deepCopy()
+        currentStat = totalStat.deepCopy()
 
         val flatStat = Stat()
         val percentStat = Stat.createInitializedStat(1.0, 1.0)
@@ -113,10 +111,10 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
             }
         }
 
-        stat.baseStat.plus(flatStat.baseStat)
-        stat.secondStat.plus(flatStat.secondStat)
-        stat.baseStat.times(percentStat.baseStat)
-        stat.secondStat.times(percentStat.secondStat)
+        currentStat.baseStat.plus(flatStat.baseStat)
+        currentStat.secondStat.plus(flatStat.secondStat)
+        currentStat.baseStat.times(percentStat.baseStat)
+        currentStat.secondStat.times(percentStat.secondStat)
     }
 
     private fun updateState() {
@@ -144,7 +142,7 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
         target: List<BattleUnit>,
         messageSubject: PublishSubject<String>? = null
     ) {
-        Logger.d("${base.name} start casting [${skill.getName()}]")
+        Logger.d("$name start casting [${skill.getName()}]")
         castingSkill = ReservedSkill(skill, target, messageSubject)
         changeState(State(UnitState.CASTING, castingSkill?.skill?.getCastingTime() ?: 0))
         if (state.isEnd()) {
@@ -158,11 +156,11 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
         messageSubject: PublishSubject<String>? = null
     ) {
         skill.onEffect(this, target, messageSubject)
-        Logger.d("${base.name} use [${skill.getName()}] immediately")
+        Logger.d("$name use [${skill.getName()}] immediately")
     }
 
     private fun onFinishCasting() {
-        Logger.d("${base.name} finish casting on [${castingSkill?.skill?.getName()}]")
+        Logger.d("$name finish casting on [${castingSkill?.skill?.getName()}]")
         startEffect()
     }
 
@@ -196,7 +194,7 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
 
     private fun ready(delay: Long) {
         changeState(State(UnitState.IDLE, delay))
-        Logger.d("${base.name} is waiting next turn!")
+        Logger.d("$name is waiting next turn!")
     }
 
     fun onStun(time: Long) {
@@ -216,20 +214,20 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
     }
 
     fun adjustHp(hpAmount: Int) {
-        if (stat.secondStat.get(HP) < hpAmount) {
-            stat.secondStat.values[HP] = 0.0
+        if (currentStat.secondStat.get(HP) < hpAmount) {
+            currentStat.secondStat.values[HP] = 0.0
         } else {
-            stat.secondStat.values[HP] = (stat.secondStat.values[HP] ?: 0.0) + hpAmount
+            currentStat.secondStat.values[HP] = (currentStat.secondStat.values[HP] ?: 0.0) + hpAmount
         }
 
-        if (stat.secondStat.get(HP) <= 0.0) {
-            stat.secondStat.values[HP] = 0.0
+        if (currentStat.secondStat.get(HP) <= 0.0) {
+            currentStat.secondStat.values[HP] = 0.0
             changeState(State(UnitState.DIE))
-            Logger.d("${base.name} died")
+            Logger.d("$name died")
         } else {
             Logger.d(
-                "${base.name} " +
-                        "HP : ${stat.secondStat.get(HP).toInt()}/${base.totalStat.secondStat.get(HP).toInt()}\n"
+                "$name " +
+                        "HP : ${currentStat.secondStat.get(HP).toInt()}/${totalStat.secondStat.get(HP).toInt()}\n"
             )
         }
     }
@@ -251,7 +249,7 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
     }
 
     fun onTurn(battle: Battle) {
-        Logger.d("${base.name}'s turn!")
+        Logger.d("$name's turn!")
 
         if (battleUnitController == null) {
             Logger.d("Unit Controller is null")
@@ -292,4 +290,6 @@ class BattleUnit(val base: BaseUnit) : MonoBehaviour() {
             return delay <= 0
         }
     }
+
+    class Location(val x: Double, val y: Double)
 }

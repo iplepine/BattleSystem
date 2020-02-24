@@ -1,12 +1,12 @@
 package com.zs.mol.model.battle
 
 import com.zs.mol.model.battle.controller.UserInputTimer
-import com.zs.mol.model.unit.BattleUnit
 import com.zs.mol.model.common.Logger
 import com.zs.mol.model.common.MonoBehaviour
-import com.zs.mol.model.user.UserRepository
+import com.zs.mol.model.unit.BattleUnit
+import com.zs.mol.model.user.UserManager
 
-class Battle : MonoBehaviour() {
+class Battle : MonoBehaviour {
     companion object {
         const val GAME_SPEED = 1000L// / 60L    // 1 프레임 당 시간 흐름
     }
@@ -98,12 +98,12 @@ class Battle : MonoBehaviour() {
 
         battleUnits.forEach {
             // 내 유닛일 때, 모두가 죽었는지 체크
-            if (it.isMine(UserRepository.getUserId()) && !it.isDie()) {
+            if (it.isMine(UserManager.getUserId()) && !it.isDie()) {
                 isDieAllMyUnits = false
             }
 
             // 내 유닛이 아닐 때, 하나라도 살았는지 체크
-            if (it.isEnemy(UserRepository.getUserId()) && !it.isDie()) {
+            if (it.isEnemy(UserManager.getUserId()) && !it.isDie()) {
                 return false
             }
         }
@@ -116,7 +116,7 @@ class Battle : MonoBehaviour() {
      */
     fun checkLose(): Boolean {
         battleUnits.forEach {
-            if (UserRepository.isMyUnit(it.owner) && !it.isDie()) {
+            if (UserManager.isMyUnit(it.owner) && !it.isDie()) {
                 return false
             }
         }
