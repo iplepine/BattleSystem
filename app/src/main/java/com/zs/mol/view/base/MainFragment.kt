@@ -1,5 +1,6 @@
 package com.zs.mol.view.base
 
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.zs.mol.model.common.Logger
 import io.reactivex.disposables.CompositeDisposable
@@ -30,5 +31,11 @@ open class MainFragment : Fragment() {
 
     open fun clearSubscribers() {
         compositeDisposable.clear()
+    }
+
+    fun showToast(text: String) {
+        context?.also {
+            Toast.makeText(it, text, Toast.LENGTH_SHORT).show()
+        }
     }
 }

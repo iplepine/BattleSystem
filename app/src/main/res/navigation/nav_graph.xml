@@ -9,7 +9,25 @@
         android:id="@+id/questFragment"
         android:name="com.zs.mol.view.quest.fragment.QuestFragment"
         android:label="@string/bottom_menu_quest"
-        tools:layout="@layout/fragment_quest" />
+        tools:layout="@layout/fragment_quest">
+
+        <action
+            android:id="@+id/action_questFragment_to_newQuestFragment"
+            app:destination="@id/newQuestFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:popEnterAnim="@anim/fragment_fade_enter">
+
+            <argument
+                android:name="questId"
+                app:argType="string" />
+        </action>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/newQuestFragment"
+        android:name="com.zs.mol.view.quest.fragment.NewQuestFragment"
+        tools:layout="@layout/fragment_new_quest"></fragment>
 
     <fragment
         android:id="@+id/unitManageFragment"

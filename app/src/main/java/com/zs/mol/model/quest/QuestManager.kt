@@ -1,14 +1,7 @@
 package com.zs.mol.model.quest
 
-object QuestManager {
-    val questList = ArrayList<Quest>()
+import com.zs.mol.model.quest.event.QuestEvent
 
-    fun createNewQuest(): Quest {
-        return Quest(
-            "Guard carriages",
-            QuestReward(100, 100),
-            QuestReward(0, -50),
-            ArrayList()
-        )
-    }
+object QuestManager {
+    val questList = ArrayList<QuestEvent>()
 }
