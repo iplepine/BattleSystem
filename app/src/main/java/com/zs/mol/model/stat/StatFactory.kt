@@ -10,18 +10,6 @@ object StatFactory {
     private const val MAX_STAT = 18.0
     private const val MIN_STAT = 6.0
 
-    fun randomName(): String {
-        return if (Math.random() < 0.5) {
-            // man
-            val index = (Math.random() * ManNamePool.NAME_LIST.size).toInt()
-            ManNamePool.NAME_LIST[index]
-        } else {
-            // woman
-            val index = (Math.random() * WomanNamePool.NAME_LIST.size).toInt()
-            WomanNamePool.NAME_LIST[index]
-        }
-    }
-
     fun randomStat(): Stat {
         return Stat().apply {
             BaseStat.KEYS.forEach {

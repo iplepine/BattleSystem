@@ -1,9 +1,8 @@
-package com.zs.mol.model.quest.event
+package com.zs.mol.model.quest
 
-import com.zs.mol.model.quest.QuestReward
 import java.util.*
 
-abstract class QuestEvent(var type: QuestEventType) {
+abstract class Quest(var type: QuestType) {
     var title: String = ""
     var description: String = ""
     var dueTime: Long = 0
@@ -28,9 +27,9 @@ abstract class QuestEvent(var type: QuestEventType) {
 
     }
 
-    class Builder<T : QuestEvent>(private val clazz: Class<T>) {
-        private var type: QuestEventType =
-            QuestEventType.REQUEST
+    class Builder<T : Quest>(private val clazz: Class<T>) {
+        private var type: QuestType =
+            QuestType.REQUEST
         private var title: String = ""
         private var description: String = ""
         private var dueTime: Long = 0
@@ -64,18 +63,18 @@ abstract class QuestEvent(var type: QuestEventType) {
             return this
         }
 
-        fun addReward(reward: QuestReward): Builder<T> {
-            this.rewards.add(reward)
+        fun addReward(key: String, value: Any): Builder<T> {
+            this.rewards.add(QuestReward(key, value))
             return this
         }
 
-        fun addPenalty(penalty: QuestReward): Builder<T> {
-            this.penalty.add(penalty)
+        fun addPenalty(key: String, value: Any): Builder<T> {
+            this.penalty.add(QuestReward(key, value))
             return this
         }
 
-        fun addRequire(reward: QuestReward): Builder<T> {
-            this.require.add(reward)
+        fun addRequire(key: String, value: Any): Builder<T> {
+            this.require.add(QuestReward(key, value))
             return this
         }
     }
