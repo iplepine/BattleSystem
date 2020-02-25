@@ -1,14 +1,14 @@
 package com.zs.mol.model.stat
 
 data class Stat(
-    var baseStat: BaseStat = BaseStat(HashMap()),
-    var secondStat: SecondStat = SecondStat(HashMap())
+    var baseStat: BaseStat = BaseStat(),
+    var secondStat: SecondStat = SecondStat()
 ) {
     companion object {
         fun createInitializedStat(baseInitialValue: Double, secondInitialValue: Double): Stat {
             return Stat(
-                BaseStat(HashMap(), baseInitialValue),
-                SecondStat(HashMap(), secondInitialValue)
+                BaseStat(baseInitialValue),
+                SecondStat(secondInitialValue)
             )
         }
     }
@@ -16,8 +16,8 @@ data class Stat(
     fun deepCopy(): Stat {
         return let {
             Stat().also {
-                it.baseStat.values.putAll(baseStat.values)
-                it.secondStat.values.putAll(secondStat.values)
+                it.baseStat.putAll(baseStat)
+                it.secondStat.putAll(secondStat)
             }
         }
     }
@@ -34,9 +34,9 @@ data class Stat(
 
     fun addValue(key: String, amount: Double) {
         if (BaseStat.isValidKey(key)) {
-            baseStat.values[key] = (baseStat.values[key] ?: 0.0) + amount
+            baseStat[key] = (baseStat[key]) + amount
         } else if (SecondStat.isValidKey(key)) {
-            secondStat.values[key] = (secondStat.values[key] ?: 0.0) + amount
+            secondStat[key] = (secondStat[key]) + amount
         }
     }
 }

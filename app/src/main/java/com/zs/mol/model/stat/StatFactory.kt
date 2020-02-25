@@ -13,7 +13,7 @@ object StatFactory {
     fun randomStat(): Stat {
         return Stat().apply {
             BaseStat.KEYS.forEach {
-                baseStat.values[it] = ceil(
+                baseStat[it] = ceil(
                     RandomUtil.rand(
                         MIN_STAT,
                         MAX_STAT

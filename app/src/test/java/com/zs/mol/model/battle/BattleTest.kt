@@ -1,10 +1,11 @@
 package com.zs.mol.model.battle
 
-import com.zs.mol.model.db.SkillDB
+import com.zs.mol.model.db.skill.SkillDB
 import com.zs.mol.model.manager.SkillManager
 import com.zs.mol.model.skill.Skill
 import com.zs.mol.model.skill.UnitSkill
 import com.zs.mol.model.stat.SecondStat.Companion.ATK
+import com.zs.mol.model.stat.SecondStat.Companion.DEF
 import com.zs.mol.model.stat.SecondStat.Companion.EVADE
 import com.zs.mol.model.stat.SecondStat.Companion.HP
 import com.zs.mol.model.stat.UnitState
@@ -63,12 +64,14 @@ class BattleTest {
     @Test
     fun dieTest() {
         val sucider = BattleUnitFactory.createEnemy("죽을 놈").apply {
-            currentStat.secondStat.values[EVADE] = 0.0
-            currentStat.secondStat.values[HP] = 1.0
-            currentStat.secondStat.values[ATK] = 10.0
+            originalStat.secondStat[EVADE] = 0.0
+            originalStat.secondStat[HP] = 1.0
+            originalStat.secondStat[ATK] = 1000.0
+            originalStat.secondStat[DEF] = 0.0
+            updateStat()
         }
 
-        sucider.useSkillImmediate(UnitSkill(SkillDB.NormalAttack), arrayListOf(sucider))
+        sucider.useSkillImmediate(UnitSkill(SkillDB.Key.NormalAttack), arrayListOf(sucider))
         assert(sucider.isDie())
     }
 

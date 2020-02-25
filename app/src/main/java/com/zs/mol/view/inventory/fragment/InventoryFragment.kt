@@ -13,6 +13,14 @@ class InventoryFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_quest, container, false)
+        return inflater.inflate(R.layout.fragment_inventory, container, false)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        init()
+    }
+
+    private fun init() {
     }
 }

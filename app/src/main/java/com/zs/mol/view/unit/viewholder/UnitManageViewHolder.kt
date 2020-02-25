@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.zs.mol.R
 import com.zs.mol.model.stat.SecondStat.Companion.HP
 import com.zs.mol.model.stat.SecondStat.Companion.MP
-import com.zs.mol.model.unit.BaseUnit
 import com.zs.mol.model.unit.BattleUnit
 import com.zs.mol.model.unit.UnitAction
 import com.zs.mol.view.unit.viewmodel.UnitViewModel
@@ -53,7 +52,7 @@ class UnitManageViewHolder(parent: ViewGroup, private val viewModel: UnitViewMod
 
         // hp
         val maxHp = unit.totalStat.secondStat.get(HP).toInt()
-        val currentHp = unit.currentStat.secondStat.get(HP).toInt()
+        val currentHp = unit.totalStat.secondStat.get(HP).toInt()
 
         if (maxHp == 0) {
             hpBar.progress = 0
@@ -64,7 +63,7 @@ class UnitManageViewHolder(parent: ViewGroup, private val viewModel: UnitViewMod
 
         // mp
         val maxMp = unit.totalStat.secondStat.get(MP).toInt()
-        val currentMp = unit.currentStat.secondStat.get(MP).toInt()
+        val currentMp = unit.totalStat.secondStat.get(MP).toInt()
 
         if (maxMp == 0) {
             mpBar.progress = 0

@@ -12,8 +12,8 @@ class BattleFunctionTest {
 
     @Test
     fun checkCritical() {
-        unit1.currentStat.secondStat.values[CRI] = 100.0
-        unit2.currentStat.secondStat.values[CRI] = 0.0
+        unit1.totalStat.secondStat[CRI] = 100.0
+        unit2.totalStat.secondStat[CRI] = 0.0
 
         assert(BattleFunction.checkCritical(unit1, unit2))
         assert(!BattleFunction.checkCritical(unit2, unit1))
@@ -21,8 +21,8 @@ class BattleFunctionTest {
 
     @Test
     fun checkEvade() {
-        unit1.currentStat.secondStat.values[EVADE] = 0.0
-        unit2.currentStat.secondStat.values[EVADE] = 100.0
+        unit1.totalStat.secondStat[EVADE] = 0.0
+        unit2.totalStat.secondStat[EVADE] = 100.0
 
         assert(BattleFunction.checkEvade(unit1, unit2))
         assert(!BattleFunction.checkEvade(unit2, unit1))

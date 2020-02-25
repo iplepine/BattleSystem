@@ -2,14 +2,11 @@ package com.zs.mol.model.stat
 
 import com.zs.mol.model.manager.StatManager
 
-class SecondStat(
-    val values: HashMap<String, Double> = HashMap(),
-    initialValue: Double = 0.0
-) {
+class SecondStat(initialValue: Double = 0.0) : HashMap<String, Double>() {
     init {
-        if (values.isEmpty()) {
+        if (isEmpty()) {
             KEYS.forEach {
-                values[it] = initialValue
+                this[it] = initialValue
             }
         }
     }
@@ -37,12 +34,12 @@ class SecondStat(
 
         fun createFromBaseStat(baseStat: BaseStat, useRandom: Boolean = true): SecondStat {
             val secondStat = SecondStat()
-            secondStat.values.forEach { second ->
+            secondStat.forEach { second ->
                 val secondStatName = second.key
 
-                baseStat.values.forEach { base ->
+                baseStat.forEach { base ->
                     val baseStatKey = base.key
-                    val baseStat = baseStat.values[baseStatKey] ?: 0.0
+                    val baseStat = baseStat[baseStatKey]
                     val factor = StatManager.statFactors[baseStatKey]?.get(secondStatName) ?: 0.0
 
                     val statBonus = 1 + (baseStat - (StatManager.Const.BASE_STAT_MAX / 2)) / 10.0
@@ -52,8 +49,8 @@ class SecondStat(
                         upStat *= Math.random()
                     }
 
-                    secondStat.values[secondStatName] =
-                        secondStat.values[secondStatName]?.plus(upStat) ?: 0.0
+                    secondStat[secondStatName] =
+                        secondStat[secondStatName]?.plus(upStat) ?: 0.0
                 }
             }
 
@@ -61,25 +58,25 @@ class SecondStat(
         }
     }
 
-    fun get(key: String): Double {
-        return values[key] ?: 0.0
+    override fun get(key: String): Double {
+        return super.get(key) ?: 0.0
     }
 
     fun plus(stat: SecondStat) {
         KEYS.forEach {
-            values[it] = get(it).plus(stat.get(it))
+            this[it] = get(it).plus(stat.get(it))
         }
     }
 
     fun plus(statValues: HashMap<String, Double>) {
         statValues.forEach {
-            values[it.key] = get(it.key).plus(statValues[it.key]!!)
+            this[it.key] = get(it.key).plus(statValues[it.key]!!)
         }
     }
 
     fun times(stat: SecondStat) {
         KEYS.forEach {
-            values[it] = get(it).times(stat.get(it))
+            this[it] = get(it).times(stat.get(it))
         }
     }
 }

@@ -1,22 +1,25 @@
-package com.zs.mol.model.db
+package com.zs.mol.model.db.skill
 
-import com.zs.mol.model.skill.Skill
+import com.zs.mol.model.db.skill.SkillDB.Key.Bash
+import com.zs.mol.model.db.skill.SkillDB.Key.EnhanceAttack
+import com.zs.mol.model.db.skill.SkillDB.Key.NormalAttack
 import com.zs.mol.model.pojo.SkillData
+import com.zs.mol.model.skill.Skill
 
-object SkillDB {
+object SkillDB : HashMap<Int, SkillData>() {
     // attack skill 10000~19999
     // defence skill 20000~29999
     // buff skill 30000~39999
 
-    const val NormalAttack = 10000
-    const val Bash = 10001
+    object Key {
+        const val NormalAttack = 10000
+        const val Bash = 10001
 
-    const val EnhanceAttack = 30000
-
-    val db = HashMap<Int, SkillData>()
+        const val EnhanceAttack = 30000
+    }
 
     init {
-        db[NormalAttack] = SkillData(
+        this[NormalAttack] = SkillData(
             name = "Normal Attack",
             description = "",
             type = "active",
@@ -28,7 +31,7 @@ object SkillDB {
             targetCount = 1
         )
 
-        db[Bash] = SkillData(
+        this[Bash] = SkillData(
             name = "Bash",
             description = "",
             type = "active",
@@ -40,7 +43,7 @@ object SkillDB {
             targetCount = 1
         )
 
-        db[EnhanceAttack] = SkillData(
+        this[EnhanceAttack] = SkillData(
             name = "Enhance Attack",
             description = "",
             type = "active",
@@ -54,10 +57,10 @@ object SkillDB {
     }
 
     fun validId(id: Int): Boolean {
-        return db.contains(id)
+        return this.contains(id)
     }
 
     fun getSkillData(id: Int): SkillData {
-        return db[id] ?: SkillData()
+        return get(id) ?: SkillData()
     }
 }

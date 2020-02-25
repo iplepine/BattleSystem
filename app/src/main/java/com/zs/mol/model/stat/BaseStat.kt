@@ -1,13 +1,10 @@
 package com.zs.mol.model.stat
 
-class BaseStat(
-    val values: HashMap<String, Double> = HashMap(),
-    initialValue: Double = 0.0
-) {
+class BaseStat(initialValue: Double = 0.0) : HashMap<String, Double>() {
     init {
-        if (values.isEmpty()) {
+        if (isEmpty()) {
             KEYS.forEach {
-                values[it] = initialValue
+                this[it] = initialValue
             }
         }
     }
@@ -28,25 +25,29 @@ class BaseStat(
         }
     }
 
+    override fun get(key: String): Double {
+        return super.get(key) ?: 0.0
+    }
+
     fun get(key: String, default: Double = 0.0): Double {
-        return values[key] ?: default
+        return super.get(key) ?: default
     }
 
     fun plus(stat: BaseStat) {
         KEYS.forEach {
-            values[it] = get(it).plus(stat.get(it))
+            this[it] = get(it).plus(stat.get(it))
         }
     }
 
     fun plus(statValues: HashMap<String, Double>) {
         statValues.forEach {
-            values[it.key] = get(it.key).plus(statValues[it.key]!!)
+            this[it.key] = get(it.key).plus(statValues[it.key]!!)
         }
     }
 
     fun times(stat: BaseStat) {
         KEYS.forEach {
-            values[it] = get(it).times(stat.get(it))
+            this[it] = get(it).times(stat.get(it))
         }
     }
 }

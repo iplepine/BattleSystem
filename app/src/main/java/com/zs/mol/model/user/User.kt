@@ -18,7 +18,7 @@ class User(val id: String) {
 
     fun toSaveData(): Map<String, Object> {
         return HashMap<String, Object>().apply {
-
+            // TODO 이걸 해야 돼....
         }
     }
 

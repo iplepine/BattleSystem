@@ -1,4 +1,4 @@
-package com.zs.mol.model.db
+package com.zs.mol.model.db.skill
 
 import com.google.common.cache.Cache
 import com.google.common.cache.CacheBuilder

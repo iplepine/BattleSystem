@@ -105,16 +105,16 @@ class UnitDetailFragment : BaseFragment() {
         name.text = unit.name
         hpBarText.text = String.format(
             "HP : %d/%d",
-            unit.currentStat.secondStat.get(HP)?.toInt(),
+            unit.totalStat.secondStat.get(HP)?.toInt(),
             unit.totalStat.secondStat.get(HP)?.toInt()
         )
 
         baseStatSequence.forEach {
-            baseStatViews[it]?.text = unit.currentStat.baseStat.get(it).toInt().toString()
+            baseStatViews[it]?.text = unit.totalStat.baseStat.get(it).toInt().toString()
         }
 
         secondStatSequence.forEach {
-            secondStatViews[it]?.text = unit.currentStat.secondStat.get(it).toInt().toString()
+            secondStatViews[it]?.text = unit.totalStat.secondStat.get(it).toInt().toString()
         }
     }
 }

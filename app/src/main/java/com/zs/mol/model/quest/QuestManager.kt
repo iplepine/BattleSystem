@@ -3,8 +3,8 @@ package com.zs.mol.model.quest
 import com.zs.mol.model.quest.factory.QuestFactory
 
 object QuestManager {
-    private val acceptedQuests = ArrayList<Quest>()
-    private val newQuests = ArrayList<Quest>()
+    val acceptedQuests = ArrayList<Quest>()
+    val newQuests = ArrayList<Quest>()
 
     fun createNewRequest(): Quest? {
         return QuestFactory.createQuest(QuestType.HIRE)?.apply {

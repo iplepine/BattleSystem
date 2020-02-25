@@ -1,14 +1,14 @@
 package com.zs.mol.model.skill.active
 
 import com.zs.mol.model.battle.BattleFunction
+import com.zs.mol.model.common.Logger
+import com.zs.mol.model.db.skill.SkillDB
 import com.zs.mol.model.skill.Skill
 import com.zs.mol.model.stat.SecondStat.Companion.DEF
 import com.zs.mol.model.unit.BattleUnit
-import com.zs.mol.model.common.Logger
-import com.zs.mol.model.db.SkillDB
 import io.reactivex.subjects.PublishSubject
 
-object Bash : Skill(SkillDB.Bash) {
+object Bash : Skill(SkillDB.Key.Bash) {
     override fun getExpectEffect(): Int {
         return 2
     }
@@ -32,7 +32,7 @@ object Bash : Skill(SkillDB.Bash) {
         }
 
         var attack = calculateDamage(user)
-        val defence = target.currentStat.secondStat.get(DEF)
+        val defence = target.totalStat.secondStat.get(DEF)
 
         var isCritical = BattleFunction.checkCritical(user, target)
         if (isCritical) {

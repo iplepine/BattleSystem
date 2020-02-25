@@ -11,6 +11,8 @@ import com.zs.mol.model.skill.continuous.buff.base.Buff
 import com.zs.mol.model.skill.continuous.buff.base.StatBuff
 import com.zs.mol.model.skill.continuous.debuff.base.DeBuff
 import com.zs.mol.model.stat.SecondStat.Companion.HP
+import com.zs.mol.model.stat.SecondStat.Companion.MP
+import com.zs.mol.model.stat.SecondStat.Companion.WILL
 import com.zs.mol.model.stat.Stat
 import com.zs.mol.model.stat.UnitState
 import io.reactivex.subjects.PublishSubject
@@ -32,6 +34,7 @@ class BattleUnit(owner: String, id: String = UUID.randomUUID().toString()) : Bas
     val deBuffs = ArrayList<StatusEffect>()
 
     var castingSkill: ReservedSkill? = null
+    var currentStat: Stat = totalStat.deepCopy()
 
     var battleUnitController: DefaultBattleUnitController? = DefaultBattleUnitController
 
@@ -95,8 +98,16 @@ class BattleUnit(owner: String, id: String = UUID.randomUUID().toString()) : Bas
         buffs.removeAll(endBuffs)
     }
 
-    fun calculateStat() {
+    override fun updateStat() {
+        super.updateStat()
+
+        val hp = currentStat.secondStat.get(HP)
+        val mp = currentStat.secondStat.get(MP)
+        val will = currentStat.secondStat.get(WILL)
         currentStat = totalStat.deepCopy()
+        currentStat.secondStat[HP] = hp
+        currentStat.secondStat[MP] = mp
+        currentStat.secondStat[WILL] = will
 
         val flatStat = Stat()
         val percentStat = Stat.createInitializedStat(1.0, 1.0)
@@ -214,23 +225,20 @@ class BattleUnit(owner: String, id: String = UUID.randomUUID().toString()) : Bas
     }
 
     fun adjustHp(hpAmount: Int) {
-        if (currentStat.secondStat.get(HP) < hpAmount) {
-            currentStat.secondStat.values[HP] = 0.0
+        if (totalStat.secondStat.get(HP) < hpAmount) {
+            currentStat.secondStat[HP] = 0.0
         } else {
-            currentStat.secondStat.values[HP] =
-                (currentStat.secondStat.values[HP] ?: 0.0) + hpAmount
+            currentStat.secondStat[HP] = (totalStat.secondStat[HP] ?: 0.0) + hpAmount
         }
 
-        if (currentStat.secondStat.get(HP) <= 0.0) {
-            currentStat.secondStat.values[HP] = 0.0
+        if (currentStat.secondStat[HP] <= 0.0) {
+            currentStat.secondStat[HP] = 0.0
             changeState(State(UnitState.DIE))
             Logger.d("$name died")
         } else {
             Logger.d(
                 "$name " +
-                        "HP : ${currentStat.secondStat.get(HP).toInt()}/${totalStat.secondStat.get(
-                            HP
-                        ).toInt()}\n"
+                        "HP : ${currentStat.secondStat[HP].toInt()}/${totalStat.secondStat[HP].toInt()}\n"
             )
         }
     }

@@ -1,6 +1,7 @@
 package com.zs.mol.model.unit
 
 import com.zs.mol.model.item.EquipItem
+import com.zs.mol.model.manager.SkillManager
 import com.zs.mol.model.manager.StatManager
 import com.zs.mol.model.skill.UnitSkill
 import com.zs.mol.model.skill.active.NormalAttack
@@ -10,12 +11,17 @@ import com.zs.mol.model.stat.Stat
 open class BaseUnit(val owner: String = "enemy", val id: String) {
     var level = 1
     var exp = 0L
+
     var name = "Noname"
     var job = "Novice"
 
     var originalStat = Stat()
-    var totalStat: Stat = calculateTotalStat()
-    var currentStat: Stat = calculateTotalStat()
+        set(value) {
+            field = value
+            updateStat()
+        }
+
+    var totalStat: Stat = originalStat
 
     var skills: ArrayList<UnitSkill> = ArrayList<UnitSkill>().apply {
         add(UnitSkill(NormalAttack.id))
@@ -24,10 +30,6 @@ open class BaseUnit(val owner: String = "enemy", val id: String) {
     var equipItems = HashMap<String, EquipItem>()
 
     var action = UnitAction.IDLE
-
-    init {
-        calculateTotalStat()
-    }
 
     override fun toString(): String {
         return StringBuilder()
@@ -39,14 +41,14 @@ open class BaseUnit(val owner: String = "enemy", val id: String) {
     fun levelUp() {
         level++
         addLevelUpStats()
-        calculateTotalStat()
+        updateStat()
     }
 
     // 기본 증가값 + 현재 총 기본 스텟에 따른 증가값
     private fun addLevelUpStats() {
         originalStat.secondStat.apply {
             plus(StatManager.defaultLevelUpFactor)
-            plus(SecondStat.createFromBaseStat(totalStat.baseStat))
+            plus(SecondStat.createFromBaseStat(calculateTotalStat().baseStat))
         }
     }
 
@@ -57,6 +59,10 @@ open class BaseUnit(val owner: String = "enemy", val id: String) {
     fun equip(item: EquipItem) {
         equipItems[item.equipType] = item
         calculateTotalStat()
+    }
+
+    open fun updateStat() {
+        totalStat = calculateTotalStat()
     }
 
     fun calculateTotalStat(): Stat {
@@ -79,7 +85,9 @@ open class BaseUnit(val owner: String = "enemy", val id: String) {
     }
 
     fun addSkill(id: Int) {
-
+        SkillManager.getSkill(id)?.also {
+            skills.add(UnitSkill(id))
+        }
     }
 
     fun removeSkill(id: Int) {

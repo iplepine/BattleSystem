@@ -12,16 +12,6 @@ class App : MultiDexApplication() {
     }
 
     private fun initTest() {
-        UserManager.user.units?.apply {
-            add(BattleUnit(UserManager.getUserId()).apply {
-                name = "iplepine"
-            })
-            add(BattleUnit(UserManager.getUserId()).apply {
-                name = "Seoty"
-            })
-            add(BattleUnit(UserManager.getUserId()).apply {
-                name = "PleleaseReleaseMe"
-            })
-        }
+        UserManager.loadData()
     }
 }

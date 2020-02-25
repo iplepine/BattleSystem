@@ -8,19 +8,25 @@ import com.zs.mol.model.user.UserManager
 object BattleUnitFactory {
 
     fun createTestUnit(owner: String = "enemy"): BattleUnit {
-        val stat = StatFactory.randomStat()
-        return BattleUnit(owner)
+        return BattleUnit(owner).apply {
+            originalStat = StatFactory.randomStat()
+            updateStat()
+        }
     }
 
     fun createMyUnit(name: String = randomName()): BattleUnit {
         return BattleUnit(UserManager.getUserId()).apply {
             this.name = name
+            originalStat = StatFactory.randomStat()
+            updateStat()
         }
     }
 
     fun createEnemy(name: String = randomName()): BattleUnit {
         return BattleUnit(UserManager.getEnemyId()).apply {
             this.name = name
+            originalStat = StatFactory.randomStat()
+            updateStat()
         }
     }
 

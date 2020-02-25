@@ -13,7 +13,6 @@ class UserTest {
             add(BattleUnitFactory.createMyUnit("Iplepine"))
         }
 
-
         val json = user.toJson()
         println(json)
 

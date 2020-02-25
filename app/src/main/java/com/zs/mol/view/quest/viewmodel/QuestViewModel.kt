@@ -2,25 +2,26 @@ package com.zs.mol.view.quest.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.zs.mol.model.quest.QuestManager
 import com.zs.mol.model.quest.Quest
-import com.zs.mol.model.quest.HireQuest
+import com.zs.mol.model.quest.QuestManager
+import io.reactivex.Single
 import java.util.*
 
 class QuestViewModel : ViewModel() {
-    val newQuest = MutableLiveData<Quest>()
 
-    fun getQuests(): ArrayList<Quest> {
-        return QuestManager.questList
+    val acceptQuests = MutableLiveData<ArrayList<Quest>>()
+    val newQuests = MutableLiveData<ArrayList<Quest>>()
+
+    fun getAcceptedQuests(): ArrayList<Quest> {
+        return QuestManager.acceptedQuests
     }
 
-    fun acceptQuest(quest: Quest) {
+    fun acceptQuest(id: String) {
+        QuestManager.accept(id)
+        acceptQuests.value = QuestManager.acceptedQuests
     }
 
-    fun onClickEventButton() {
-        newQuest.value = Quest.Builder(HireQuest::class.java)
-            .setTitle("나는 일하고 싶다")
-            .setDescription("지나가던 나그네가 우리 협회에 고용되고 싶어합니다.")
-            .create()
+    fun onClickEventButton(): Single<Quest> {
+        return Single.just(QuestManager.createNewRequest())
     }
 }

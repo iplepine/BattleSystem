@@ -9,8 +9,8 @@ class SecondStatTest {
     fun levelUpTest() {
         val baseStat = BaseStat()
 
-        baseStat.values.forEach {
-            baseStat.values[it.key] = 1.0
+        baseStat.forEach {
+            baseStat[it.key] = 1.0
         }
 
         Logger.d(SecondStat.createFromBaseStat(baseStat, false).toString())
@@ -21,9 +21,9 @@ class SecondStatTest {
         val stat = Stat()
         val stat2 = stat.deepCopy()
 
-        stat2.secondStat.values["test"] = 3.0
+        stat2.secondStat["test"] = 3.0
 
-        Logger.d("" + stat.secondStat.values["test"])
-        Logger.d("" + stat2.secondStat.values["test"])
+        Logger.d("" + stat.secondStat["test"])
+        Logger.d("" + stat2.secondStat["test"])
     }
 }

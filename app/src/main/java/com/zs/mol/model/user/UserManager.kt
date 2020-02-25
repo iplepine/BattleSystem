@@ -2,6 +2,7 @@ package com.zs.mol.model.user
 
 import com.google.gson.Gson
 import com.zs.mol.model.unit.BattleUnit
+import com.zs.mol.model.unit.BattleUnitFactory
 
 
 object UserManager {
@@ -33,5 +34,13 @@ object UserManager {
 
     fun getUserGson(): Gson {
         return Gson()
+    }
+
+    fun loadData() {
+        user.units?.apply {
+            add(BattleUnitFactory.createMyUnit("Iplepine"))
+            add(BattleUnitFactory.createMyUnit("Seoty"))
+            add(BattleUnitFactory.createMyUnit("PleaseReleaseMe"))
+        }
     }
 }
