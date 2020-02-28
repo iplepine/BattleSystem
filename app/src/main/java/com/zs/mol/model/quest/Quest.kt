@@ -14,29 +14,36 @@ abstract class Quest(var type: QuestType) {
     var id: String = UUID.randomUUID().toString()
 
     open fun checkSuccess(): Boolean {
-        return requires.find { !requireEnough(it) } != null
+        return requires.find { !requireEnough(it) } == null
     }
 
     private fun requireEnough(questReward: QuestReward): Boolean {
-        when(questReward.key) {
-            RewardKey.GOLD -> (questReward.value as? Long)?:0 <= UserManager.user.userStatus.gold
-            else -> questReward.value as? Long?: 0 <= Inventory.getAmount(questReward.key)
+        return when (questReward.key) {
+            else -> questReward.value as? Long ?: 0 <= Inventory.getAmount(questReward.key)
         }
         return true
     }
 
     open fun onSuccess() {
-        requires.forEach{
-            Inventory.removeItem(it.key, it.value as? Long?: 0)
+        requires.forEach {
+            when (it.key) {
+                else -> Inventory.removeItem(it.key, it.value as? Long ?: 0)
+            }
         }
-        rewards.forEach{
-            Inventory.addItem(it.key, it.value as? Long?: 0)
+        rewards.forEach {
+            when (it.key) {
+                RewardKey.EXP -> UserManager.addExp(it.value as? Long ?: 0)
+                else -> Inventory.addItem(it.key, it.value as? Long ?: 0)
+            }
         }
     }
 
     open fun onFailed() {
-        penalty.forEach{
-            Inventory.removeItem(it.key, it.value as? Long?: 0)
+        penalty.forEach {
+            when (it.key) {
+                RewardKey.EXP -> UserManager.addExp(it.value as? Long ?: 0)
+                else -> Inventory.removeItem(it.key, it.value as? Long ?: 0)
+            }
         }
     }
 

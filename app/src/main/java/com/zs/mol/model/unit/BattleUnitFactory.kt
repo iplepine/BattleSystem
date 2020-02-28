@@ -14,6 +14,14 @@ object BattleUnitFactory {
         }
     }
 
+    fun createUnit(name: String = randomName()): BattleUnit {
+        return BattleUnit("").apply {
+            this.name = name
+            originalStat = StatFactory.randomStat()
+            updateStat()
+        }
+    }
+
     fun createMyUnit(name: String = randomName()): BattleUnit {
         return BattleUnit(UserManager.getUserId()).apply {
             this.name = name

@@ -25,7 +25,12 @@ object UserManager {
     }
 
     fun addUnit(unit: BattleUnit) {
+        unit.owner = getUserId()
         user.units?.add(unit)
+    }
+
+    fun addExp(exp: Long) {
+        user.userStatus.exp += exp
     }
 
     fun isMyUnit(id: String): Boolean {

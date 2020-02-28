@@ -8,7 +8,7 @@ import com.zs.mol.model.skill.active.NormalAttack
 import com.zs.mol.model.stat.SecondStat
 import com.zs.mol.model.stat.Stat
 
-open class BaseUnit(val owner: String = "enemy", val id: String) {
+open class BaseUnit(var owner: String = "enemy", val id: String) {
     var level = 1
     var exp = 0L
 

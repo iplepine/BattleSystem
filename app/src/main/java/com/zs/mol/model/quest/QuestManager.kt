@@ -1,35 +1,46 @@
 package com.zs.mol.model.quest
 
 import com.zs.mol.model.quest.factory.QuestFactory
+import java.util.concurrent.ConcurrentHashMap
 
 object QuestManager {
     val acceptedQuests = ArrayList<Quest>()
-    val newQuests = ArrayList<Quest>()
+    val newQuests = ConcurrentHashMap<String, Quest>()
 
-    fun createNewRequest(): Quest? {
-        return QuestFactory.createQuest(QuestType.HIRE)?.apply {
-            newQuests.add(this)
+    fun createNewRequest(type: QuestType): Quest? {
+        return QuestFactory.createQuest(type)?.apply {
+            newQuests[id] = this
         }
     }
 
+    fun createNewRequest(): Quest? {
+        val randIndex = (Math.random() * QuestType.values().size).toInt()
+        return createNewRequest(QuestType.values()[randIndex])
+    }
+
     fun accept(id: String) {
-        newQuests.find { it.id == id }?.also {
-            when(it.type){
-                QuestType.HIRE -> it.onSuccess()
+        newQuests[id]?.also {
+            when (it.type) {
+                QuestType.HIRE -> {
+                    if (it.checkSuccess()) {
+                        it.onSuccess()
+                    } else {
+                        it.onFailed()
+                    }
+                }
                 else -> acceptedQuests.add(it)
             }
-            newQuests.remove(it)
+            newQuests.remove(it.id)
         }
     }
 
     fun reject(id: String) {
-        newQuests.find {it.id == id }?.also {
-            newQuests.remove(it)
+        newQuests[id]?.apply {
+            newQuests.remove(id)
         }
     }
 
     fun getQuest(id: String?): Quest? {
-        return newQuests.find { it.id == id }?:
-        acceptedQuests.find {it.id == id}
+        return newQuests[id] ?: acceptedQuests.find { it.id == id }
     }
 }

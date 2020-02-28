@@ -12,7 +12,7 @@ object Inventory : ConcurrentHashMap<String, Long>() {
     }
 
     fun removeItem(id: String, amount: Long) {
-        if (contains(id)) {
+        if (containsKey(id)) {
             put(id, max(0, getAmount(id) - amount))
         }
     }

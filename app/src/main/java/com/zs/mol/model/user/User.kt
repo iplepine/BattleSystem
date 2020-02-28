@@ -13,8 +13,12 @@ class User(val id: String) {
         }
     }
 
-    var userStatus = UserStatus(1, 500)
+    var userStatus = UserStatus(1)
     val units = ArrayList<BattleUnit>()
+
+    fun getUnit(id: String): BattleUnit? {
+        return units.find { id == it.id }
+    }
 
     fun toSaveData(): Map<String, Object> {
         return HashMap<String, Object>().apply {
