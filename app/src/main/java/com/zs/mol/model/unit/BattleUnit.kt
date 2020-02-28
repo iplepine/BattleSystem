@@ -271,6 +271,13 @@ class BattleUnit(owner: String, id: String = UUID.randomUUID().toString()) : Bas
         }
     }
 
+    fun toSimpleInfo() : String {
+        return StringBuilder().run {
+            append("Lv. $level $name")
+        }.toString()
+    }
+
+
     class ReservedSkill(
         var skill: UnitSkill,
         var target: List<BattleUnit>,

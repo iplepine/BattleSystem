@@ -1,7 +1,5 @@
 package com.zs.mol.model.stat
 
-import com.zs.mol.model.manager.StatManager
-
 class SecondStat(initialValue: Double = 0.0) : HashMap<String, Double>() {
     init {
         if (isEmpty()) {

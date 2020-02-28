@@ -1,6 +1,5 @@
-package com.zs.mol.model.manager
+package com.zs.mol.model.skill
 
-import com.zs.mol.model.skill.Skill
 import com.zs.mol.model.skill.active.Bash
 import com.zs.mol.model.skill.active.NormalAttack
 

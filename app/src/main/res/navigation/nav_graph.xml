@@ -21,13 +21,12 @@
                 android:name="questId"
                 app:argType="string" />
         </action>
-
     </fragment>
 
-    <fragment
+    <dialog
         android:id="@+id/newQuestFragment"
         android:name="com.zs.mol.view.quest.fragment.NewQuestFragment"
-        tools:layout="@layout/fragment_new_quest"></fragment>
+        tools:layout="@layout/fragment_new_quest" />
 
     <fragment
         android:id="@+id/unitManageFragment"

@@ -13,9 +13,23 @@ object QuestManager {
     }
 
     fun accept(id: String) {
-        newQuests.find { it.id == id }?.apply {
-            acceptedQuests.add(this)
-            newQuests.remove(this)
+        newQuests.find { it.id == id }?.also {
+            when(it.type){
+                QuestType.HIRE -> it.onSuccess()
+                else -> acceptedQuests.add(it)
+            }
+            newQuests.remove(it)
         }
+    }
+
+    fun reject(id: String) {
+        newQuests.find {it.id == id }?.also {
+            newQuests.remove(it)
+        }
+    }
+
+    fun getQuest(id: String?): Quest? {
+        return newQuests.find { it.id == id }?:
+        acceptedQuests.find {it.id == id}
     }
 }

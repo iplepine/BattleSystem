@@ -1,6 +1,5 @@
 package com.zs.mol.model.skill
 
-import com.zs.mol.model.manager.SkillManager
 import com.zs.mol.model.unit.BattleUnit
 import io.reactivex.subjects.PublishSubject
 

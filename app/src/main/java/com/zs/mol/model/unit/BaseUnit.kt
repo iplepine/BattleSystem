@@ -1,8 +1,8 @@
 package com.zs.mol.model.unit
 
 import com.zs.mol.model.item.EquipItem
-import com.zs.mol.model.manager.SkillManager
-import com.zs.mol.model.manager.StatManager
+import com.zs.mol.model.skill.SkillManager
+import com.zs.mol.model.stat.StatManager
 import com.zs.mol.model.skill.UnitSkill
 import com.zs.mol.model.skill.active.NormalAttack
 import com.zs.mol.model.stat.SecondStat

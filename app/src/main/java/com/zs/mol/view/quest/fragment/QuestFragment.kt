@@ -30,11 +30,11 @@ class QuestFragment : MainFragment() {
     }
 
     fun init() {
-        eventButton.setOnClickListener { onClickEvent() }
+        eventButton.setOnClickListener { onClickNewQuest() }
         refreshButton.setOnClickListener { onClickRefresh() }
     }
 
-    fun onClickEvent() {
+    private fun onClickNewQuest() {
         addDisposable(
             viewModel.onClickEventButton()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -44,8 +44,7 @@ class QuestFragment : MainFragment() {
         )
     }
 
-    fun onClickRefresh() {
-        showToast("refresh")
+    private fun onClickRefresh() {
         if (Math.random() < 0.5) {
             eventButton.visibility = View.VISIBLE
         } else {

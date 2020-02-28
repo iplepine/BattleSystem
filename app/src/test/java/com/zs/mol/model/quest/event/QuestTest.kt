@@ -4,7 +4,7 @@ import com.zs.mol.model.quest.Quest
 import com.zs.mol.model.quest.HireQuest
 import org.junit.Test
 
-class QuestEventTest {
+class QuestTest {
     @Test
     fun questBuilderTest() {
         val event = Quest.Builder(HireQuest::class.java)

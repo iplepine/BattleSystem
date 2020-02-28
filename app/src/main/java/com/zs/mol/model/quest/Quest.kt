@@ -1,5 +1,7 @@
 package com.zs.mol.model.quest
 
+import com.zs.mol.model.db.inventory.Inventory
+import com.zs.mol.model.user.UserManager
 import java.util.*
 
 abstract class Quest(var type: QuestType) {
@@ -8,23 +10,34 @@ abstract class Quest(var type: QuestType) {
     var dueTime: Long = 0
     var rewards: ArrayList<QuestReward> = ArrayList()
     var penalty: ArrayList<QuestReward> = ArrayList()
-    var require: ArrayList<QuestReward> = ArrayList()
+    var requires: ArrayList<QuestReward> = ArrayList()
     var id: String = UUID.randomUUID().toString()
 
-    open fun checkSuccess() {
-
+    open fun checkSuccess(): Boolean {
+        return requires.find { !requireEnough(it) } != null
     }
 
-    open fun checkFailed() {
-
+    private fun requireEnough(questReward: QuestReward): Boolean {
+        when(questReward.key) {
+            RewardKey.GOLD -> (questReward.value as? Long)?:0 <= UserManager.user.userStatus.gold
+            else -> questReward.value as? Long?: 0 <= Inventory.getAmount(questReward.key)
+        }
+        return true
     }
 
     open fun onSuccess() {
-
+        requires.forEach{
+            Inventory.removeItem(it.key, it.value as? Long?: 0)
+        }
+        rewards.forEach{
+            Inventory.addItem(it.key, it.value as? Long?: 0)
+        }
     }
 
     open fun onFailed() {
-
+        penalty.forEach{
+            Inventory.removeItem(it.key, it.value as? Long?: 0)
+        }
     }
 
     class Builder<T : Quest>(private val clazz: Class<T>) {
@@ -44,7 +57,7 @@ abstract class Quest(var type: QuestType) {
                 it.dueTime = dueTime
                 it.rewards = rewards
                 it.penalty = penalty
-                it.require = require
+                it.requires = require
             }
         }
 

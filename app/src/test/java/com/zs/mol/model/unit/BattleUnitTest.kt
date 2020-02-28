@@ -1,6 +1,6 @@
 package com.zs.mol.model.unit
 
-import com.zs.mol.model.manager.SkillManager
+import com.zs.mol.model.skill.SkillManager
 import com.zs.mol.model.skill.UnitSkill
 import com.zs.mol.model.skill.active.control.StateControlSkill
 import com.zs.mol.model.skill.continuous.buff.base.StatBuff

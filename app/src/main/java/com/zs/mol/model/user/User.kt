@@ -13,7 +13,7 @@ class User(val id: String) {
         }
     }
 
-    var userStatus = UserStatus(1, 0)
+    var userStatus = UserStatus(1, 500)
     val units = ArrayList<BattleUnit>()
 
     fun toSaveData(): Map<String, Object> {

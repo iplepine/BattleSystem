@@ -1,7 +1,7 @@
 package com.zs.mol.model.battle
 
 import com.zs.mol.model.db.skill.SkillDB
-import com.zs.mol.model.manager.SkillManager
+import com.zs.mol.model.skill.SkillManager
 import com.zs.mol.model.skill.Skill
 import com.zs.mol.model.skill.UnitSkill
 import com.zs.mol.model.stat.SecondStat.Companion.ATK

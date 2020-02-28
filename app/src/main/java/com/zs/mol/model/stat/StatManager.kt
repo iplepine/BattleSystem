@@ -1,7 +1,4 @@
-package com.zs.mol.model.manager
-
-import com.zs.mol.model.stat.BaseStat
-import com.zs.mol.model.stat.SecondStat
+package com.zs.mol.model.stat
 
 /**
  * 스탯 밸런스 관련 문서
