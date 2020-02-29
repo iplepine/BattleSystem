@@ -23,7 +23,7 @@ object QuestFactory {
             .setTitle("새로운 인물")
             .setDescription("${unit.name}이 당신과 함께 일하고 싶어합니다.")
             .addRequire(RewardKey.GOLD, 300)
-            .addReward(RewardKey.UNIT, BattleUnitFactory.createMyUnit())
+            .addReward(RewardKey.UNIT, unit)
             .setDueTime(30)
             .create()
     }
