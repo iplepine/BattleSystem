@@ -47,12 +47,12 @@ class UnitManageViewHolder(parent: ViewGroup, private val viewModel: UnitViewMod
     fun bind(unit: BattleUnit) {
         this.unit = unit
 
-        level.text = String.format("Lv.%02d", unit.level)
+        level.text = String.format("Lv.%d", unit.level)
         name.text = unit.name
 
         // hp
         val maxHp = unit.totalStat.secondStat.get(HP).toInt()
-        val currentHp = unit.totalStat.secondStat.get(HP).toInt()
+        val currentHp = unit.currentStat.secondStat.get(HP).toInt()
 
         if (maxHp == 0) {
             hpBar.progress = 0
@@ -63,7 +63,7 @@ class UnitManageViewHolder(parent: ViewGroup, private val viewModel: UnitViewMod
 
         // mp
         val maxMp = unit.totalStat.secondStat.get(MP).toInt()
-        val currentMp = unit.totalStat.secondStat.get(MP).toInt()
+        val currentMp = unit.currentStat.secondStat.get(MP).toInt()
 
         if (maxMp == 0) {
             mpBar.progress = 0

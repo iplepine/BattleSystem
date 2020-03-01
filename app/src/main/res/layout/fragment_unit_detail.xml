@@ -14,9 +14,8 @@
         android:id="@+id/thumbnail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
         android:src="@mipmap/ic_launcher_round"
+        app:layout_constraintBottom_toBottomOf="@id/willBarText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -25,7 +24,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:minWidth="60dp"
         android:text="Lv. 1"
         app:layout_constraintEnd_toStartOf="@+id/name"
         app:layout_constraintStart_toEndOf="@+id/thumbnail"
@@ -33,10 +31,18 @@
 
     <TextView
         android:id="@+id/name"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginLeft="4dp"
         app:layout_constraintStart_toEndOf="@id/level"
+        app:layout_constraintTop_toTopOf="@id/level"></TextView>
+
+    <TextView
+        android:id="@+id/royalty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        app:layout_constraintLeft_toRightOf="@id/name"
         app:layout_constraintTop_toTopOf="@id/level"></TextView>
 
     <TextView
@@ -47,24 +53,67 @@
         app:layout_constraintLeft_toLeftOf="@id/level"
         app:layout_constraintTop_toBottomOf="@id/level"></TextView>
 
-    <GridLayout
-        android:id="@+id/baseStatLayout"
+    <TextView
+        android:id="@+id/mpBarText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:columnCount="4"
-        android:useDefaultMargins="true"
+        android:text="100"
+        app:layout_constraintLeft_toLeftOf="@id/level"
+        app:layout_constraintTop_toBottomOf="@id/hpBarText"></TextView>
+
+    <TextView
+        android:id="@+id/willBarText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="100"
+        app:layout_constraintLeft_toLeftOf="@id/level"
+        app:layout_constraintTop_toBottomOf="@id/mpBarText"></TextView>
+
+    <TextView
+        android:id="@+id/statTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="능력치"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/willBarText"></TextView>
+
+    <LinearLayout
+        android:id="@+id/baseStatLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/thumbnail"></GridLayout>
+        app:layout_constraintTop_toBottomOf="@id/statTitle"></LinearLayout>
 
-    <GridLayout
+    <LinearLayout
         android:id="@+id/secondStatLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:orientation="vertical"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/baseStatLayout"></LinearLayout>
+
+    <TextView
+        android:id="@+id/skillTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:columnCount="4"
-        android:useDefaultMargins="true"
-        app:layout_constraintLeft_toLeftOf="@id/baseStatLayout"
-        app:layout_constraintRight_toRightOf="@id/baseStatLayout"
-        app:layout_constraintTop_toBottomOf="@id/baseStatLayout"></GridLayout>
+        android:layout_margin="16dp"
+        android:text="스킬"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/secondStatLayout"></TextView>
+
+    <LinearLayout
+        android:id="@+id/skillLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/skillTitle"></LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

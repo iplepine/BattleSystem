@@ -11,6 +11,7 @@ import com.zs.mol.model.stat.Stat
 open class BaseUnit(var owner: String = "enemy", val id: String) {
     var level = 1
     var exp = 0L
+    var royalty = 100
 
     var name = "Noname"
     var job = "Novice"
@@ -21,7 +22,7 @@ open class BaseUnit(var owner: String = "enemy", val id: String) {
             updateStat()
         }
 
-    var totalStat: Stat = originalStat
+    var totalStat: Stat = originalStat.deepCopy()
 
     var skills: ArrayList<UnitSkill> = ArrayList<UnitSkill>().apply {
         add(UnitSkill(NormalAttack.id))
