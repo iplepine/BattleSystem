@@ -3,7 +3,7 @@ package com.zs.mol.model.unit
 import com.zs.mol.model.common.Logger
 import org.junit.Test
 
-class BaseUnitFactoryTest {
+class BattleUnitFactoryTest {
     @Test
     fun createUnitTest() {
         val unit = BattleUnitFactory.createMyUnit("test")

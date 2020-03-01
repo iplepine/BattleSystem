@@ -22,7 +22,7 @@ open class BaseUnit(var owner: String = "enemy", val id: String) {
             updateStat()
         }
 
-    var totalStat: Stat = originalStat.deepCopy()
+    var totalStat: Stat = Stat()
 
     var skills: ArrayList<UnitSkill> = ArrayList<UnitSkill>().apply {
         add(UnitSkill(NormalAttack.id))

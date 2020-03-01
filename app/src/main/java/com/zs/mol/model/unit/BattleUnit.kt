@@ -34,7 +34,7 @@ class BattleUnit(owner: String, id: String = UUID.randomUUID().toString()) : Bas
     val deBuffs = ArrayList<StatusEffect>()
 
     var castingSkill: ReservedSkill? = null
-    var currentStat: Stat = totalStat.deepCopy()
+    var currentStat: Stat = Stat()
 
     var battleUnitController: DefaultBattleUnitController? = DefaultBattleUnitController
 
@@ -101,13 +101,18 @@ class BattleUnit(owner: String, id: String = UUID.randomUUID().toString()) : Bas
     override fun updateStat() {
         super.updateStat()
 
+        val hasInit = currentStat.secondStat.any { it.value != 0.0 }
+
         val hp = currentStat.secondStat.get(HP)
         val mp = currentStat.secondStat.get(MP)
         val will = currentStat.secondStat.get(WILL)
+
         currentStat = totalStat.deepCopy()
-        currentStat.secondStat[HP] = hp
-        currentStat.secondStat[MP] = mp
-        currentStat.secondStat[WILL] = will
+        if (hasInit) {
+            currentStat.secondStat[HP] = hp
+            currentStat.secondStat[MP] = mp
+            currentStat.secondStat[WILL] = will
+        }
 
         val flatStat = Stat()
         val percentStat = Stat.createInitializedStat(1.0, 1.0)
@@ -271,7 +276,7 @@ class BattleUnit(owner: String, id: String = UUID.randomUUID().toString()) : Bas
         }
     }
 
-    fun toSimpleInfo() : String {
+    fun toSimpleInfo(): String {
         return StringBuilder().run {
             append("Lv. $level $name")
         }.toString()
