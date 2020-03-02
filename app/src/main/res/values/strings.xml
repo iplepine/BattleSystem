@@ -4,6 +4,7 @@
 
     <!--bottom navigation-->
     <string name="bottom_menu_quest">Quest</string>
+    <string name="bottom_menu_town">Town</string>
     <string name="bottom_menu_unit">Unit</string>
     <string name="bottom_menu_store">Store</string>
     <string name="bottom_menu_inventory">Inventory</string>

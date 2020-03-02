@@ -2,14 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/unitManageFragment"
+        android:id="@+id/townFragment"
         android:icon="@android:drawable/ic_dialog_info"
-        android:title="@string/bottom_menu_unit" />
+        android:title="@string/bottom_menu_town" />
 
     <item
         android:id="@+id/inventoryFragment"
         android:icon="@android:drawable/ic_dialog_info"
         android:title="@string/bottom_menu_inventory" />
+
 
     <item
         android:id="@+id/questFragment"
@@ -20,5 +21,10 @@
         android:id="@+id/storeFragment"
         android:icon="@android:drawable/ic_dialog_info"
         android:title="@string/bottom_menu_store" />
+
+    <item
+        android:id="@+id/unitManageFragment"
+        android:icon="@android:drawable/ic_dialog_info"
+        android:title="@string/bottom_menu_unit" />
 
 </menu>

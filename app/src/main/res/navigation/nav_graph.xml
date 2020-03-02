@@ -48,6 +48,12 @@
     </fragment>
 
     <fragment
+        android:id="@+id/townFragment"
+        android:name="com.zs.mol.view.town.fragment.TownFragment"
+        android:label="@string/bottom_menu_town"
+        tools:layout="@layout/fragment_town" />
+
+    <fragment
         android:id="@+id/inventoryFragment"
         android:name="com.zs.mol.view.inventory.fragment.InventoryFragment"
         android:label="@string/bottom_menu_store"
