@@ -1,19 +1,25 @@
 package com.zs.mol.model.user
 
+import android.content.Context
 import com.google.gson.Gson
+import com.zs.mol.model.db.UserDB
 import com.zs.mol.model.unit.BattleUnit
 import com.zs.mol.model.unit.BattleUnitFactory
-
+import java.util.*
 
 object UserManager {
-    var user = User("guest")
+    var user: User = User("init")
 
-    fun newUser(id: String) {
-        user = User(id)
+    fun initUser(context: Context) {
+        user = UserDB.loadUser(context)?: newUser(UUID.randomUUID().toString())
+    }
+
+    fun newUser(id: String): User {
+        return User(id)
     }
 
     fun getUserId(): String {
-        return user.id ?: "guest"
+        return user.id
     }
 
     fun getEnemyId(): String {
@@ -39,13 +45,5 @@ object UserManager {
 
     fun getUserGson(): Gson {
         return Gson()
-    }
-
-    fun loadData() {
-        user.units?.apply {
-            add(BattleUnitFactory.createMyUnit("Iplepine"))
-            add(BattleUnitFactory.createMyUnit("Seoty"))
-            add(BattleUnitFactory.createMyUnit("PleaseReleaseMe"))
-        }
     }
 }

@@ -12,6 +12,6 @@ class App : MultiDexApplication() {
     }
 
     private fun initTest() {
-        UserManager.loadData()
+        UserManager.initUser(applicationContext)
     }
 }
