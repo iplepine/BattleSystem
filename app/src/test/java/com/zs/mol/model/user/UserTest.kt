@@ -13,7 +13,7 @@ class UserTest {
             add(BattleUnitFactory.createMyUnit("Iplepine"))
         }
 
-        val userJson = user.toJson()
+        val userJson = Gson().toJson(user)
 
         val parsedUser = UserManager.getUserGson().fromJson<User>(userJson, User::class.java)
 

@@ -2,6 +2,7 @@ package com.zs.mol.model.server
 
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
+import com.zs.mol.model.GameManager
 import com.zs.mol.model.server.GameServer.CollectionName.USERS
 import com.zs.mol.model.user.User
 import com.zs.mol.model.user.UserManager
@@ -19,7 +20,7 @@ object GameServer {
             .add("")
             .addOnSuccessListener { documentReference ->
                 Log.d(TAG, "DocumentSnapshot written with ID: ${documentReference.id}")
-                UserManager.newUser(documentReference.id)
+                // TODO init game 해줘야 함...
             }
             .addOnFailureListener { e ->
                 Log.e(TAG, "Error adding document", e)

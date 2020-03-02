@@ -8,8 +8,8 @@ import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.zs.mol.R
 import com.zs.mol.model.db.inventory.Inventory
+import com.zs.mol.model.item.ItemKey
 import com.zs.mol.model.quest.Quest
-import com.zs.mol.model.quest.RewardKey
 import com.zs.mol.model.user.UserManager
 import com.zs.mol.view.base.MainFragment
 import com.zs.mol.view.quest.viewmodel.QuestViewModel
@@ -33,17 +33,22 @@ class QuestFragment : MainFragment() {
         init()
     }
 
+    override fun onResume() {
+        super.onResume()
+        updateUserStatusView()
+    }
+
     fun init() {
-        initUserStatusView()
+        updateUserStatusView()
         eventButton.setOnClickListener { onClickNewQuest() }
         refreshButton.setOnClickListener { onClickRefresh() }
     }
 
-    private fun initUserStatusView() {
+    private fun updateUserStatusView() {
         UserManager.user?.apply {
             userStatusView.level.text = "Lv. ${userStatus.level}"
             userStatusView.nickname.text = id
-            userStatusView.gold.text = "${Inventory.getAmount(RewardKey.GOLD)} G"
+            userStatusView.gold.text = "${Inventory.getAmount(ItemKey.GOLD)} G"
         }
     }
 

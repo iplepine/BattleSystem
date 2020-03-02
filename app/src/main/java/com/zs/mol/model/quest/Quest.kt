@@ -1,6 +1,7 @@
 package com.zs.mol.model.quest
 
 import com.zs.mol.model.db.inventory.Inventory
+import com.zs.mol.model.item.ItemKey
 import com.zs.mol.model.user.UserManager
 import java.util.*
 
@@ -32,7 +33,7 @@ abstract class Quest(var type: QuestType) {
         }
         rewards.forEach {
             when (it.key) {
-                RewardKey.EXP -> UserManager.addExp(it.value as? Long ?: 0)
+                ItemKey.EXP -> UserManager.addExp(it.value as? Long ?: 0)
                 else -> Inventory.addItem(it.key, it.value as? Long ?: 0)
             }
         }
@@ -41,7 +42,7 @@ abstract class Quest(var type: QuestType) {
     open fun onFailed() {
         penalty.forEach {
             when (it.key) {
-                RewardKey.EXP -> UserManager.addExp(it.value as? Long ?: 0)
+                ItemKey.EXP -> UserManager.addExp(it.value as? Long ?: 0)
                 else -> Inventory.removeItem(it.key, it.value as? Long ?: 0)
             }
         }

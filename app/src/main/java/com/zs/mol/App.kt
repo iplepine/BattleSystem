@@ -1,6 +1,7 @@
 package com.zs.mol
 
 import androidx.multidex.MultiDexApplication
+import com.zs.mol.model.GameManager
 import com.zs.mol.model.unit.BattleUnit
 import com.zs.mol.model.user.UserManager
 
@@ -12,6 +13,6 @@ class App : MultiDexApplication() {
     }
 
     private fun initTest() {
-        UserManager.initUser(applicationContext)
+        GameManager.initGame(applicationContext)
     }
 }
