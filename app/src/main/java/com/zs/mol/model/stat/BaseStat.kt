@@ -1,13 +1,6 @@
 package com.zs.mol.model.stat
 
-class BaseStat(initialValue: Double = 0.0) : HashMap<String, Double>() {
-    init {
-        if (isEmpty()) {
-            KEYS.forEach {
-                this[it] = initialValue
-            }
-        }
-    }
+class BaseStat : HashMap<String, Double>() {
 
     companion object {
         const val STR = "STR"
@@ -31,6 +24,12 @@ class BaseStat(initialValue: Double = 0.0) : HashMap<String, Double>() {
 
     fun get(key: String, default: Double = 0.0): Double {
         return super.get(key) ?: default
+    }
+
+    fun setInitialValue(value: Double) {
+        KEYS.forEach {
+            this[it] = value
+        }
     }
 
     fun plus(stat: BaseStat) {

@@ -1,13 +1,6 @@
 package com.zs.mol.model.stat
 
-class SecondStat(initialValue: Double = 0.0) : HashMap<String, Double>() {
-    init {
-        if (isEmpty()) {
-            KEYS.forEach {
-                this[it] = initialValue
-            }
-        }
-    }
+class SecondStat : HashMap<String, Double>() {
 
     companion object {
         const val HP = "HP"
@@ -32,23 +25,20 @@ class SecondStat(initialValue: Double = 0.0) : HashMap<String, Double>() {
 
         fun createFromBaseStat(baseStat: BaseStat, useRandom: Boolean = true): SecondStat {
             val secondStat = SecondStat()
-            secondStat.forEach { second ->
-                val secondStatName = second.key
-
-                baseStat.forEach { base ->
-                    val baseStatKey = base.key
+            KEYS.forEach { secondStatName ->
+                BaseStat.KEYS.forEach { baseStatKey ->
                     val baseStat = baseStat[baseStatKey]
                     val factor = StatManager.statFactors[baseStatKey]?.get(secondStatName) ?: 0.0
 
                     val statBonus = 1 + (baseStat - (StatManager.Const.BASE_STAT_MAX / 2)) / 10.0
 
-                    var upStat = factor * baseStat// * statBonus
+                    var upStat = factor * baseStat * statBonus
                     if (useRandom) {
                         upStat *= Math.random()
                     }
 
                     secondStat[secondStatName] =
-                        secondStat[secondStatName]?.plus(upStat) ?: 0.0
+                        secondStat[secondStatName]?.plus(upStat)
                 }
             }
 
@@ -58,6 +48,12 @@ class SecondStat(initialValue: Double = 0.0) : HashMap<String, Double>() {
 
     override fun get(key: String): Double {
         return super.get(key) ?: 0.0
+    }
+
+    fun setInitialValue(value: Double) {
+        KEYS.forEach {
+            this[it] = value
+        }
     }
 
     fun plus(stat: SecondStat) {

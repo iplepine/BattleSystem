@@ -7,8 +7,8 @@ data class Stat(
     companion object {
         fun createInitializedStat(baseInitialValue: Double, secondInitialValue: Double): Stat {
             return Stat(
-                BaseStat(baseInitialValue),
-                SecondStat(secondInitialValue)
+                BaseStat().apply { setInitialValue(baseInitialValue) },
+                SecondStat().apply { setInitialValue(secondInitialValue) }
             )
         }
     }
