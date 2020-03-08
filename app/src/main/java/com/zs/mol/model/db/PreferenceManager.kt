@@ -12,20 +12,25 @@ object PreferenceManager {
     private const val USER = "user"
     private const val INVENTORY = "inventory"
 
-    private fun toJson(any : Any): String {
+    private const val USER_ID = "userId"
+
+    private fun toJson(any: Any): String {
         return Gson().toJson(any)
     }
 
     fun saveUser(context: Context) {
         val preferences = context.getSharedPreferences(USER, MODE_PRIVATE)
         var user = UserManager.user
-        preferences.edit().putString(user.id, toJson(user)).commit()
+        preferences.edit()
+            .putString(USER_ID, user.id)
+            .putString(user.id, toJson(user))
+            .commit()
     }
 
     fun loadUser(context: Context): User? {
         val preferences = context.getSharedPreferences(USER, MODE_PRIVATE)
 
-        val userId = UserManager.getUserId()
+        val userId = preferences.getString(USER_ID, "")
         val json = preferences.getString(userId, "")
 
         return try {

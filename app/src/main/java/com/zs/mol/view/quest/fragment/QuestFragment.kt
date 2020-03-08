@@ -7,8 +7,7 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.zs.mol.R
-import com.zs.mol.model.db.inventory.Inventory
-import com.zs.mol.model.item.ItemKey
+import com.zs.mol.model.common.Logger
 import com.zs.mol.model.quest.Quest
 import com.zs.mol.model.user.UserManager
 import com.zs.mol.view.base.MainFragment
@@ -48,8 +47,10 @@ class QuestFragment : MainFragment() {
         UserManager.user?.apply {
             userStatusView.level.text = "Lv. ${userStatus.level}"
             userStatusView.nickname.text = id
-            userStatusView.gold.text = "${Inventory.getAmount(ItemKey.GOLD)} G"
+            userStatusView.gold.text = "${UserManager.getGold()} G"
         }
+
+        Logger.d("update user status, gold : ${UserManager.getGold()} G")
     }
 
     private fun onClickNewQuest() {

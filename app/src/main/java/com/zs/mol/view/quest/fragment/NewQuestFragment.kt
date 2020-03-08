@@ -11,7 +11,7 @@ import com.zs.mol.R
 import com.zs.mol.model.db.text.TextDB
 import com.zs.mol.model.quest.Quest
 import com.zs.mol.model.quest.QuestManager
-import com.zs.mol.model.quest.QuestReward
+import com.zs.mol.model.quest.detail.QuestDetailItem
 import com.zs.mol.view.base.BaseDialogFragment
 import com.zs.mol.view.quest.QuestRewardAdapter
 import com.zs.mol.view.quest.viewmodel.NewQuestViewModel
@@ -58,17 +58,17 @@ open class NewQuestFragment : BaseDialogFragment() {
             initRecyclerView(rewardRecyclerView, it.rewards)
         })
 
-        view?.findViewById<View>(R.id.acceptButton)?.setOnClickListener{onClickAccept()}
-        view?.findViewById<View>(R.id.rejectButton)?.setOnClickListener{onClickReject()}
+        view?.findViewById<View>(R.id.acceptButton)?.setOnClickListener { onClickAccept() }
+        view?.findViewById<View>(R.id.rejectButton)?.setOnClickListener { onClickReject() }
     }
 
-    fun initQuestData(quest: Quest) {
+    private fun initQuestData(quest: Quest) {
         questTitle.text = quest.title
         questDescription.text = quest.description
     }
 
-    fun initRecyclerView(recyclerView:RecyclerView, items: ArrayList<QuestReward>) {
-        activity?.also { activity->
+    private fun initRecyclerView(recyclerView: RecyclerView, items: ArrayList<out QuestDetailItem>) {
+        activity?.also { activity ->
             rewardRecyclerView?.apply {
                 recyclerView.adapter = QuestRewardAdapter(items)
                 recyclerView.layoutManager = LinearLayoutManager(activity)
@@ -76,12 +76,12 @@ open class NewQuestFragment : BaseDialogFragment() {
         }
     }
 
-    fun onClickAccept() {
+    private fun onClickAccept() {
         viewModel.accept()
         dismiss()
     }
 
-    fun onClickReject() {
+    private fun onClickReject() {
         viewModel.reject()
         dismiss()
     }

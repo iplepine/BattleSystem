@@ -6,7 +6,7 @@ open class MainFragment : BaseFragment() {
     override fun onStop() {
         super.onStop()
         context?.apply {
-            GameManager.saveGame(this)
+            GameManager.saveGame(applicationContext)
         }
     }
 }

@@ -3,11 +3,16 @@ package com.zs.mol.model.user
 import com.zs.mol.model.unit.BattleUnit
 
 class User(val id: String) {
-    var userStatus = UserStatus(1)
+    @Volatile
+    var userStatus = UserStatus(1, 0, 5000)
     val units = ArrayList<BattleUnit>()
 
     fun getUnit(id: String): BattleUnit? {
         return units.find { id == it.id }
+    }
+
+    fun addUnit(unit: BattleUnit) {
+        units.add(unit)
     }
 
     fun toSaveData(): Map<String, Object> {

@@ -7,14 +7,14 @@ class InventoryTest {
 
     @Test
     fun jsonTest() {
-        Inventory.addItem("gold", 777)
+        Inventory.addItem("testItem", 777)
         val json = Gson().toJson(Inventory)
 
         Inventory.clear()
 
         val aa = Gson().fromJson(json, Inventory::class.java)
-        assert(Inventory["gold"] == null)
+        assert(Inventory["testItem"] == null)
         Inventory.putAll(aa)
-        assert(Inventory["gold"] == 777L)
+        assert(Inventory["testItem"] == 777L)
     }
 }

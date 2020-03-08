@@ -1,9 +1,10 @@
 package com.zs.mol.model.quest.factory
 
-import com.zs.mol.model.item.ItemKey
 import com.zs.mol.model.quest.HireQuest
 import com.zs.mol.model.quest.Quest
 import com.zs.mol.model.quest.QuestType
+import com.zs.mol.model.quest.detail.condition.GoldRequirement
+import com.zs.mol.model.quest.detail.reward.UnitReward
 import com.zs.mol.model.unit.BattleUnitFactory
 
 object QuestFactory {
@@ -22,8 +23,8 @@ object QuestFactory {
         return Quest.Builder(HireQuest::class.java)
             .setTitle("새로운 인물")
             .setDescription("${unit.name}이 당신과 함께 일하고 싶어합니다.")
-            .addRequire(ItemKey.GOLD, 300)
-            .addReward(ItemKey.UNIT, unit)
+            .addRequire(GoldRequirement(300L))
+            .addReward(UnitReward(unit))
             .setDueTime(30)
             .create()
     }

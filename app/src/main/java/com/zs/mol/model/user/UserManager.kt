@@ -1,6 +1,5 @@
 package com.zs.mol.model.user
 
-import com.google.gson.Gson
 import com.zs.mol.model.unit.BattleUnit
 
 object UserManager {
@@ -19,23 +18,18 @@ object UserManager {
     }
 
     fun getUnits(): List<BattleUnit> {
-        return user.units ?: emptyList()
-    }
-
-    fun addUnit(unit: BattleUnit) {
-        unit.owner = getUserId()
-        user.units?.add(unit)
-    }
-
-    fun addExp(exp: Long) {
-        user.userStatus.exp += exp
+        return user.units
     }
 
     fun isMyUnit(id: String): Boolean {
         return user.id === id
     }
 
-    fun getUserGson(): Gson {
-        return Gson()
+    fun getGold(): Long {
+        return user.userStatus.gold
+    }
+
+    fun gainGold(amount: Long) {
+        user.userStatus.gainGold(amount)
     }
 }

@@ -1,50 +1,36 @@
 package com.zs.mol.model.quest
 
-import com.zs.mol.model.db.inventory.Inventory
-import com.zs.mol.model.item.ItemKey
-import com.zs.mol.model.user.UserManager
+import com.zs.mol.model.quest.detail.condition.QuestRequirement
+import com.zs.mol.model.quest.detail.penalty.QuestPenalty
+import com.zs.mol.model.quest.detail.reward.QuestReward
 import java.util.*
+import kotlin.collections.ArrayList
 
 abstract class Quest(var type: QuestType) {
     var title: String = ""
     var description: String = ""
     var dueTime: Long = 0
     var rewards: ArrayList<QuestReward> = ArrayList()
-    var penalty: ArrayList<QuestReward> = ArrayList()
-    var requires: ArrayList<QuestReward> = ArrayList()
+    var penalty: ArrayList<QuestPenalty> = ArrayList()
+    var requires: ArrayList<QuestRequirement> = ArrayList()
     var id: String = UUID.randomUUID().toString()
 
     open fun checkSuccess(): Boolean {
-        return requires.find { !requireEnough(it) } == null
-    }
-
-    private fun requireEnough(questReward: QuestReward): Boolean {
-        return when (questReward.key) {
-            else -> questReward.value as? Long ?: 0 <= Inventory.getAmount(questReward.key)
-        }
-        return true
+        return requires.find { !it.checkRequire() } == null
     }
 
     open fun onSuccess() {
         requires.forEach {
-            when (it.key) {
-                else -> Inventory.removeItem(it.key, it.value as? Long ?: 0)
-            }
+            it.onSuccess()
         }
         rewards.forEach {
-            when (it.key) {
-                ItemKey.EXP -> UserManager.addExp(it.value as? Long ?: 0)
-                else -> Inventory.addItem(it.key, it.value as? Long ?: 0)
-            }
+            it.onSuccess()
         }
     }
 
     open fun onFailed() {
         penalty.forEach {
-            when (it.key) {
-                ItemKey.EXP -> UserManager.addExp(it.value as? Long ?: 0)
-                else -> Inventory.removeItem(it.key, it.value as? Long ?: 0)
-            }
+            it.onFailed()
         }
     }
 
@@ -55,8 +41,8 @@ abstract class Quest(var type: QuestType) {
         private var description: String = ""
         private var dueTime: Long = 0
         private var rewards = ArrayList<QuestReward>()
-        private var penalty = ArrayList<QuestReward>()
-        private var require = ArrayList<QuestReward>()
+        private var penalty = ArrayList<QuestPenalty>()
+        private var require = ArrayList<QuestRequirement>()
 
         fun create(): T {
             return (clazz.newInstance() as T).also {
@@ -84,18 +70,18 @@ abstract class Quest(var type: QuestType) {
             return this
         }
 
-        fun addReward(key: String, value: Any): Builder<T> {
-            this.rewards.add(QuestReward(key, value))
+        fun addReward(reward: QuestReward): Builder<T> {
+            this.rewards.add(reward)
             return this
         }
 
-        fun addPenalty(key: String, value: Any): Builder<T> {
-            this.penalty.add(QuestReward(key, value))
+        fun addPenalty(penalty: QuestPenalty): Builder<T> {
+            this.penalty.add(penalty)
             return this
         }
 
-        fun addRequire(key: String, value: Any): Builder<T> {
-            this.require.add(QuestReward(key, value))
+        fun addRequire(requirement: QuestRequirement): Builder<T> {
+            this.require.add(requirement)
             return this
         }
     }

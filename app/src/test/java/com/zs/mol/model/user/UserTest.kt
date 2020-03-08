@@ -15,7 +15,7 @@ class UserTest {
 
         val userJson = Gson().toJson(user)
 
-        val parsedUser = UserManager.getUserGson().fromJson<User>(userJson, User::class.java)
+        val parsedUser = Gson().fromJson<User>(userJson, User::class.java)
 
         val newUserJson = Gson().toJson(parsedUser)
 
