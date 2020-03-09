@@ -12,9 +12,7 @@ class QuestViewModel : ViewModel() {
 
     val acceptQuests = MutableLiveData<ArrayList<Quest>>()
     val newQuests = MutableLiveData<ArrayList<Quest>>()
-
-    val dataNotify = MutableLiveData<Boolean>()
-
+    
     fun acceptQuest(id: String) {
         QuestManager.accept(id)
         acceptQuests.value = QuestManager.acceptedQuests

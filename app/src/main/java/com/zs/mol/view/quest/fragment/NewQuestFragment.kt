@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.zs.mol.R
@@ -15,11 +16,13 @@ import com.zs.mol.model.quest.detail.QuestDetailItem
 import com.zs.mol.view.base.BaseDialogFragment
 import com.zs.mol.view.quest.QuestRewardAdapter
 import com.zs.mol.view.quest.viewmodel.NewQuestViewModel
+import com.zs.mol.view.quest.viewmodel.UserStatusViewModel
 import kotlinx.android.synthetic.main.fragment_new_quest.*
 
 open class NewQuestFragment : BaseDialogFragment() {
 
-    val viewModel = NewQuestViewModel()
+    private val viewModel = NewQuestViewModel()
+    lateinit var userStatusViewModel: UserStatusViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,29 +40,33 @@ open class NewQuestFragment : BaseDialogFragment() {
     private fun handleArguments() {
         arguments?.apply {
             val questId = get("questId").toString()
-            QuestManager.getQuest(questId)?.also {
-                viewModel.questData.value = it
+            val quest = QuestManager.getQuest(questId)
+            if (quest == null) {
+                showToast(TextDB.getText(TextDB.Key.ERROR_QUEST_NOT_FOUND))
+                dismiss()
+            } else {
+                viewModel.questData.value = quest
             }
         }
     }
 
     fun init() {
+        initViewModels()
         handleArguments()
 
-        if (viewModel.questData.value == null) {
-            showToast(TextDB.getText(TextDB.Key.ERROR_QUEST_NOT_FOUND))
-            dismiss()
-            return
-        }
+        view?.findViewById<View>(R.id.acceptButton)?.setOnClickListener { onClickAccept() }
+        view?.findViewById<View>(R.id.rejectButton)?.setOnClickListener { onClickReject() }
+    }
+
+    private fun initViewModels() {
+        userStatusViewModel =
+            ViewModelProvider(requireActivity()).get(UserStatusViewModel::class.java)
 
         viewModel.questData.observe(viewLifecycleOwner, Observer {
             initQuestData(it)
             initRecyclerView(requireRecyclerView, it.requires)
             initRecyclerView(rewardRecyclerView, it.rewards)
         })
-
-        view?.findViewById<View>(R.id.acceptButton)?.setOnClickListener { onClickAccept() }
-        view?.findViewById<View>(R.id.rejectButton)?.setOnClickListener { onClickReject() }
     }
 
     private fun initQuestData(quest: Quest) {
@@ -67,7 +74,10 @@ open class NewQuestFragment : BaseDialogFragment() {
         questDescription.text = quest.description
     }
 
-    private fun initRecyclerView(recyclerView: RecyclerView, items: ArrayList<out QuestDetailItem>) {
+    private fun initRecyclerView(
+        recyclerView: RecyclerView,
+        items: ArrayList<out QuestDetailItem>
+    ) {
         activity?.also { activity ->
             rewardRecyclerView?.apply {
                 recyclerView.adapter = QuestRewardAdapter(items)

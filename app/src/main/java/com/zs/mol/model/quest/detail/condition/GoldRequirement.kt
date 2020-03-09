@@ -11,7 +11,7 @@ class GoldRequirement(value: Long) : QuestRequirement(ItemKey.GOLD, value) {
     }
 
     override fun onSuccess() {
-        UserManager.user.userStatus.useGold(amount)
+        UserManager.useGold(amount)
     }
 
     override fun toDescription(): String {
