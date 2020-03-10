@@ -2,15 +2,17 @@ package com.zs.mol
 
 import androidx.multidex.MultiDexApplication
 import com.zs.mol.model.GameManager
+import com.zs.mol.model.notification.NotiManager
 
 
-class App : MultiDexApplication() {
+class MolApp : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
         initTest()
     }
 
     private fun initTest() {
+        NotiManager.createChannels(applicationContext)
         GameManager.newGame(applicationContext)
     }
 }
