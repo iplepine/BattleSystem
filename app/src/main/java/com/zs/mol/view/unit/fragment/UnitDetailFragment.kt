@@ -1,12 +1,15 @@
 package com.zs.mol.view.unit.fragment
 
 import android.os.Bundle
+import android.text.InputType
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import com.zs.mol.R
 import com.zs.mol.model.stat.BaseStat.Companion.CHA
@@ -61,6 +64,7 @@ class UnitDetailFragment : BaseFragment() {
         initStatViews(secondStatSequence, secondStatViews, secondStatLayout)
 
         viewModel.unit.observe(viewLifecycleOwner, Observer { updateUnitInfo(it) })
+        renameButton.setOnClickListener { onClickRename() }
     }
 
     private fun handleArguments() {
@@ -169,6 +173,24 @@ class UnitDetailFragment : BaseFragment() {
                 title.setPadding(margin, 0, margin, 0)
                 skillLayout.addView(title)
             }
+        }
+    }
+
+    private fun onClickRename() {
+        context?.also {
+            val input = EditText(it)
+            input.inputType = InputType.TYPE_CLASS_TEXT
+
+            AlertDialog.Builder(it)
+                .setTitle("이름을 입력 해 주세요.")
+                .setView(input)
+                .setPositiveButton("변경") { _, _ -> viewModel.rename(input.text.toString()) }
+                .setNegativeButton("취소") { dialog, _ -> dialog.dismiss() }
+                .create()
+                .show()
+
+            input.requestFocus()
+            showSoftKey(input)
         }
     }
 }
