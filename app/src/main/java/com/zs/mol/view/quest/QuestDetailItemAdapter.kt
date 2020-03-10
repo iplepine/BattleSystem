@@ -1,17 +1,18 @@
 package com.zs.mol.view.quest
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.zs.mol.R
 import com.zs.mol.model.quest.detail.QuestDetailItem
+import com.zs.mol.view.base.OnClickItemListener
 
-class QuestRewardAdapter(private val items: ArrayList<out QuestDetailItem>) :
+class QuestDetailItemAdapter(
+    private val items: ArrayList<out QuestDetailItem>,
+    private val clickItemListener: OnClickItemListener<QuestDetailItem>
+) :
     RecyclerView.Adapter<QuestDetailViewHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuestDetailViewHolder {
-        val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_quest_reward, parent, false)
-        return QuestDetailViewHolder(view)
+        return QuestDetailViewHolder(parent, clickItemListener)
     }
 
     override fun getItemCount(): Int {
