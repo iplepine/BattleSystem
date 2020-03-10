@@ -1,5 +1,8 @@
 package com.zs.mol.view.base
 
+import android.app.Activity
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.zs.mol.model.common.Logger
@@ -36,6 +39,24 @@ open class BaseFragment : Fragment() {
     fun showToast(text: String) {
         context?.also {
             Toast.makeText(it, text, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun showSoftKey(view: View) {
+        activity?.apply {
+            view.post {
+                val inputMethodManager =
+                    getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.showSoftInput(view, 0)
+            }
+        }
+    }
+
+    fun hideSoftKey() {
+        activity?.apply {
+            val inputMethodManager =
+                getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(currentFocus.windowToken, 0)
         }
     }
 }
