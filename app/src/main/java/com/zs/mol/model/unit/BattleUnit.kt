@@ -19,7 +19,8 @@ import io.reactivex.subjects.PublishSubject
 import java.util.*
 import kotlin.collections.ArrayList
 
-class BattleUnit(owner: String, id: String = UUID.randomUUID().toString()) : BaseUnit(owner, id),
+open class BattleUnit(owner: String, id: String = UUID.randomUUID().toString()) :
+    BaseUnit(owner, id),
     MonoBehaviour {
 
     companion object {
@@ -158,7 +159,7 @@ class BattleUnit(owner: String, id: String = UUID.randomUUID().toString()) : Bas
         target: List<BattleUnit>,
         messageSubject: PublishSubject<String>? = null
     ) {
-        Logger.d("$name start casting [${skill.getName()}]")
+        Logger.d("${getName()} start casting [${skill.getName()}]")
         castingSkill = ReservedSkill(skill, target, messageSubject)
         changeState(State(UnitState.CASTING, castingSkill?.skill?.getCastingTime() ?: 0))
         if (state.isEnd()) {
@@ -172,11 +173,11 @@ class BattleUnit(owner: String, id: String = UUID.randomUUID().toString()) : Bas
         messageSubject: PublishSubject<String>? = null
     ) {
         skill.onEffect(this, target, messageSubject)
-        Logger.d("$name use [${skill.getName()}] immediately")
+        Logger.d("${getName()} use [${skill.getName()}] immediately")
     }
 
     private fun onFinishCasting() {
-        Logger.d("$name finish casting on [${castingSkill?.skill?.getName()}]")
+        Logger.d("${getName()} finish casting on [${castingSkill?.skill?.getName()}]")
         startEffect()
     }
 
@@ -210,7 +211,7 @@ class BattleUnit(owner: String, id: String = UUID.randomUUID().toString()) : Bas
 
     private fun ready(delay: Long) {
         changeState(State(UnitState.IDLE, delay))
-        Logger.d("$name is waiting next turn!")
+        Logger.d("${getName()} is waiting next turn!")
     }
 
     fun onStun(time: Long) {
@@ -239,10 +240,10 @@ class BattleUnit(owner: String, id: String = UUID.randomUUID().toString()) : Bas
         if (currentStat.secondStat[HP] <= 0.0) {
             currentStat.secondStat[HP] = 0.0
             changeState(State(UnitState.DIE))
-            Logger.d("$name died")
+            Logger.d("${getName()} died")
         } else {
             Logger.d(
-                "$name " +
+                "${getName()} " +
                         "HP : ${currentStat.secondStat[HP].toInt()}/${totalStat.secondStat[HP].toInt()}\n"
             )
         }
@@ -265,7 +266,7 @@ class BattleUnit(owner: String, id: String = UUID.randomUUID().toString()) : Bas
     }
 
     fun onTurn(battle: Battle) {
-        Logger.d("$name's turn!")
+        Logger.d("${getName()}'s turn!")
 
         if (battleUnitController == null) {
             Logger.d("Unit Controller is null")
@@ -278,7 +279,7 @@ class BattleUnit(owner: String, id: String = UUID.randomUUID().toString()) : Bas
 
     fun toSimpleInfo(): String {
         return StringBuilder().run {
-            append("Lv. $level $name")
+            append(unitStatus.toLevelName())
         }.toString()
     }
 

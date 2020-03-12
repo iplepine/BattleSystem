@@ -2,19 +2,15 @@ package com.zs.mol.model.unit
 
 import com.zs.mol.model.item.EquipItem
 import com.zs.mol.model.skill.SkillManager
-import com.zs.mol.model.stat.StatManager
 import com.zs.mol.model.skill.UnitSkill
 import com.zs.mol.model.skill.active.NormalAttack
 import com.zs.mol.model.stat.SecondStat
 import com.zs.mol.model.stat.Stat
+import com.zs.mol.model.stat.StatManager
 
 open class BaseUnit(var owner: String = "enemy", val id: String) {
-    var level = 1
-    var exp = 0L
-    var royalty = 100
-
-    var name = "Noname"
-    var job = "Novice"
+    var unitStatus = UnitStatus()
+    var hiringStatus = HiringStatus()
 
     var originalStat = Stat()
         set(value) {
@@ -34,15 +30,27 @@ open class BaseUnit(var owner: String = "enemy", val id: String) {
 
     override fun toString(): String {
         return StringBuilder()
-            .append("Lv. $level $name ")
+            .appendln(unitStatus.toLevelName())
             .append(totalStat)
             .toString()
     }
 
     fun levelUp() {
-        level++
+        unitStatus.level++
         addLevelUpStats()
         updateStat()
+    }
+
+    fun getLevel(): Int {
+        return unitStatus.level
+    }
+
+    fun getName(): String {
+        return unitStatus.name
+    }
+
+    fun setName(name: String) {
+        unitStatus.name = name
     }
 
     // 기본 증가값 + 현재 총 기본 스텟에 따른 증가값

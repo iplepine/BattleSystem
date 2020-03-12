@@ -22,7 +22,7 @@ object QuestFactory {
 
         return Quest.Builder(HireQuest::class.java)
             .setTitle("새로운 인물")
-            .setDescription("${unit.name}이 당신과 함께 일하고 싶어합니다.")
+            .setDescription("${unit.getName()}이 당신과 함께 일하고 싶어합니다.")
             .addRequire(GoldRequirement(300L))
             .addReward(UnitReward(unit))
             .setDueTime(30)

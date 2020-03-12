@@ -4,12 +4,19 @@ import com.zs.mol.model.unit.BattleUnit
 import io.reactivex.subjects.PublishSubject
 
 object UserManager {
-    var user: User = User("init")
+    object ReservedUserId {
+        const val GUEST = "guest"
+        const val ENEMY = "enemy"
+        const val NPC = "npc"
+    }
+
+    var user: User = User(ReservedUserId.GUEST)
 
     val updateSubject = PublishSubject.create<Boolean>()
 
     fun initUser(userId: String) {
         user = User(userId)
+        gainGold(5000)
     }
 
     fun getUserId(): String {
@@ -17,7 +24,7 @@ object UserManager {
     }
 
     fun getEnemyId(): String {
-        return "enemy"
+        return ReservedUserId.ENEMY
     }
 
     fun getUnits(): List<BattleUnit> {

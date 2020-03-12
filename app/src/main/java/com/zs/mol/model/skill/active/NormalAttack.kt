@@ -18,7 +18,7 @@ object NormalAttack : Skill(SkillDB.Key.NormalAttack) {
         target: BattleUnit,
         messageSubject: PublishSubject<String>?
     ) {
-        Logger.d("${user.name} use [${skillData.name}] to ${target.name}")
+        Logger.d("${user.getName()} use [${skillData.name}] to ${target.getName()}")
 
         if (BattleFunction.checkEvade(user, target)) {
             val message = "Miss!!"

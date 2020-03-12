@@ -12,6 +12,6 @@ class UnitReward(value: BattleUnit) : QuestReward(ItemKey.UNIT, value) {
     }
 
     override fun toDescription(): String {
-        return "Lv. ${unit.level} ${unit.name}"
+        return unit.unitStatus.toLevelName()
     }
 }

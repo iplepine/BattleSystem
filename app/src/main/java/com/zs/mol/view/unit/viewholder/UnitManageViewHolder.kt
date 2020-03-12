@@ -47,8 +47,8 @@ class UnitManageViewHolder(parent: ViewGroup, private val viewModel: UnitViewMod
     fun bind(unit: BattleUnit) {
         this.unit = unit
 
-        level.text = String.format("Lv.%d", unit.level)
-        name.text = unit.name
+        level.text = String.format("Lv.%d", unit.getLevel())
+        name.text = unit.getName()
 
         // hp
         val maxHp = unit.totalStat.secondStat.get(HP).toInt()

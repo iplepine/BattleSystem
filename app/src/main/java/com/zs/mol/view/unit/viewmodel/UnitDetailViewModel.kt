@@ -8,7 +8,7 @@ class UnitDetailViewModel : ViewModel() {
     val unit: MutableLiveData<BattleUnit> = MutableLiveData()
 
     fun rename(name: String) {
-        unit.value?.name = name
+        unit.value?.setName(name)
         unit.value = unit.value
     }
 }
