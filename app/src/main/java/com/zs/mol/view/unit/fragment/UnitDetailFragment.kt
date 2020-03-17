@@ -124,7 +124,7 @@ class UnitDetailFragment : BaseFragment() {
     }
 
     private fun updateUnitInfo(unit: BattleUnit) {
-        level.text = "Lv. ${unit.unitStatus.level}"
+        level.text = "Lv. ${unit.status.level}"
         name.text = unit.getName()
         royalty.text = "(${unit.hiringStatus.royalty})"
 

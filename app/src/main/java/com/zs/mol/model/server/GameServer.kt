@@ -2,10 +2,8 @@ package com.zs.mol.model.server
 
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
-import com.zs.mol.model.GameManager
 import com.zs.mol.model.server.GameServer.CollectionName.USERS
 import com.zs.mol.model.user.User
-import com.zs.mol.model.user.UserManager
 
 object GameServer {
     val TAG = "Server"

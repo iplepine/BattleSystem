@@ -1,4 +1,4 @@
-package com.zs.mol.model
+package com.zs.mol.model.game
 
 import android.content.Context
 import com.zs.mol.model.common.Logger

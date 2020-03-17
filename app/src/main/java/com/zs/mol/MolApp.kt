@@ -1,7 +1,7 @@
 package com.zs.mol
 
 import androidx.multidex.MultiDexApplication
-import com.zs.mol.model.GameManager
+import com.zs.mol.model.game.GameManager
 import com.zs.mol.model.notification.NotiManager
 
 

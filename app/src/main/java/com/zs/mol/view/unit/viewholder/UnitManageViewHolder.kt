@@ -5,10 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.zs.mol.R
+import com.zs.mol.model.action.UnitAction
 import com.zs.mol.model.stat.SecondStat.Companion.HP
 import com.zs.mol.model.stat.SecondStat.Companion.MP
 import com.zs.mol.model.unit.BattleUnit
-import com.zs.mol.model.unit.UnitAction
+import com.zs.mol.model.unit.UnitState
 import com.zs.mol.view.unit.viewmodel.UnitViewModel
 import kotlinx.android.synthetic.main.item_unit.view.*
 
@@ -76,16 +77,19 @@ class UnitManageViewHolder(parent: ViewGroup, private val viewModel: UnitViewMod
         //thumbnail.setImageResource(R.drawable.knight_idle_anim_f0)
 
         // action
-        bindUnitAction(unit.action)
+        bindUnitAction(unit.status.action)
     }
 
-    private fun bindUnitAction(action: UnitAction) {
-        when (action) {
-            UnitAction.IDLE -> actionView.setImageResource(R.drawable.baseline_play_arrow_black_36)
-            UnitAction.ADVENTURE -> actionView.setImageResource(R.drawable.baseline_play_arrow_black_48)
-            UnitAction.BATTLE -> actionView.setImageResource(R.drawable.weapon_sword_1)
-            UnitAction.REST -> actionView.setImageResource(R.drawable.baseline_hotel_black_48)
-            UnitAction.DIE -> actionView.setImageResource(R.drawable.baseline_clear_black_48)
+    private fun bindUnitAction(action: UnitAction?) {
+        action?.apply {
+            when (state) {
+                UnitState.IDLE -> actionView.text = "대기"
+                UnitState.WAITING -> actionView.text = "준비 중..."
+                UnitState.EXPEDITION -> actionView.text = "모험 중..."
+                UnitState.BATTLE -> actionView.text = "전투 중..."
+                UnitState.REST -> actionView.text = "휴식 중"
+                UnitState.DIE -> actionView.text = "사망"
+            }
         }
 
         timeView.visibility = View.GONE

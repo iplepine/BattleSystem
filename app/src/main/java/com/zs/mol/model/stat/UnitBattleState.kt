@@ -1,6 +1,6 @@
 package com.zs.mol.model.stat
 
-object UnitState {
+object UnitBattleState {
     const val IDLE = "idle"
     const val CASTING = "casting"
     const val EFFECT = "effect"

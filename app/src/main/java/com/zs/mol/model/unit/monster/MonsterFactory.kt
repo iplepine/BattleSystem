@@ -11,7 +11,7 @@ object MonsterFactory {
         }
 
         return Monster().apply {
-            unitStatus = monsterStatus
+            status = monsterStatus
             originalStat.baseStat = baseStat
 
             for (i in 0 until level) {

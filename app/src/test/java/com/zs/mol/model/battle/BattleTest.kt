@@ -8,7 +8,7 @@ import com.zs.mol.model.stat.SecondStat.Companion.ATK
 import com.zs.mol.model.stat.SecondStat.Companion.DEF
 import com.zs.mol.model.stat.SecondStat.Companion.EVADE
 import com.zs.mol.model.stat.SecondStat.Companion.HP
-import com.zs.mol.model.stat.UnitState
+import com.zs.mol.model.stat.UnitBattleState
 import com.zs.mol.model.unit.BattleUnit
 import com.zs.mol.model.unit.BattleUnitFactory
 import io.reactivex.subjects.PublishSubject
@@ -37,26 +37,26 @@ class BattleTest {
         assert(!battle.checkLose())
 
         // 아군 하나 살아남았을 때
-        myUnit1.changeState(UnitState.DIE)
-        myUnit2.changeState(UnitState.STUN)
-        enemyUnit1.changeState(UnitState.DIE)
-        enemyUnit2.changeState(UnitState.DIE)
+        myUnit1.changeState(UnitBattleState.DIE)
+        myUnit2.changeState(UnitBattleState.STUN)
+        enemyUnit1.changeState(UnitBattleState.DIE)
+        enemyUnit2.changeState(UnitBattleState.DIE)
         assert(battle.checkWin())
         assert(!battle.checkLose())
 
         // 적군 하나 살아남았을 때
-        myUnit1.changeState(UnitState.DIE)
-        myUnit2.changeState(UnitState.DIE)
-        enemyUnit1.changeState(UnitState.IDLE)
-        enemyUnit2.changeState(UnitState.DIE)
+        myUnit1.changeState(UnitBattleState.DIE)
+        myUnit2.changeState(UnitBattleState.DIE)
+        enemyUnit1.changeState(UnitBattleState.IDLE)
+        enemyUnit2.changeState(UnitBattleState.DIE)
         assert(!battle.checkWin())
         assert(battle.checkLose())
 
         // 모두 죽었을 때
-        myUnit1.changeState(UnitState.DIE)
-        myUnit2.changeState(UnitState.DIE)
-        enemyUnit1.changeState(UnitState.DIE)
-        enemyUnit2.changeState(UnitState.DIE)
+        myUnit1.changeState(UnitBattleState.DIE)
+        myUnit2.changeState(UnitBattleState.DIE)
+        enemyUnit1.changeState(UnitBattleState.DIE)
+        enemyUnit2.changeState(UnitBattleState.DIE)
         assert(!battle.checkWin())
         assert(battle.checkLose())
     }
@@ -105,19 +105,19 @@ class BattleTest {
         val enemy = BattleUnitFactory.createEnemy("enemy")
 
         unit.startCasting(unitSkill, arrayListOf(enemy))
-        assert(unit.state.name == UnitState.CASTING)
+        assert(unit.state.name == UnitBattleState.CASTING)
         assert(unitSkill.getCoolDown() == 0L)
 
         unit.updateTime(testSkill.skillData.castingTime)
-        assert(unit.state.name == UnitState.EFFECT)
+        assert(unit.state.name == UnitBattleState.EFFECT)
         assert(unitSkill.getCoolDown() == 0L)
 
         unit.updateTime(testSkill.skillData.effectTime)
-        assert(unit.state.name == UnitState.AFTER_DELAY)
+        assert(unit.state.name == UnitBattleState.AFTER_DELAY)
         assert(unitSkill.getCoolDown() == 0L)
 
         unit.updateTime(testSkill.skillData.afterDelay)
-        assert(unit.state.name == UnitState.IDLE)
+        assert(unit.state.name == UnitBattleState.IDLE)
         assert(unitSkill.getCoolDown() == testSkill.skillData.coolTime)
 
         unit.updateTime(testSkill.skillData.coolTime / 2)

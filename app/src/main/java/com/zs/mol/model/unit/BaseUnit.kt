@@ -9,7 +9,7 @@ import com.zs.mol.model.stat.Stat
 import com.zs.mol.model.stat.StatManager
 
 open class BaseUnit(var owner: String = "enemy", val id: String) {
-    var unitStatus = UnitStatus()
+    var status = UnitStatus()
     var hiringStatus = HiringStatus()
 
     var originalStat = Stat()
@@ -26,31 +26,29 @@ open class BaseUnit(var owner: String = "enemy", val id: String) {
 
     var equipItems = HashMap<String, EquipItem>()
 
-    var action = UnitAction.IDLE
-
     override fun toString(): String {
         return StringBuilder()
-            .appendln(unitStatus.toLevelName())
+            .appendln(status.toLevelName())
             .append(totalStat)
             .toString()
     }
 
     fun levelUp() {
-        unitStatus.level++
+        status.level++
         addLevelUpStats()
         updateStat()
     }
 
     fun getLevel(): Int {
-        return unitStatus.level
+        return status.level
     }
 
     fun getName(): String {
-        return unitStatus.name
+        return status.name
     }
 
     fun setName(name: String) {
-        unitStatus.name = name
+        status.name = name
     }
 
     // 기본 증가값 + 현재 총 기본 스텟에 따른 증가값

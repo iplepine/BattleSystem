@@ -1,6 +1,6 @@
 package com.zs.mol.view.base
 
-import com.zs.mol.model.GameManager
+import com.zs.mol.model.game.GameManager
 
 open class MainFragment : BaseFragment() {
     override fun onStop() {

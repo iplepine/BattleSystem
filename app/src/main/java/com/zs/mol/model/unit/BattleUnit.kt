@@ -14,7 +14,7 @@ import com.zs.mol.model.stat.SecondStat.Companion.HP
 import com.zs.mol.model.stat.SecondStat.Companion.MP
 import com.zs.mol.model.stat.SecondStat.Companion.WILL
 import com.zs.mol.model.stat.Stat
-import com.zs.mol.model.stat.UnitState
+import com.zs.mol.model.stat.UnitBattleState
 import io.reactivex.subjects.PublishSubject
 import java.util.*
 import kotlin.collections.ArrayList
@@ -29,7 +29,7 @@ open class BattleUnit(owner: String, id: String = UUID.randomUUID().toString()) 
     }
 
     val location = Location(0.0, 0.0)
-    var state = State(UnitState.IDLE)
+    var state = State(UnitBattleState.IDLE)
 
     val buffs = ArrayList<StatusEffect>()
     val deBuffs = ArrayList<StatusEffect>()
@@ -52,15 +52,15 @@ open class BattleUnit(owner: String, id: String = UUID.randomUUID().toString()) 
     }
 
     fun isDie(): Boolean {
-        return state.name == UnitState.DIE
+        return state.name == UnitBattleState.DIE
     }
 
     fun isAfterDelay(): Boolean {
-        return state.name == UnitState.AFTER_DELAY
+        return state.name == UnitBattleState.AFTER_DELAY
     }
 
     private fun isIdle(): Boolean {
-        return state.name == UnitState.IDLE
+        return state.name == UnitBattleState.IDLE
     }
 
     fun canAction(): Boolean {
@@ -137,11 +137,11 @@ open class BattleUnit(owner: String, id: String = UUID.randomUUID().toString()) 
     private fun updateState() {
         if (state.isEnd()) {
             when (state.name) {
-                UnitState.DIE -> return
-                UnitState.CASTING -> onFinishCasting()
-                UnitState.EFFECT -> onFinishEffect()
-                UnitState.AFTER_DELAY -> onFinishAfterDelay()
-                UnitState.STUN -> ready(0)
+                UnitBattleState.DIE -> return
+                UnitBattleState.CASTING -> onFinishCasting()
+                UnitBattleState.EFFECT -> onFinishEffect()
+                UnitBattleState.AFTER_DELAY -> onFinishAfterDelay()
+                UnitBattleState.STUN -> ready(0)
             }
         }
     }
@@ -161,7 +161,7 @@ open class BattleUnit(owner: String, id: String = UUID.randomUUID().toString()) 
     ) {
         Logger.d("${getName()} start casting [${skill.getName()}]")
         castingSkill = ReservedSkill(skill, target, messageSubject)
-        changeState(State(UnitState.CASTING, castingSkill?.skill?.getCastingTime() ?: 0))
+        changeState(State(UnitBattleState.CASTING, castingSkill?.skill?.getCastingTime() ?: 0))
         if (state.isEnd()) {
             updateState()
         }
@@ -182,7 +182,7 @@ open class BattleUnit(owner: String, id: String = UUID.randomUUID().toString()) 
     }
 
     private fun startEffect() {
-        changeState(State(UnitState.EFFECT, castingSkill?.skill?.getEffectTime() ?: 0))
+        changeState(State(UnitBattleState.EFFECT, castingSkill?.skill?.getEffectTime() ?: 0))
         if (state.isEnd()) {
             updateState()
         }
@@ -197,7 +197,7 @@ open class BattleUnit(owner: String, id: String = UUID.randomUUID().toString()) 
     }
 
     private fun startAfterDelay() {
-        changeState(State(UnitState.AFTER_DELAY, castingSkill?.skill?.getAfterDelay() ?: 0))
+        changeState(State(UnitBattleState.AFTER_DELAY, castingSkill?.skill?.getAfterDelay() ?: 0))
         if (state.isEnd()) {
             updateState()
         }
@@ -210,7 +210,7 @@ open class BattleUnit(owner: String, id: String = UUID.randomUUID().toString()) 
     }
 
     private fun ready(delay: Long) {
-        changeState(State(UnitState.IDLE, delay))
+        changeState(State(UnitBattleState.IDLE, delay))
         Logger.d("${getName()} is waiting next turn!")
     }
 
@@ -225,7 +225,7 @@ open class BattleUnit(owner: String, id: String = UUID.randomUUID().toString()) 
         }
 
         changeState(
-            State(UnitState.STUN, delay)
+            State(UnitBattleState.STUN, delay)
         )
         castingSkill = null
     }
@@ -239,7 +239,7 @@ open class BattleUnit(owner: String, id: String = UUID.randomUUID().toString()) 
 
         if (currentStat.secondStat[HP] <= 0.0) {
             currentStat.secondStat[HP] = 0.0
-            changeState(State(UnitState.DIE))
+            changeState(State(UnitBattleState.DIE))
             Logger.d("${getName()} died")
         } else {
             Logger.d(
@@ -279,7 +279,7 @@ open class BattleUnit(owner: String, id: String = UUID.randomUUID().toString()) 
 
     fun toSimpleInfo(): String {
         return StringBuilder().run {
-            append(unitStatus.toLevelName())
+            append(status.toLevelName())
         }.toString()
     }
 
