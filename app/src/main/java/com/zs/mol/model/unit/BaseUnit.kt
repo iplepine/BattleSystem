@@ -26,6 +26,8 @@ open class BaseUnit(var owner: String = "enemy", val id: String) {
 
     var equipItems = HashMap<String, EquipItem>()
 
+    var reports = ArrayList<Report>()
+
     override fun toString(): String {
         return StringBuilder()
             .appendln(status.toLevelName())

@@ -105,19 +105,19 @@ class BattleTest {
         val enemy = BattleUnitFactory.createEnemy("enemy")
 
         unit.startCasting(unitSkill, arrayListOf(enemy))
-        assert(unit.state.name == UnitBattleState.CASTING)
+        assert(unit.battleState.name == UnitBattleState.CASTING)
         assert(unitSkill.getCoolDown() == 0L)
 
         unit.updateTime(testSkill.skillData.castingTime)
-        assert(unit.state.name == UnitBattleState.EFFECT)
+        assert(unit.battleState.name == UnitBattleState.EFFECT)
         assert(unitSkill.getCoolDown() == 0L)
 
         unit.updateTime(testSkill.skillData.effectTime)
-        assert(unit.state.name == UnitBattleState.AFTER_DELAY)
+        assert(unit.battleState.name == UnitBattleState.AFTER_DELAY)
         assert(unitSkill.getCoolDown() == 0L)
 
         unit.updateTime(testSkill.skillData.afterDelay)
-        assert(unit.state.name == UnitBattleState.IDLE)
+        assert(unit.battleState.name == UnitBattleState.IDLE)
         assert(unitSkill.getCoolDown() == testSkill.skillData.coolTime)
 
         unit.updateTime(testSkill.skillData.coolTime / 2)

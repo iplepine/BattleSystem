@@ -29,7 +29,7 @@ open class BattleUnit(owner: String, id: String = UUID.randomUUID().toString()) 
     }
 
     val location = Location(0.0, 0.0)
-    var state = State(UnitBattleState.IDLE)
+    var battleState = State(UnitBattleState.IDLE)
 
     val buffs = ArrayList<StatusEffect>()
     val deBuffs = ArrayList<StatusEffect>()
@@ -52,19 +52,19 @@ open class BattleUnit(owner: String, id: String = UUID.randomUUID().toString()) 
     }
 
     fun isDie(): Boolean {
-        return state.name == UnitBattleState.DIE
+        return battleState.name == UnitBattleState.DIE
     }
 
     fun isAfterDelay(): Boolean {
-        return state.name == UnitBattleState.AFTER_DELAY
+        return battleState.name == UnitBattleState.AFTER_DELAY
     }
 
     private fun isIdle(): Boolean {
-        return state.name == UnitBattleState.IDLE
+        return battleState.name == UnitBattleState.IDLE
     }
 
     fun canAction(): Boolean {
-        return isIdle() && state.isEnd()
+        return isIdle() && battleState.isEnd()
     }
 
     override fun updateTime(time: Long) {
@@ -72,7 +72,7 @@ open class BattleUnit(owner: String, id: String = UUID.randomUUID().toString()) 
             return
         }
 
-        val spentTime = state.spendTime(time)
+        val spentTime = battleState.spendTime(time)
         timePast(spentTime)
         updateState()
 
@@ -135,8 +135,8 @@ open class BattleUnit(owner: String, id: String = UUID.randomUUID().toString()) 
     }
 
     private fun updateState() {
-        if (state.isEnd()) {
-            when (state.name) {
+        if (battleState.isEnd()) {
+            when (battleState.name) {
                 UnitBattleState.DIE -> return
                 UnitBattleState.CASTING -> onFinishCasting()
                 UnitBattleState.EFFECT -> onFinishEffect()
@@ -147,11 +147,11 @@ open class BattleUnit(owner: String, id: String = UUID.randomUUID().toString()) 
     }
 
     private fun changeState(state: State) {
-        this.state = state
+        this.battleState = state
     }
 
     fun changeState(stateName: String) {
-        this.state = State(stateName)
+        this.battleState = State(stateName)
     }
 
     fun startCasting(
@@ -162,7 +162,7 @@ open class BattleUnit(owner: String, id: String = UUID.randomUUID().toString()) 
         Logger.d("${getName()} start casting [${skill.getName()}]")
         castingSkill = ReservedSkill(skill, target, messageSubject)
         changeState(State(UnitBattleState.CASTING, castingSkill?.skill?.getCastingTime() ?: 0))
-        if (state.isEnd()) {
+        if (battleState.isEnd()) {
             updateState()
         }
     }
@@ -183,7 +183,7 @@ open class BattleUnit(owner: String, id: String = UUID.randomUUID().toString()) 
 
     private fun startEffect() {
         changeState(State(UnitBattleState.EFFECT, castingSkill?.skill?.getEffectTime() ?: 0))
-        if (state.isEnd()) {
+        if (battleState.isEnd()) {
             updateState()
         }
     }
@@ -198,7 +198,7 @@ open class BattleUnit(owner: String, id: String = UUID.randomUUID().toString()) 
 
     private fun startAfterDelay() {
         changeState(State(UnitBattleState.AFTER_DELAY, castingSkill?.skill?.getAfterDelay() ?: 0))
-        if (state.isEnd()) {
+        if (battleState.isEnd()) {
             updateState()
         }
     }
@@ -221,7 +221,7 @@ open class BattleUnit(owner: String, id: String = UUID.randomUUID().toString()) 
 
         var delay = time
         if (isIdle()) {
-            delay += state.delay
+            delay += battleState.delay
         }
 
         changeState(

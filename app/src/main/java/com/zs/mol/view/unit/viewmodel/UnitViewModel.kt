@@ -8,6 +8,7 @@ import io.reactivex.subjects.PublishSubject
 class UnitViewModel : ViewModel() {
     val onClickUnitSubject: PublishSubject<BattleUnit> = PublishSubject.create<BattleUnit>()
     val onClickUnitActionSubject: PublishSubject<BattleUnit> = PublishSubject.create<BattleUnit>()
+    val onClickUnitReportSubject: PublishSubject<BattleUnit> = PublishSubject.create<BattleUnit>()
 
     fun getUnitCount(): Int {
         return UserManager.getUnits().size

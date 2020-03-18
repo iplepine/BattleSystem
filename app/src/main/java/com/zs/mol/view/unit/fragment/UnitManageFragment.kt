@@ -8,12 +8,13 @@ import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zs.mol.R
-import com.zs.mol.model.unit.BaseUnit
 import com.zs.mol.model.common.Logger
+import com.zs.mol.model.game.GameEngine
 import com.zs.mol.model.unit.BattleUnit
 import com.zs.mol.view.base.MainFragment
 import com.zs.mol.view.unit.adapter.UnitAdapter
 import com.zs.mol.view.unit.viewmodel.UnitViewModel
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_unit_manage.*
 
 class UnitManageFragment : MainFragment() {
@@ -42,14 +43,22 @@ class UnitManageFragment : MainFragment() {
 
     override fun addSubscribers() {
         count++
-        addDisposable(viewModel.onClickUnitSubject.subscribe { unit ->
-            showUnitDetails(unit)
-            Logger.d("subscriber $count")
-        })
+        addDisposable(viewModel.onClickUnitSubject
+            .subscribe { unit ->
+                showUnitDetails(unit)
+                Logger.d("subscriber $count")
+            })
 
-        addDisposable(viewModel.onClickUnitActionSubject.subscribe { unit ->
-            showActionFragment(unit)
-        })
+        addDisposable(viewModel.onClickUnitActionSubject
+            .subscribe { unit ->
+                showActionFragment(unit)
+            })
+
+        addDisposable(GameEngine.timeSubject
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                adapter?.notifyDataSetChanged()
+            })
 
         Logger.d("add Subscribers, ${compositeDisposable.size()}")
     }
@@ -70,6 +79,5 @@ class UnitManageFragment : MainFragment() {
     }
 
     private fun showActionFragment(unit: BattleUnit) {
-
     }
 }

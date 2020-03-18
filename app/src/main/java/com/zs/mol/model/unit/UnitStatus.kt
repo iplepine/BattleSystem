@@ -1,6 +1,7 @@
 package com.zs.mol.model.unit
 
-import com.zs.mol.model.action.UnitAction
+import com.zs.mol.model.unit.action.UnitAction
+import com.zs.mol.model.unit.action.WaitingAction
 
 open class UnitStatus {
     var level = 1
@@ -11,7 +12,7 @@ open class UnitStatus {
     var jobClass = JobClass.NOVICE
 
     var state: UnitState = UnitState.IDLE
-    var action: UnitAction? = null
+    var action: UnitAction = WaitingAction(5000)
 
     fun toLevelName(): String {
         return "Lv. $level $name"

@@ -1,14 +1,21 @@
 package com.zs.mol
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
+import android.widget.TextView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.zs.mol.model.game.GameEngine
 import com.zs.mol.view.base.BaseActivity
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
+
+    var timeDisposable: Disposable? = null
+    var timeTextView: TextView? = null
+
+    var time = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,22 +23,31 @@ class MainActivity : BaseActivity() {
         setSupportActionBar(toolbar)
 
         initNavigation()
+
+        initViews()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
+    override fun onResume() {
+        super.onResume()
+        GameEngine.onResume()
+
+        timeDisposable = GameEngine.timeSubject
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                time += it
+                timeTextView?.text = time.toString()
+            }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
-        }
+    override fun onPause() {
+        super.onPause()
+        GameEngine.onPause()
+
+        timeDisposable?.dispose()
+    }
+
+    private fun initViews() {
+        timeTextView = timeView
     }
 
     private fun initNavigation() {

@@ -1,16 +1,17 @@
 package com.zs.mol.view.unit.viewholder
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.zs.mol.R
-import com.zs.mol.model.action.UnitAction
+import com.zs.mol.model.game.GameEngine
 import com.zs.mol.model.stat.SecondStat.Companion.HP
 import com.zs.mol.model.stat.SecondStat.Companion.MP
 import com.zs.mol.model.unit.BattleUnit
 import com.zs.mol.model.unit.UnitState
 import com.zs.mol.view.unit.viewmodel.UnitViewModel
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.item_unit.view.*
 
 class UnitManageViewHolder(parent: ViewGroup, private val viewModel: UnitViewModel) :
@@ -19,6 +20,9 @@ class UnitManageViewHolder(parent: ViewGroup, private val viewModel: UnitViewMod
             R.layout.item_unit, parent, false
         )
     ) {
+
+    var disposable: Disposable? = null
+
     val thumbnail = itemView.thumbnail
     val level = itemView.level
     val name = itemView.name
@@ -28,6 +32,7 @@ class UnitManageViewHolder(parent: ViewGroup, private val viewModel: UnitViewMod
     val mpBarText = itemView.mpBarText
     val actionView = itemView.action
     val timeView = itemView.time
+    val reportView = itemView.report
 
     var unit: BattleUnit? = null
 
@@ -43,6 +48,25 @@ class UnitManageViewHolder(parent: ViewGroup, private val viewModel: UnitViewMod
                 viewModel.onClickUnitActionSubject.onNext(it)
             }
         }
+
+        reportView.setOnClickListener {
+            unit?.also {
+                viewModel.onClickUnitReportSubject.onNext(it)
+            }
+        }
+    }
+
+    fun onAttached() {
+        disposable = GameEngine.timeSubject
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                updateView()
+            }
+    }
+
+    fun onDetached() {
+        disposable?.dispose()
+        disposable = null
     }
 
     fun bind(unit: BattleUnit) {
@@ -77,11 +101,11 @@ class UnitManageViewHolder(parent: ViewGroup, private val viewModel: UnitViewMod
         //thumbnail.setImageResource(R.drawable.knight_idle_anim_f0)
 
         // action
-        bindUnitAction(unit.status.action)
+        updateView()
     }
 
-    private fun bindUnitAction(action: UnitAction?) {
-        action?.apply {
+    private fun updateView() {
+        unit?.status?.action?.apply {
             when (state) {
                 UnitState.IDLE -> actionView.text = "대기"
                 UnitState.WAITING -> actionView.text = "준비 중..."
@@ -90,8 +114,17 @@ class UnitManageViewHolder(parent: ViewGroup, private val viewModel: UnitViewMod
                 UnitState.REST -> actionView.text = "휴식 중"
                 UnitState.DIE -> actionView.text = "사망"
             }
+
+            val timeToSecond = ((time - 1) / 1000).toInt() + 1
+            timeView.text = "$timeToSecond 초 남음"
         }
 
-        timeView.visibility = View.GONE
+        (unit?.reports?.size ?: 0).also {
+            if (it == 0) {
+                reportView.text = "보상 없음"
+            } else {
+                reportView.text = "얻은 보상 : $it"
+            }
+        }
     }
 }

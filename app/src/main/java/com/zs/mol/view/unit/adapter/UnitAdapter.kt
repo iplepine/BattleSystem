@@ -5,7 +5,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.zs.mol.view.unit.viewholder.UnitManageViewHolder
 import com.zs.mol.view.unit.viewmodel.UnitViewModel
 
-class UnitAdapter(private val viewModel: UnitViewModel) : RecyclerView.Adapter<UnitManageViewHolder>() {
+class UnitAdapter(private val viewModel: UnitViewModel) :
+    RecyclerView.Adapter<UnitManageViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UnitManageViewHolder {
         return UnitManageViewHolder(parent, viewModel)
@@ -17,5 +18,15 @@ class UnitAdapter(private val viewModel: UnitViewModel) : RecyclerView.Adapter<U
 
     override fun onBindViewHolder(holder: UnitManageViewHolder, position: Int) {
         holder.bind(viewModel.getUnit(position))
+    }
+
+    override fun onViewAttachedToWindow(holder: UnitManageViewHolder) {
+        super.onViewAttachedToWindow(holder)
+        holder.onAttached()
+    }
+
+    override fun onViewDetachedFromWindow(holder: UnitManageViewHolder) {
+        super.onViewDetachedFromWindow(holder)
+        holder.onDetached()
     }
 }
