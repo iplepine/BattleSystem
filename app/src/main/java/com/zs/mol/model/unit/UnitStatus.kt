@@ -8,6 +8,8 @@ open class UnitStatus {
     var exp = 0L
 
     var name = "NoName"
+    var faceImage = ""
+
     var race = Race.HUMAN
     var jobClass = JobClass.NOVICE
 

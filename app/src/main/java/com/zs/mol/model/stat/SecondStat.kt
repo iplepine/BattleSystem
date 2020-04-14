@@ -1,5 +1,7 @@
 package com.zs.mol.model.stat
 
+import com.zs.mol.model.battle.BattleFunction
+
 class SecondStat : HashMap<String, Double>() {
 
     companion object {
@@ -30,9 +32,9 @@ class SecondStat : HashMap<String, Double>() {
                     val baseStat = baseStat[baseStatKey]
                     val factor = StatManager.statFactors[baseStatKey]?.get(secondStatName) ?: 0.0
 
-                    val statBonus = 1 + (baseStat - (StatManager.Const.BASE_STAT_MAX / 2)) / 10.0
+                    val statBonus = BattleFunction.getStatBonus(baseStat)
 
-                    var upStat = factor * baseStat * statBonus
+                    var upStat = factor * baseStat + statBonus
                     if (useRandom) {
                         upStat *= Math.random()
                     }

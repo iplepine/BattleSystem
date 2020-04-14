@@ -1,6 +1,7 @@
 package com.zs.mol.view.unit.viewmodel
 
 import androidx.lifecycle.ViewModel
+import com.zs.mol.R
 import com.zs.mol.model.unit.BattleUnit
 import com.zs.mol.model.user.UserManager
 import io.reactivex.subjects.PublishSubject

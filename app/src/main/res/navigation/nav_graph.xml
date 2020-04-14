@@ -21,12 +21,38 @@
                 android:name="questId"
                 app:argType="string" />
         </action>
+
+        <action
+            android:id="@+id/action_questFragment_to_hireQuestFragment"
+            app:destination="@id/hireQuestFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:popEnterAnim="@anim/fragment_fade_enter">
+
+            <argument
+                android:name="questId"
+                app:argType="string" />
+        </action>
     </fragment>
 
     <dialog
         android:id="@+id/newQuestFragment"
         android:name="com.zs.mol.view.quest.fragment.NewQuestFragment"
         tools:layout="@layout/fragment_new_quest" />
+
+    <dialog
+        android:id="@+id/hireQuestFragment"
+        android:name="com.zs.mol.view.quest.fragment.HireQuestFragment"
+        tools:layout="@layout/fragment_new_quest_hire">
+
+        <action
+            android:id="@+id/action_hireQuestFragment_to_unitDetailFragment"
+            app:destination="@id/unitDetailFragment">
+
+            <argument
+                android:name="unitId"
+                app:argType="string" />
+        </action>
+    </dialog>
 
     <fragment
         android:id="@+id/unitManageFragment"
@@ -54,6 +80,12 @@
         tools:layout="@layout/fragment_town" />
 
     <fragment
+        android:id="@+id/dungeonFragment"
+        android:name="com.zs.mol.view.town.fragment.DungeonFragment"
+        android:label="@string/bottom_menu_town"
+        tools:layout="@layout/fragment_dungeon" />
+
+    <fragment
         android:id="@+id/inventoryFragment"
         android:name="com.zs.mol.view.inventory.fragment.InventoryFragment"
         android:label="@string/bottom_menu_store"
@@ -69,5 +101,6 @@
         android:id="@+id/unitDetailFragment"
         android:name="com.zs.mol.view.unit.fragment.UnitDetailFragment"
         tools:layout="@layout/fragment_unit_detail" />
+
 
 </navigation>

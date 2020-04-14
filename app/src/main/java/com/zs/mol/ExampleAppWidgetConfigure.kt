@@ -1,17 +1,20 @@
 package com.zs.mol
 
-import com.zs.mol.ExampleAppWidgetConfigure
+import android.app.Activity
+import android.appwidget.AppWidgetManager
+import android.widget.EditText
 
 class ExampleAppWidgetConfigure : Activity() {
     var mAppWidgetId: Int = AppWidgetManager.INVALID_APPWIDGET_ID
     var mAppWidgetPrefix: EditText? = null
-    fun onCreate(icicle: Bundle?) {
+
+    /*fun onCreate(icicle: Bundle?) {
         super.onCreate(icicle)
         // Set the result to CANCELED.  This will cause the widget host to cancel
 // out of the widget placement if they press the back button.
         setResult(RESULT_CANCELED)
         // Set the view layout resource to use.
-        setContentView(R.layout.appwidget_configure)
+        setContentView(R.layout.configure)
         // Find the EditText
         mAppWidgetPrefix = findViewById(R.id.appwidget_prefix) as EditText?
         // Bind the action for the save button.
@@ -89,5 +92,5 @@ class ExampleAppWidgetConfigure : Activity() {
             texts: ArrayList<String?>?
         ) {
         }
-    }
+    }*/
 }

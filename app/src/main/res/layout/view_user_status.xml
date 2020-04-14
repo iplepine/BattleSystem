@@ -7,30 +7,79 @@
     android:padding="16dp"
     tools:context=".MainActivity">
 
+    <ImageView
+        android:id="@+id/levelFrame"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/frame_level"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></ImageView>
+
     <TextView
-        android:id="@+id/level"
+        android:id="@+id/levelText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Lv. 1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></TextView>
+        android:layout_marginBottom="8dp"
+        android:text="34"
+        android:textColor="#FFFF00"
+        android:textSize="16dp"
+        app:layout_constraintBottom_toBottomOf="@id/levelFrame"
+        app:layout_constraintLeft_toLeftOf="@id/levelFrame"
+        app:layout_constraintRight_toRightOf="@id/levelFrame"
+        app:layout_constraintTop_toTopOf="@id/levelFrame"></TextView>
 
     <TextView
         android:id="@+id/nickname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:ellipsize="end"
+        android:maxWidth="140dp"
+        android:maxLines="1"
         android:text="noname"
-        app:layout_constraintBottom_toBottomOf="@id/level"
-        app:layout_constraintLeft_toRightOf="@id/level"
-        app:layout_constraintTop_toTopOf="@id/level"></TextView>
+        android:textColor="#fffb99"
+        app:layout_constraintLeft_toRightOf="@id/levelFrame"
+        app:layout_constraintTop_toTopOf="@id/levelText"></TextView>
+
+    <ImageView
+        android:id="@+id/gemIcon"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginRight="104dp"
+        android:src="@drawable/gem_01"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></ImageView>
 
     <TextView
-        android:id="@+id/gold"
-        android:layout_width="wrap_content"
+        android:id="@+id/gemText"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:text="0 G"
+        android:text="99,999,999,999"
+        android:textColor="#fffb99"
+        android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="@id/gemIcon"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/nickname"></TextView>
+        app:layout_constraintTop_toTopOf="@id/gemIcon"></TextView>
+
+    <ImageView
+        android:id="@+id/goldIcon"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="104dp"
+        android:src="@drawable/gold_01"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/gemIcon"></ImageView>
+
+    <TextView
+        android:id="@+id/goldText"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:textColor="#fffb99"
+        android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="@id/goldIcon"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/goldIcon"></TextView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

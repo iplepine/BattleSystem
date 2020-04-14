@@ -4,14 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.os.bundleOf
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.zs.mol.R
 import com.zs.mol.model.common.Logger
 import com.zs.mol.model.quest.Quest
+import com.zs.mol.model.quest.QuestType
 import com.zs.mol.model.user.UserManager
 import com.zs.mol.view.base.MainFragment
+import com.zs.mol.view.quest.adapter.QuestAdapter
 import com.zs.mol.view.quest.viewmodel.QuestViewModel
 import com.zs.mol.view.quest.viewmodel.UserStatusViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -21,6 +26,7 @@ import kotlinx.android.synthetic.main.view_user_status.view.*
 class QuestFragment : MainFragment() {
     val viewModel = QuestViewModel()
     lateinit var userStatusViewModel: UserStatusViewModel
+    var emptyQuestView: TextView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,13 +41,10 @@ class QuestFragment : MainFragment() {
         init()
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
-
     fun init() {
         initViewModels()
         updateUserStatusView()
+        initRecyclerView()
         eventButton.setOnClickListener { onClickNewQuest() }
         refreshButton.setOnClickListener { onClickRefresh() }
     }
@@ -55,25 +58,63 @@ class QuestFragment : MainFragment() {
             .subscribe {
                 updateUserStatusView()
             })
+
+        viewModel.listType.observe(viewLifecycleOwner, Observer {
+            refresh()
+        })
+
+        viewModel.selectedQuest.observe(viewLifecycleOwner, Observer {
+            if (it == null) {
+                closeQuestPopup()
+            } else {
+                openQuestPopup(it)
+            }
+        })
+    }
+
+    private fun initRecyclerView() {
+        recyclerView?.apply {
+            adapter = QuestAdapter(viewModel)
+            layoutManager = LinearLayoutManager(context)
+        }
+
+        checkQuestEmpty()
+    }
+
+    private fun checkQuestEmpty() {
+        if (emptyQuestView == null) {
+            emptyQuestView = emptyQuestText
+        }
+
+        emptyQuestView?.apply {
+            if (viewModel.isQuestEmpty()) {
+                visibility = View.VISIBLE
+            } else {
+                visibility = View.GONE
+            }
+        }
     }
 
     private fun updateUserStatusView() {
         UserManager.user?.apply {
-            userStatusView.level.text = "Lv. ${userStatus.level}"
+            userStatusView.levelText.text = "${userStatus.level}"
             userStatusView.nickname.text = id
-            userStatusView.gold.text = "${UserManager.getGold()} G"
+            //userStatusView.gemText.text = "${UserManager.getGem()}"
+            userStatusView.goldText.text = "${UserManager.getGold()}"
         }
 
         Logger.d("update user status, gold : ${UserManager.getGold()} G")
+    }
+
+    private fun refresh() {
+
     }
 
     private fun onClickNewQuest() {
         addDisposable(
             viewModel.onClickEventButton()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { quest ->
-                    openQuestPopup(quest)
-                }
+                .subscribe()
         )
     }
 
@@ -85,9 +126,18 @@ class QuestFragment : MainFragment() {
         }
     }
 
+    private fun closeQuestPopup() {
+        showToast("클로즈 팝업")
+    }
+
     private fun openQuestPopup(quest: Quest) {
+        val actionId = when (quest.type) {
+            QuestType.HIRE -> R.id.action_questFragment_to_hireQuestFragment
+            else -> R.id.action_questFragment_to_newQuestFragment
+        }
+
         findNavController().navigate(
-            R.id.action_questFragment_to_newQuestFragment,
+            actionId,
             bundleOf("questId" to quest.id)
         )
     }

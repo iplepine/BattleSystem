@@ -31,6 +31,9 @@ open class NewQuestFragment : BaseDialogFragment() {
 
     private var detailItemView: View? = null
 
+    var quest: Quest? = null
+        get() = viewModel.questData?.value
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -57,12 +60,13 @@ open class NewQuestFragment : BaseDialogFragment() {
         }
     }
 
-    fun init() {
+    open fun init() {
         initViewModels()
         handleArguments()
 
         view?.findViewById<View>(R.id.acceptButton)?.setOnClickListener { onClickAccept() }
         view?.findViewById<View>(R.id.rejectButton)?.setOnClickListener { onClickReject() }
+        view?.findViewById<View>(R.id.detailButton)?.setOnClickListener { onClickDetail() }
     }
 
     private fun initViewModels() {
@@ -121,6 +125,9 @@ open class NewQuestFragment : BaseDialogFragment() {
     private fun onClickReject() {
         viewModel.reject()
         dismiss()
+    }
+
+    open fun onClickDetail() {
     }
 
     private fun showDetailItemView(view: View, item: QuestDetailItem) {

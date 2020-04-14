@@ -6,6 +6,7 @@ import com.zs.mol.model.stat.SecondStat.Companion.ATK
 import com.zs.mol.model.stat.SecondStat.Companion.CRI
 import com.zs.mol.model.stat.SecondStat.Companion.EVADE
 import com.zs.mol.model.stat.SecondStat.Companion.HIT
+import com.zs.mol.model.stat.StatManager
 import com.zs.mol.model.unit.BattleUnit
 import kotlin.math.min
 
@@ -66,6 +67,21 @@ object BattleFunction {
         return min(
             BattleUnit.MINIMUM_DELAY, (BattleUnit.DEFAULT_DELAY - unit.totalStat.secondStat.get(
                 SecondStat.SPEED
-            )).toLong())
+            )).toLong()
+        )
+    }
+
+
+    /**
+     *      6   7   8   9   10  11  12  13  14  15  16  17  18
+     *      -3  -2  -2  -1  -1  0   0   0   1   1   2   2   3
+     */
+    fun getStatBonus(stat: Double): Int {
+        val max = StatManager.Const.MAX_STAT
+        val min = StatManager.Const.MIN_STAT
+
+        val mid = (max + min) / 2
+
+        return ((stat - mid) / 2).toInt()
     }
 }

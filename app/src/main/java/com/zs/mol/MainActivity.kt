@@ -1,7 +1,7 @@
 package com.zs.mol
 
 import android.os.Bundle
-import android.widget.TextView
+import android.util.Log
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.zs.mol.model.game.GameEngine
@@ -13,17 +13,14 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : BaseActivity() {
 
     var timeDisposable: Disposable? = null
-    var timeTextView: TextView? = null
-
     var time = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
 
+        handleIntent()
         initNavigation()
-
         initViews()
     }
 
@@ -35,7 +32,6 @@ class MainActivity : BaseActivity() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 time += it
-                timeTextView?.text = time.toString()
             }
     }
 
@@ -46,8 +42,15 @@ class MainActivity : BaseActivity() {
         timeDisposable?.dispose()
     }
 
+    private fun handleIntent() {
+        if (intent == null) {
+            Log.e("인텐트", "널널")
+        } else {
+            Log.e("인텐트", "노널널")
+        }
+    }
+
     private fun initViews() {
-        timeTextView = timeView
     }
 
     private fun initNavigation() {

@@ -2,7 +2,6 @@ package com.zs.mol.view.base
 
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
 import com.zs.mol.model.common.Logger
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable

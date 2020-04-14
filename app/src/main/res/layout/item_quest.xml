@@ -15,11 +15,35 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"></TextView>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
+            <TextView
+                android:id="@+id/questTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="퀘스트 이름"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"></TextView>
+
+            <TextView
+                android:id="@+id/dueTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="남은 시간 : 30:10"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/title"></TextView>
+
+            <TextView
+                android:id="@+id/questDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="퀘스트 내용"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/questTitle"></TextView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

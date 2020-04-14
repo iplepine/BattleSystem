@@ -9,6 +9,7 @@ import com.zs.mol.model.user.UserManager
 
 object PreferenceManager {
 
+    private const val PREF = "mol_pref"
     private const val USER = "user"
     private const val INVENTORY = "inventory"
 
@@ -16,6 +17,26 @@ object PreferenceManager {
 
     private fun toJson(any: Any): String {
         return Gson().toJson(any)
+    }
+
+    fun getInt(context: Context, key: String): Int {
+        val preferences = context.getSharedPreferences(PREF, MODE_PRIVATE)
+        return preferences.getInt(key, 0)
+    }
+
+    fun setInt(context: Context, key: String, value: Int) {
+        val preferences = context.getSharedPreferences(PREF, MODE_PRIVATE)
+        preferences.edit().putInt(key, value).commit()
+    }
+
+    fun getString(context: Context, key: String, value: String): String {
+        val preferences = context.getSharedPreferences(PREF, MODE_PRIVATE)
+        return preferences.getString(key, "")
+    }
+
+    fun setString(context: Context, key: String, value: String) {
+        val preferences = context.getSharedPreferences(PREF, MODE_PRIVATE)
+        preferences.edit().putString(key, value).commit()
     }
 
     fun saveUser(context: Context) {

@@ -5,11 +5,11 @@ import java.util.concurrent.ConcurrentHashMap
 
 object QuestManager {
     val acceptedQuests = ArrayList<Quest>()
-    val newQuests = ConcurrentHashMap<String, Quest>()
+    val requests = ConcurrentHashMap<String, Quest>()
 
     fun createNewRequest(type: QuestType): Quest? {
         return QuestFactory.createQuest(type)?.apply {
-            newQuests[id] = this
+            requests[id] = this
         }
     }
 
@@ -19,7 +19,7 @@ object QuestManager {
     }
 
     fun accept(id: String) {
-        newQuests[id]?.also {
+        requests[id]?.also {
             when (it.type) {
                 QuestType.HIRE -> {
                     if (it.checkSuccess()) {
@@ -30,17 +30,17 @@ object QuestManager {
                 }
                 else -> acceptedQuests.add(it)
             }
-            newQuests.remove(it.id)
+            requests.remove(it.id)
         }
     }
 
     fun reject(id: String) {
-        newQuests[id]?.apply {
-            newQuests.remove(id)
+        requests[id]?.apply {
+            requests.remove(id)
         }
     }
 
     fun getQuest(id: String?): Quest? {
-        return newQuests[id] ?: acceptedQuests.find { it.id == id }
+        return requests[id] ?: acceptedQuests.find { it.id == id }
     }
 }

@@ -4,8 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.zs.mol.model.quest.Quest
 import com.zs.mol.model.quest.QuestManager
-import com.zs.mol.model.quest.detail.QuestDetailItem
-import io.reactivex.subjects.PublishSubject
 
 class NewQuestViewModel : ViewModel() {
 

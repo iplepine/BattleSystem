@@ -9,19 +9,39 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
         <activity
             android:name="com.zs.mol.MainActivity"
             android:configChanges="screenSize|layoutDirection"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".WidgetConfigure">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+
+        <receiver android:name=".widget.UnitManagementWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/unit_widget_info" />
+        </receiver>
+
+        <receiver android:name=".widget.AlarmReceiver"></receiver>
+
+        <service
+            android:name=".widget.WidgetUpdateService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 
 </manifest>

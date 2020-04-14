@@ -35,6 +35,10 @@ object UserManager {
         return user.id === id
     }
 
+    fun getGem(): Long {
+        return user.userStatus.gem
+    }
+
     fun getGold(): Long {
         return user.userStatus.gold
     }

@@ -6,6 +6,7 @@ import com.zs.mol.model.quest.QuestType
 import com.zs.mol.model.quest.detail.condition.GoldRequirement
 import com.zs.mol.model.quest.detail.reward.UnitReward
 import com.zs.mol.model.unit.BattleUnitFactory
+import com.zs.mol.model.unit.UnitManager
 
 object QuestFactory {
     fun createQuest(type: QuestType): Quest? {
@@ -19,6 +20,7 @@ object QuestFactory {
 
     private fun createHireQuest(): HireQuest {
         val unit = BattleUnitFactory.createMyUnit()
+        UnitManager.addUnit(unit)
 
         return Quest.Builder(HireQuest::class.java)
             .setTitle("새로운 인물")

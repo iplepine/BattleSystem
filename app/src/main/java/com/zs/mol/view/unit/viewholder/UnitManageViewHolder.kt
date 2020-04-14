@@ -1,5 +1,6 @@
 package com.zs.mol.view.unit.viewholder
 
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -8,6 +9,7 @@ import com.zs.mol.model.game.GameEngine
 import com.zs.mol.model.stat.SecondStat.Companion.HP
 import com.zs.mol.model.stat.SecondStat.Companion.MP
 import com.zs.mol.model.unit.BattleUnit
+import com.zs.mol.model.unit.BattleUnitFactory
 import com.zs.mol.model.unit.UnitState
 import com.zs.mol.view.unit.viewmodel.UnitViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -23,7 +25,7 @@ class UnitManageViewHolder(parent: ViewGroup, private val viewModel: UnitViewMod
 
     var disposable: Disposable? = null
 
-    val thumbnail = itemView.thumbnail
+    val face = itemView.face
     val level = itemView.level
     val name = itemView.name
     val hpBar = itemView.hpBar
@@ -97,8 +99,19 @@ class UnitManageViewHolder(parent: ViewGroup, private val viewModel: UnitViewMod
         }
         mpBarText.text = "$currentMp / $maxMp"
 
-        // thumbnail
-        //thumbnail.setImageResource(R.drawable.knight_idle_anim_f0)
+        // face
+        face.context?.apply {
+            if (TextUtils.isEmpty(unit.status.faceImage)) {
+                unit.status.faceImage = BattleUnitFactory.getRandomFace()
+            }
+
+            val id = resources.getIdentifier(unit.status.faceImage, "drawable", packageName)
+            if (id == 0) {// error
+                face.setImageResource(R.drawable.char_face_f_1)
+            } else {
+                face.setImageResource(id)
+            }
+        }
 
         // action
         updateView()
