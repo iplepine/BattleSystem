@@ -7,7 +7,12 @@ open class UnitAction(time: Long) {
         READY, PAUSE, RUNNING, SUCCESS, FAILED
     }
 
+    enum class ActionType {
+        IDLE, REST, DIE, WAITING, EXPEDITION, BATTLE
+    }
+
     var state = State.READY
+    var actionType = ActionType.IDLE
     var time = time
 
     fun updateTime(time: Long) {

@@ -39,14 +39,10 @@ class UnitManageFragment : MainFragment() {
         initRecyclerView()
     }
 
-    var count = 0
-
     override fun addSubscribers() {
-        count++
         addDisposable(viewModel.onClickUnitSubject
             .subscribe { unit ->
                 showUnitDetails(unit)
-                Logger.d("subscriber $count")
             })
 
         addDisposable(viewModel.onClickUnitActionSubject
@@ -57,7 +53,7 @@ class UnitManageFragment : MainFragment() {
         addDisposable(GameEngine.timeSubject
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                adapter?.notifyDataSetChanged()
+                //adapter?.notifyDataSetChanged()
             })
 
         Logger.d("add Subscribers, ${compositeDisposable.size()}")
@@ -68,6 +64,12 @@ class UnitManageFragment : MainFragment() {
             recyclerView.layoutManager = LinearLayoutManager(context)
             adapter = UnitAdapter(viewModel)
             recyclerView.adapter = adapter
+        }
+
+        if (viewModel.getUnitCount() == 0) {
+            emptyText.visibility = View.VISIBLE
+        } else {
+            emptyText.visibility = View.GONE
         }
     }
 

@@ -16,9 +16,9 @@ class QuestItemViewHolder(parent: ViewGroup, private val viewModel: QuestViewMod
     ) {
     private var quest: Quest? = null
 
-    private var title = itemView.findViewById<TextView>(R.id.questTitle)
-    private var description = itemView.findViewById<TextView>(R.id.questDescription)
-    private var dueTime = itemView.findViewById<TextView>(R.id.dueTime)
+    private val title = itemView.findViewById<TextView>(R.id.questTitle)
+    private val description = itemView.findViewById<TextView>(R.id.questDescription)
+    private val dueTime = itemView.findViewById<TextView>(R.id.dueTime)
 
     init {
         itemView.setOnClickListener { quest?.also { viewModel.onClickQuestItem(it) } }

@@ -1,3 +1,4 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="user_info_view_size">52dp</dimen>
 </resources>

@@ -83,7 +83,7 @@ class QuestFragment : MainFragment() {
 
     private fun checkQuestEmpty() {
         if (emptyQuestView == null) {
-            emptyQuestView = emptyQuestText
+            emptyQuestView = emptyText
         }
 
         emptyQuestView?.apply {
