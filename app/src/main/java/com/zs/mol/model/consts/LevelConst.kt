@@ -28,6 +28,10 @@ object LevelConst {
         return level * (level + 2L)
     }
 
+    fun getBasicExp(level: Int): Int {
+        return 10 * level + (level / 5 - 1) * 5
+    }
+
     fun getBalancedExp(exp: Long, expLevel: Int, takerLevel: Int): Long {
         val levelDiff = takerLevel - expLevel
         return max(1, (exp * (1 - levelDiff / 10.0)).toLong())
