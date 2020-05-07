@@ -1,4 +1,4 @@
-package com.zs.mol.model.const
+package com.zs.mol.model.consts
 
 object ManNamePool {
     val NAME_LIST = arrayOf(

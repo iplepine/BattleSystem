@@ -17,7 +17,7 @@ class RandomUtilTest {
         println("time : " + (System.currentTimeMillis() - current))
         current = System.currentTimeMillis()
         for (i in 0..10000) {
-            RandomUtil.weightedRandomIndex(weights)
+            RandomUtil.weightedIndex(weights)
         }
         println("time : " + (System.currentTimeMillis() - current))
         // 1 3 6 10 15 21

@@ -1,7 +1,7 @@
 package com.zs.mol.model.unit
 
-import com.zs.mol.model.const.ManNamePool
-import com.zs.mol.model.const.WomanNamePool
+import com.zs.mol.model.consts.ManNamePool
+import com.zs.mol.model.consts.WomanNamePool
 import com.zs.mol.model.stat.StatFactory
 import com.zs.mol.model.user.UserManager
 import kotlin.random.Random
