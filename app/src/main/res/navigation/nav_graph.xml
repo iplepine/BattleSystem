@@ -80,15 +80,9 @@
         tools:layout="@layout/fragment_town" />
 
     <fragment
-        android:id="@+id/dungeonFragment"
-        android:name="com.zs.mol.view.town.fragment.DungeonFragment"
-        android:label="@string/bottom_menu_town"
-        tools:layout="@layout/fragment_dungeon" />
-
-    <fragment
         android:id="@+id/inventoryFragment"
         android:name="com.zs.mol.view.inventory.fragment.InventoryFragment"
-        android:label="@string/bottom_menu_store"
+        android:label="@string/bottom_menu_inventory"
         tools:layout="@layout/fragment_inventory" />
 
     <fragment
@@ -102,5 +96,9 @@
         android:name="com.zs.mol.view.unit.fragment.UnitDetailFragment"
         tools:layout="@layout/fragment_unit_detail" />
 
+    <fragment
+        android:id="@+id/dungeonFragment"
+        android:name="com.zs.mol.view.dungeon.DungeonFragment"
+        tools:layout="@layout/fragment_dungeon" />
 
 </navigation>

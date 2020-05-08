@@ -1,14 +1,16 @@
-package com.zs.mol.view.town.fragment
+package com.zs.mol.view.dungeon
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import com.zs.mol.R
 import com.zs.mol.view.base.MainFragment
-import kotlinx.android.synthetic.main.fragment_town.*
 
 class DungeonFragment : MainFragment() {
+    var viewModel: DungeonViewModel? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -23,10 +25,12 @@ class DungeonFragment : MainFragment() {
     }
 
     private fun init() {
-        dungeon.setOnClickListener { onClickDungeon() }
+        activity?.application?.also {
+            val viewModelFactory = ViewModelProvider.AndroidViewModelFactory(it)
+            viewModel = ViewModelProvider(this, viewModelFactory).get(DungeonViewModel::class.java)
+        }
     }
 
-    private fun onClickDungeon() {
-
+    private fun changeDungeon() {
     }
 }
