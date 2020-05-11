@@ -47,7 +47,7 @@ class UnitManageFragment : MainFragment() {
 
         addDisposable(viewModel.onClickUnitActionSubject
             .subscribe { unit ->
-                showActionFragment(unit)
+                showFieldMap(unit)
             })
 
         addDisposable(GameEngine.timeSubject
@@ -80,6 +80,10 @@ class UnitManageFragment : MainFragment() {
         )
     }
 
-    private fun showActionFragment(unit: BattleUnit) {
+    private fun showFieldMap(unit: BattleUnit) {
+        findNavController().navigate(
+            R.id.action_unitManageFragment_to_unitDetailFragment,
+            bundleOf("unitId" to unit.id)
+        )
     }
 }
