@@ -5,4 +5,5 @@
     <color name="colorAccent">#D81B60</color>
     <color name="background_quest">#3c2811</color>
     <color name="background_dungeon">#162b29</color>
+    <color name="background_unit">#63000000</color>
 </resources>

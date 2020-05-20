@@ -6,8 +6,9 @@ import com.zs.mol.model.stat.SecondStat.Companion.ATK
 import com.zs.mol.model.stat.SecondStat.Companion.CRI
 import com.zs.mol.model.stat.SecondStat.Companion.EVADE
 import com.zs.mol.model.stat.SecondStat.Companion.HIT
-import com.zs.mol.model.stat.StatManager
+import com.zs.mol.model.stat.StatFactory
 import com.zs.mol.model.unit.BattleUnit
+import kotlin.math.max
 import kotlin.math.min
 
 object BattleFunction {
@@ -77,11 +78,11 @@ object BattleFunction {
      *      -3  -2  -2  -1  -1  0   0   0   1   1   2   2   3
      */
     fun getStatBonus(stat: Double): Int {
-        val max = StatManager.Const.MAX_STAT
-        val min = StatManager.Const.MIN_STAT
+        val max = StatFactory.MAX_STAT
+        val min = StatFactory.MIN_STAT
 
         val mid = (max + min) / 2
 
-        return ((stat - mid) / 2).toInt()
+        return max(0.0, (stat - mid) / 2).toInt()
     }
 }

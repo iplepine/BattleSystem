@@ -6,10 +6,8 @@ import org.junit.Test
 class BattleUnitFactoryTest {
     @Test
     fun createUnitTest() {
-        val unit = BattleUnitFactory.createMyUnit("test")
-        Logger.d(unit.toString())
         for (i in 1 until 10) {
-            unit.levelUp()
+            val unit = BattleUnitFactory.createMyUnit("test")
             Logger.d(unit.toString())
         }
     }

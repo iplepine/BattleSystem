@@ -3,6 +3,7 @@ package com.zs.mol.model.quest
 import com.zs.mol.model.quest.detail.condition.QuestRequirement
 import com.zs.mol.model.quest.detail.penalty.QuestPenalty
 import com.zs.mol.model.quest.detail.reward.QuestReward
+import com.zs.mol.model.quest.detail.reward.UnitReward
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -14,6 +15,13 @@ abstract class Quest(var type: QuestType) {
     var penalty: ArrayList<QuestPenalty> = ArrayList()
     var requires: ArrayList<QuestRequirement> = ArrayList()
     var id: String = UUID.randomUUID().toString()
+
+    fun isValid(): Boolean {
+        return when (type) {
+            QuestType.HIRE -> return rewards.isNotEmpty() && (rewards[0] as? UnitReward)?.unit != null
+            else -> true
+        }
+    }
 
     open fun checkSuccess(): Boolean {
         return requires.find { !it.checkRequire() } == null

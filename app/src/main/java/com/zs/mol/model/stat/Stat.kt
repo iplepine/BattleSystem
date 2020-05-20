@@ -22,6 +22,14 @@ data class Stat(
         }
     }
 
+    fun getStat(key: String): Double {
+        return when {
+            baseStat.containsKey(key) -> baseStat[key]
+            secondStat.containsKey(key) -> secondStat[key]
+            else -> 0.0
+        }
+    }
+
     fun add(stat: Stat) {
         baseStat.plus(stat.baseStat)
         secondStat.plus(stat.secondStat)

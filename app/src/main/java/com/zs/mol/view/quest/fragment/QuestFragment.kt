@@ -131,6 +131,11 @@ class QuestFragment : MainFragment() {
     }
 
     private fun openQuestPopup(quest: Quest) {
+        if (!quest.isValid()) {
+            showToast(R.string.error_message_quest_not_valid)
+            return
+        }
+
         val actionId = when (quest.type) {
             QuestType.HIRE -> R.id.action_questFragment_to_hireQuestFragment
             else -> R.id.action_questFragment_to_newQuestFragment

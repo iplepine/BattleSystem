@@ -41,8 +41,8 @@
 
     <dialog
         android:id="@+id/hireQuestFragment"
-        android:name="com.zs.mol.view.quest.fragment.HireQuestFragment"
-        tools:layout="@layout/fragment_new_quest_hire">
+        android:name="com.zs.mol.view.quest.fragment.UnitHireFragment"
+        tools:layout="@layout/fragment_hire">
 
         <action
             android:id="@+id/action_hireQuestFragment_to_unitDetailFragment"

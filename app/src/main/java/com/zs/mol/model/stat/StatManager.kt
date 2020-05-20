@@ -6,11 +6,6 @@ package com.zs.mol.model.stat
  */
 
 object StatManager {
-    object Const {
-        const val MAX_STAT = 18.0
-        const val MIN_STAT = 6.0
-    }
-
     private val LEVEL_UP_DEFAULT_FACTORS = arrayOf(
         10, 5, 1, 2, 1, 0, 1, 0.05, 0.005, 0.05, 0.01
     )

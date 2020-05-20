@@ -36,6 +36,12 @@ open class BaseFragment : Fragment() {
         compositeDisposable.clear()
     }
 
+    fun showToast(resourceId: Int) {
+        context?.also {
+            Toast.makeText(it, resourceId, Toast.LENGTH_SHORT).show()
+        }
+    }
+
     fun showToast(text: String) {
         context?.also {
             Toast.makeText(it, text, Toast.LENGTH_SHORT).show()

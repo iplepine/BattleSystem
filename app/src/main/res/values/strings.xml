@@ -9,4 +9,5 @@
     <string name="bottom_menu_store">Store</string>
     <string name="bottom_menu_inventory">Inventory</string>
 
+    <string name="error_message_quest_not_valid">알 수 없는 의뢰입니다.</string>
 </resources>

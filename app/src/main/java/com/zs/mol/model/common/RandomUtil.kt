@@ -3,8 +3,16 @@ package com.zs.mol.model.common
 import kotlin.random.Random
 
 object RandomUtil {
+    fun rand(min: Int, max: Int): Int {
+        return (Math.random() * (max - min) + min).toInt()
+    }
+
     fun rand(min: Double, max: Double): Double {
         return Math.random() * (max - min) + min
+    }
+
+    fun isOver(value: Double, limit: Double): Boolean {
+        return Math.random() * value > limit
     }
 
     fun isOver(value: Double): Boolean {
