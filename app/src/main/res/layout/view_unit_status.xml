@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="unitStatusViewModel"
+            type="com.zs.mol.view.unit.viewmodel.UnitStatusViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:context=".MainActivity">
+
+        <View
+            android:id="@+id/thumbnailBackground"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/frame"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"></View>
+
+        <ImageView
+            android:id="@+id/thumbnail"
+            setFaceImage="@{unitStatusViewModel.faceImage}"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:padding="12dp"
+            android:src="@drawable/char_face_m_34"
+            app:layout_constraintBottom_toBottomOf="@id/thumbnailBackground"
+            app:layout_constraintLeft_toLeftOf="@id/thumbnailBackground"
+            app:layout_constraintRight_toRightOf="@id/thumbnailBackground"
+            app:layout_constraintTop_toTopOf="@id/thumbnailBackground"></ImageView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            app:layout_constraintLeft_toRightOf="@id/thumbnailBackground"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/thumbnailBackground">
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{unitStatusViewModel.name}"
+                android:textSize="18dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"></TextView>
+
+            <Button
+                android:id="@+id/renameButton"
+                android:layout_width="40dp"
+                android:layout_height="0dp"
+                android:background="@drawable/frame_c3_01"
+                android:text="변경"
+                android:textAlignment="center"
+                android:textSize="14dp"
+                app:layout_constraintBottom_toBottomOf="@id/name"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/name"></Button>
+
+            <TextView
+                android:id="@+id/level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{unitStatusViewModel.levelText}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/name"></TextView>
+
+            <TextView
+                android:id="@+id/exp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{unitStatusViewModel.expText}"
+                app:layout_constraintLeft_toRightOf="@id/level"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/level"></TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="HP"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/level"></TextView>
+
+            <TextView
+                android:id="@+id/hpBarText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{unitStatusViewModel.hpTex}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/level"></TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MP"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/hpBarText"></TextView>
+
+            <TextView
+                android:id="@+id/mpBarText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{unitStatusViewModel.mpTex}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/hpBarText"></TextView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/statTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="능력치"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/thumbnailBackground"></TextView>
+
+        <LinearLayout
+            android:id="@+id/statLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="6dp"
+            android:orientation="horizontal"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/statTitle">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/stat_name_str"></TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/stat_name_dex"></TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/stat_name_int"></TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/statStr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{unitStatusViewModel.getStatText(`STR`)}"
+                    android:textAlignment="textEnd"></TextView>
+
+                <TextView
+                    android:id="@+id/statDex"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{unitStatusViewModel.getStatText(`DEX`)}"
+                    android:textAlignment="textEnd"></TextView>
+
+                <TextView
+                    android:id="@+id/statInt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{unitStatusViewModel.getStatText(`INT`)}"
+                    android:textAlignment="textEnd"></TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/stat_name_con"></TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/stat_name_wis"></TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/stat_name_cha"></TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/statCon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{unitStatusViewModel.getStatText(`CON`)}"
+                    android:textAlignment="textEnd"></TextView>
+
+                <TextView
+                    android:id="@+id/statWIs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{unitStatusViewModel.getStatText(`WIS`)}"
+                    android:textAlignment="textEnd"></TextView>
+
+                <TextView
+                    android:id="@+id/statCha"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{unitStatusViewModel.getStatText(`CHA`)}"
+                    android:textAlignment="textEnd"></TextView>
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/skillTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="스킬"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/statLayout"></TextView>
+
+        <HorizontalScrollView
+            android:id="@+id/skillLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:minHeight="48dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/skillTitle">
+
+            <LinearLayout
+                android:id="@+id/skillSlotLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <include
+                    layout="@layout/item_skill_unit"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_margin="6dp"></include>
+
+                <include
+                    layout="@layout/item_skill_unit"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_margin="6dp"></include>
+
+                <include
+                    layout="@layout/item_skill_unit"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_margin="6dp"></include>
+
+                <include
+                    layout="@layout/item_skill_unit"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_margin="6dp"></include>
+
+                <include
+                    layout="@layout/item_skill_unit"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_margin="6dp"></include>
+
+            </LinearLayout>
+        </HorizontalScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
