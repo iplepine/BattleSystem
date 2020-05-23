@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.os.bundleOf
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -14,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.zs.mol.R
 import com.zs.mol.model.common.Logger
 import com.zs.mol.model.quest.Quest
+import com.zs.mol.model.quest.QuestManager
 import com.zs.mol.model.quest.QuestType
 import com.zs.mol.model.user.UserManager
 import com.zs.mol.view.base.MainFragment
@@ -48,8 +48,8 @@ class QuestFragment : MainFragment() {
         initViewModels()
         updateUserStatusView()
         initRecyclerView()
-        eventButton.setOnClickListener { onClickNewQuest() }
         refreshButton.setOnClickListener { onClickRefresh() }
+        newQuestButton.setOnClickListener { onClickQuestItem() }
     }
 
     private fun initViewModels() {
@@ -63,7 +63,7 @@ class QuestFragment : MainFragment() {
             })
 
         viewModel.listType.observe(viewLifecycleOwner, Observer {
-            refresh()
+            //refresh()
         })
 
         viewModel.selectedQuest.observe(viewLifecycleOwner, Observer {
@@ -71,6 +71,18 @@ class QuestFragment : MainFragment() {
                 closeQuestPopup()
             } else {
                 openQuestPopup(it)
+            }
+        })
+
+        viewModel.getAcceptedQuests().observe(viewLifecycleOwner, Observer {
+            // TODO 어댑터 처리 해줘야함
+        })
+
+        viewModel.getRequests().observe(viewLifecycleOwner, Observer {
+            if (it == null || it.isEmpty()) {
+                newQuestButton.visibility = View.GONE
+            } else {
+                newQuestButton.visibility = View.VISIBLE
             }
         })
     }
@@ -110,27 +122,21 @@ class QuestFragment : MainFragment() {
     }
 
     private fun refresh() {
-
+        viewModel.refresh()
     }
 
-    private fun onClickNewQuest() {
-        addDisposable(
-            viewModel.onClickEventButton()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe()
-        )
+    private fun onClickQuestItem() {
+        // TODO 테스트용 코드
+        val testQuest = QuestManager.requests.elements().nextElement()
+        viewModel.selectQuest(testQuest)
     }
 
     private fun onClickRefresh() {
-        if (Math.random() < 0.5) {
-            eventButton.visibility = View.VISIBLE
-        } else {
-            eventButton.visibility = View.GONE
-        }
+        viewModel.refresh()
     }
 
     private fun closeQuestPopup() {
-        showToast("클로즈 팝업")
+        findNavController().navigateUp()
     }
 
     private fun openQuestPopup(quest: Quest) {

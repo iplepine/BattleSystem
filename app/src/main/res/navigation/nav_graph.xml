@@ -77,7 +77,21 @@
         android:id="@+id/townFragment"
         android:name="com.zs.mol.view.town.fragment.TownFragment"
         android:label="@string/bottom_menu_town"
-        tools:layout="@layout/fragment_town" />
+        tools:layout="@layout/fragment_town" >
+
+        <action
+            android:id="@+id/action_town_to_dungeon"
+            app:destination="@id/dungeonFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:popEnterAnim="@anim/fragment_fade_enter">
+
+            <argument
+                android:name="dungeonId"
+                app:argType="string" />
+
+        </action>
+
+    </fragment>
 
     <fragment
         android:id="@+id/inventoryFragment"

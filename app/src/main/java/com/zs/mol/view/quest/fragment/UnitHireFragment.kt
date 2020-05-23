@@ -15,7 +15,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import com.zs.mol.databinding.FragmentHireBinding
 import com.zs.mol.model.quest.HireQuest
-import com.zs.mol.model.quest.QuestManager
 import com.zs.mol.view.base.BaseDialogFragment
 import com.zs.mol.view.quest.viewmodel.QuestViewModel
 import com.zs.mol.view.unit.viewmodel.UnitStatusViewModel
@@ -61,6 +60,8 @@ class UnitHireFragment : BaseDialogFragment(), QuestView {
             val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
             params?.width = (size.x * 0.9).toInt()
             dialog?.window?.attributes = params as WindowManager.LayoutParams
+
+            isCancelable = false
         }
     }
 
@@ -90,19 +91,15 @@ class UnitHireFragment : BaseDialogFragment(), QuestView {
     }
 
     override fun onClickAccept() {
-        val questId = questViewModel.selectedQuest.value?.id ?: return
-        QuestManager.accept(questId)
-        dismiss()
+        questViewModel.acceptQuest()
     }
 
     override fun onClickReject() {
-        val questId = questViewModel.selectedQuest.value?.id ?: return
-        QuestManager.reject(questId)
-        dismiss()
+        questViewModel.rejectQuest()
     }
 
     override fun onClickClose() {
-        dismiss()
+        questViewModel.unSelectQuest()
     }
 
     override fun onClickDetail() {
@@ -119,7 +116,7 @@ class UnitHireFragment : BaseDialogFragment(), QuestView {
                 .setPositiveButton("변경") { _, _ ->
                     unitStatusViewModel.unit.setName(input.text.toString())
                 }
-                .setNegativeButton("취소") { dialog, _ -> dialog.dismiss() }
+                .setNegativeButton("취소") { dialog, _ -> onClickClose() }
                 .create()
                 .show()
 

@@ -30,7 +30,7 @@
         app:layout_constraintRight_toRightOf="parent"></ImageView>
 
     <ImageView
-        android:id="@+id/eventButton"
+        android:id="@+id/newQuestButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
