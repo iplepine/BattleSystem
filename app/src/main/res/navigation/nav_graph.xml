@@ -24,7 +24,7 @@
 
         <action
             android:id="@+id/action_questFragment_to_hireQuestFragment"
-            app:destination="@id/hireQuestFragment"
+            app:destination="@id/unitHireFragment"
             app:enterAnim="@anim/fragment_open_enter"
             app:popEnterAnim="@anim/fragment_fade_enter">
 
@@ -40,7 +40,7 @@
         tools:layout="@layout/fragment_new_quest" />
 
     <dialog
-        android:id="@+id/hireQuestFragment"
+        android:id="@+id/unitHireFragment"
         android:name="com.zs.mol.view.quest.fragment.UnitHireFragment"
         tools:layout="@layout/fragment_hire">
 

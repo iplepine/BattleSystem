@@ -39,6 +39,14 @@ open class BattleUnit(owner: String, id: String = UUID.randomUUID().toString()) 
 
     var battleUnitController: DefaultBattleUnitController? = DefaultBattleUnitController
 
+    fun getHpText(): String {
+        return "${currentStat.getStat(HP)} / ${totalStat.getStat(HP)}"
+    }
+
+    fun getMpText(): String {
+        return "${currentStat.getStat(MP)} / ${totalStat.getStat(MP)}"
+    }
+
     fun addSkill(skill: UnitSkill) {
         skills.add(skill)
     }

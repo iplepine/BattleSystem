@@ -9,7 +9,7 @@ import com.zs.mol.model.common.Logger
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
-open class BaseFragment : Fragment() {
+open class BaseFragment : Fragment(), BaseGameView {
 
     val compositeDisposable = CompositeDisposable()
 
@@ -64,5 +64,9 @@ open class BaseFragment : Fragment() {
                 getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(currentFocus.windowToken, 0)
         }
+    }
+
+    override fun onError(error: Throwable) {
+        showToast(error.toString())
     }
 }

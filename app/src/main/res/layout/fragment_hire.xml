@@ -1,123 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="24dp"
-    tools:context=".MainActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/questTitle"
-        android:layout_width="wrap_content"
+    <data>
+
+        <variable
+            name="unitStatusViewModel"
+            type="com.zs.mol.view.unit.viewmodel.UnitStatusViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="새로운 인물"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></TextView>
+        android:background="@drawable/bg_01_02"
+        android:padding="24dp"
+        tools:context=".MainActivity">
 
-    <ImageView
-        android:id="@+id/closeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/baseline_clear_black_36"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></ImageView>
+        <TextView
+            android:id="@+id/questTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:text="@string/title_hire_Unit"
+            android:textAlignment="center"
+            android:textSize="32dp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"></TextView>
 
-    <View
-        android:id="@+id/thumbnailBackground"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:background="@color/background_unit"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/questTitle"></View>
+        <ImageView
+            android:id="@+id/closeButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="6dp"
+            android:src="@drawable/baseline_clear_black_48"
+            app:layout_constraintBottom_toBottomOf="@id/questTitle"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/questTitle"></ImageView>
 
-    <ImageView
-        android:id="@+id/thumbnail"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:src="@drawable/char_face_m_34"
-        app:layout_constraintBottom_toBottomOf="@id/thumbnailBackground"
-        app:layout_constraintLeft_toLeftOf="@id/thumbnailBackground"
-        app:layout_constraintRight_toRightOf="@id/thumbnailBackground"
-        app:layout_constraintTop_toTopOf="@id/thumbnailBackground"></ImageView>
+        <include
+            android:id="@+id/unitStatusView"
+            layout="@layout/view_unit_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/questTitle"
+            app:unitStatusViewModel="@{unitStatusViewModel}"></include>
 
-    <TextView
-        android:id="@+id/questDescription"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="퀘스트 설명"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/questTitle" />
+        <Button
+            android:id="@+id/rejectButton"
+            android:layout_width="120dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/plank_07"
+            android:text="거절"
+            android:textColor="#83000000"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/acceptButton"
+            app:layout_constraintTop_toBottomOf="@id/unitStatusView"></Button>
 
-    <TextView
-        android:id="@+id/requireTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:text="비용"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/questDescription"></TextView>
+        <Button
+            android:id="@+id/acceptButton"
+            android:layout_width="120dp"
+            android:layout_height="48dp"
+            android:background="@drawable/plank_07"
+            android:text="고용"
+            android:textAlignment="center"
+            android:textColor="#83000000"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/rejectButton"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintLeft_toRightOf="@id/rejectButton"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/rejectButton"></Button>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/requireRecyclerView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="6dp"
-        android:orientation="horizontal"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/requireTitle"></androidx.recyclerview.widget.RecyclerView>
-
-    <TextView
-        android:id="@+id/rewardTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:text="보상"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/requireRecyclerView"></TextView>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rewardRecyclerView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="6dp"
-        android:orientation="horizontal"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rewardTitle"></androidx.recyclerview.widget.RecyclerView>
-
-    <TextView
-        android:id="@+id/rejectButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#00ff00"
-        android:paddingLeft="36dp"
-        android:paddingTop="12dp"
-        android:paddingRight="36dp"
-        android:paddingBottom="12dp"
-        android:text="거절"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/acceptButton"></TextView>
-
-    <TextView
-        android:id="@+id/acceptButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#00ff00"
-        android:paddingLeft="36dp"
-        android:paddingTop="12dp"
-        android:paddingRight="36dp"
-        android:paddingBottom="12dp"
-        android:text="수락"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/rejectButton"
-        app:layout_constraintRight_toRightOf="parent"></TextView>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

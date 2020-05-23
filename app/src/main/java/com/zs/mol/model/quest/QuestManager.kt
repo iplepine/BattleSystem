@@ -28,7 +28,9 @@ object QuestManager {
                         it.onFailed()
                     }
                 }
-                else -> acceptedQuests.add(it)
+                else -> {
+                    acceptedQuests.add(it)
+                }
             }
             requests.remove(it.id)
         }

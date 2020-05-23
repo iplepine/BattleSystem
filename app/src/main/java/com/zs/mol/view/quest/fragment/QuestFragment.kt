@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.os.bundleOf
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -24,7 +25,9 @@ import kotlinx.android.synthetic.main.fragment_quest.*
 import kotlinx.android.synthetic.main.view_user_status.view.*
 
 class QuestFragment : MainFragment() {
-    val viewModel = QuestViewModel()
+    val viewModel: QuestViewModel by lazy {
+        ViewModelProvider(requireActivity()).get(QuestViewModel::class.java)
+    }
     lateinit var userStatusViewModel: UserStatusViewModel
     var emptyQuestView: TextView? = null
 

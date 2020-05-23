@@ -1,27 +1,48 @@
 package com.zs.mol.view.quest.fragment
 
+import android.content.Context
+import android.graphics.Color
+import android.graphics.Point
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
-import androidx.fragment.app.DialogFragment
-import androidx.navigation.fragment.findNavController
-import com.zs.mol.R
-import com.zs.mol.model.quest.Quest
-import com.zs.mol.model.quest.detail.reward.UnitReward
-import com.zs.mol.model.unit.BattleUnit
-import com.zs.mol.view.unit.fragment.UnitDetailFragment
+import android.view.WindowManager
+import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.ViewModelProvider
+import com.zs.mol.databinding.FragmentHireBinding
+import com.zs.mol.model.quest.HireQuest
+import com.zs.mol.model.quest.QuestManager
+import com.zs.mol.view.base.BaseDialogFragment
+import com.zs.mol.view.quest.viewmodel.QuestViewModel
+import com.zs.mol.view.unit.viewmodel.UnitStatusViewModel
 
-class UnitHireFragment : DialogFragment(), QuestView {
-    var quest: Quest? = null
+class UnitHireFragment : BaseDialogFragment(), QuestView {
+    lateinit var binding: FragmentHireBinding
+
+    private val questViewModel: QuestViewModel by lazy {
+        ViewModelProvider(requireActivity()).get(QuestViewModel::class.java)
+    }
+
+    private val unitStatusViewModel: UnitStatusViewModel by lazy {
+        ViewModelProvider(requireParentFragment()).get(UnitStatusViewModel::class.java)
+        /*ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
+            .create(UnitStatusViewModel::class.java)*/
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_hire, container, false)
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        binding = FragmentHireBinding.inflate(inflater)
+        binding.lifecycleOwner = this
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -29,29 +50,80 @@ class UnitHireFragment : DialogFragment(), QuestView {
         init()
     }
 
-    private fun init() {
-    }
+    override fun onStart() {
+        super.onStart()
+        context?.apply {
+            val windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
+            val display = windowManager.defaultDisplay
+            val size = Point()
+            display.getSize(size)
 
-    override fun onClickAccept() {
-    }
-
-    override fun onClickReject() {
-    }
-
-    override fun onClickClose() {
-    }
-
-    override fun onClickDetail() {
-        quest?.apply {
-            val unitReward = rewards[0] as? UnitReward ?: return
-            showUnitDetailView(unitReward.unit)
+            val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
+            params?.width = (size.x * 0.9).toInt()
+            dialog?.window?.attributes = params as WindowManager.LayoutParams
         }
     }
 
-    private fun showUnitDetailView(unit: BattleUnit) {
-        findNavController().navigate(
-            R.id.action_hireQuestFragment_to_unitDetailFragment,
-            bundleOf(UnitDetailFragment.KEY_UNIT_ID to unit.id)
-        )
+    private fun init() {
+        handleArgument()
+        binding.closeButton.setOnClickListener { onClickClose() }
+        binding.acceptButton.setOnClickListener { onClickAccept() }
+        binding.rejectButton.setOnClickListener { onClickReject() }
+        binding.unitStatusView.renameButton.setOnClickListener { onClickRename() }
+    }
+
+    private fun handleArgument() {
+        arguments?.apply {
+            val quest = questViewModel.selectedQuest.value as? HireQuest
+            if (quest == null) {
+                onError(IllegalArgumentException("invalid quest"))
+            } else {
+                val unit = quest.getUnit()
+                if (unit == null) {
+                    onError(IllegalArgumentException("can't find unit"))
+                } else {
+                    unitStatusViewModel.unit = unit
+                    binding.unitStatusViewModel = unitStatusViewModel
+                }
+            }
+        }
+    }
+
+    override fun onClickAccept() {
+        val questId = questViewModel.selectedQuest.value?.id ?: return
+        QuestManager.accept(questId)
+        dismiss()
+    }
+
+    override fun onClickReject() {
+        val questId = questViewModel.selectedQuest.value?.id ?: return
+        QuestManager.reject(questId)
+        dismiss()
+    }
+
+    override fun onClickClose() {
+        dismiss()
+    }
+
+    override fun onClickDetail() {
+    }
+
+    private fun onClickRename() {
+        context?.also {
+            val input = EditText(it)
+            input.inputType = InputType.TYPE_CLASS_TEXT
+
+            AlertDialog.Builder(it)
+                .setTitle("이름을 입력 해 주세요.")
+                .setView(input)
+                .setPositiveButton("변경") { _, _ ->
+                    unitStatusViewModel.unit.setName(input.text.toString())
+                }
+                .setNegativeButton("취소") { dialog, _ -> dialog.dismiss() }
+                .create()
+                .show()
+
+            input.requestFocus()
+        }
     }
 }

@@ -16,11 +16,8 @@ abstract class Quest(var type: QuestType) {
     var requires: ArrayList<QuestRequirement> = ArrayList()
     var id: String = UUID.randomUUID().toString()
 
-    fun isValid(): Boolean {
-        return when (type) {
-            QuestType.HIRE -> return rewards.isNotEmpty() && (rewards[0] as? UnitReward)?.unit != null
-            else -> true
-        }
+    open fun isValid(): Boolean {
+        return true
     }
 
     open fun checkSuccess(): Boolean {

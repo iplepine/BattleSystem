@@ -8,7 +8,6 @@ import com.zs.mol.model.quest.QuestType
 import io.reactivex.Completable
 
 class QuestViewModel : ViewModel() {
-
     val acceptQuests = MutableLiveData<ArrayList<Quest>>().apply { value = ArrayList() }
     val newQuests = MutableLiveData<ArrayList<Quest>>().apply { value = ArrayList() }
 
@@ -28,6 +27,10 @@ class QuestViewModel : ViewModel() {
             QuestListType.NEW -> newQuests.value!!
             else -> ArrayList()
         }
+    }
+
+    fun getQuest(id: String): Quest? {
+        return getQuests().find { it.id == id }
     }
 
     fun getQuest(index: Int): Quest? {

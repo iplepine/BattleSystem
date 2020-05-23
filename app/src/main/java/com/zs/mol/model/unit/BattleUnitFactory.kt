@@ -9,7 +9,7 @@ import kotlin.random.Random
 object BattleUnitFactory {
 
     private const val MAN_FACE_SIZE = 71
-    private const val WOMAN_FACE_SIZE = 59
+    private const val WOMAN_FACE_SIZE = 58
 
     fun createUnit(owner: String, name: String?): BattleUnit {
         return BattleUnit(owner).apply {
