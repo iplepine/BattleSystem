@@ -5,18 +5,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.zs.mol.R
+import com.zs.mol.databinding.FragmentTownBinding
 import com.zs.mol.view.base.MainFragment
-import kotlinx.android.synthetic.main.fragment_town.*
+import com.zs.mol.view.town.TownViewModel
 
 class TownFragment : MainFragment() {
+    lateinit var binding: FragmentTownBinding
+    val viewModel: TownViewModel by lazy {
+        ViewModelProvider(requireActivity()).get(TownViewModel::class.java)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_town, container, false)
+        binding = FragmentTownBinding.inflate(inflater)
+        binding.lifecycleOwner = viewLifecycleOwner
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -25,7 +34,8 @@ class TownFragment : MainFragment() {
     }
 
     private fun init() {
-        dungeon.setOnClickListener { onClickDungeon() }
+        binding.viewModel = viewModel
+        //dungeon.setOnClickListener { onClickDungeon() }
     }
 
     private fun onClickDungeon() {

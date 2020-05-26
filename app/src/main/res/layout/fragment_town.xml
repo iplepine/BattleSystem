@@ -1,59 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.zs.mol.view.town.TownViewModel" />
+
+    </data>
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity">
+        android:padding="16dp">
 
-        <Button
-            android:id="@+id/dungeon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:text="던전"
-            ></Button>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".MainActivity">
 
-        <Button
-            android:id="@+id/building2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/dungeon"
-            android:text="시설2"
-            ></Button>
+            <Button
+                android:id="@+id/dungeon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{()->viewModel.onClickDungeon()}"
+                android:text="@{viewModel.dungeonText}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"></Button>
 
-        <Button
-            android:id="@+id/building3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/building2"
-            android:text="시설3"
-            ></Button>
+            <Button
+                android:id="@+id/building2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="시설2"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/dungeon"></Button>
 
-        <Button
-            android:id="@+id/building4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/building3"
-            android:text="시설4"
-            ></Button>
+            <Button
+                android:id="@+id/building3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="시설3"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/building2"></Button>
 
-        <Button
-            android:id="@+id/building5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/building4"
-            android:text="시설5"
-            ></Button>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+            <Button
+                android:id="@+id/building4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="시설4"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/building3"></Button>
+
+            <Button
+                android:id="@+id/building5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="시설5"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/building4"></Button>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>

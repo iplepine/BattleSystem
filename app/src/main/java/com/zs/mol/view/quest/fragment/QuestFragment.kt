@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zs.mol.R
+import com.zs.mol.databinding.FragmentQuestBinding
 import com.zs.mol.model.common.Logger
 import com.zs.mol.model.quest.Quest
 import com.zs.mol.model.quest.QuestManager
@@ -28,15 +29,19 @@ class QuestFragment : MainFragment() {
     val viewModel: QuestViewModel by lazy {
         ViewModelProvider(requireActivity()).get(QuestViewModel::class.java)
     }
+
     lateinit var userStatusViewModel: UserStatusViewModel
     var emptyQuestView: TextView? = null
+
+    lateinit var binding: FragmentQuestBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_quest, container, false)
+        binding = FragmentQuestBinding.inflate(inflater)
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -119,10 +124,6 @@ class QuestFragment : MainFragment() {
         }
 
         Logger.d("update user status, gold : ${UserManager.getGold()} G")
-    }
-
-    private fun refresh() {
-        viewModel.refresh()
     }
 
     private fun onClickQuestItem() {

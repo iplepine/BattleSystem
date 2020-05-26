@@ -110,7 +110,7 @@ class UnitManageViewHolder(parent: ViewGroup, private val viewModel: UnitViewMod
         // face
         face.context?.apply {
             if (TextUtils.isEmpty(unit.status.faceImage)) {
-                unit.status.faceImage = BattleUnitFactory.getRandomFace()
+                unit.status.faceImage = BattleUnitFactory.getSmartRandomName()
             }
 
             val id = resources.getIdentifier(unit.status.faceImage, "drawable", packageName)

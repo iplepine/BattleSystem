@@ -10,4 +10,12 @@ class Dungeon(val startPlace: DungeonPlace) {
     var direction = MutableLiveData<DungeonPlace.Direction>().apply {
         DungeonPlace.Direction.NONE
     }
+
+    var currentEvent = MutableLiveData <DungeonEvent<String>>()
+
+    val map = startPlace
+
+    fun onEnter() {
+        currentPlace.value = startPlace
+    }
 }

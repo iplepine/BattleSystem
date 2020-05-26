@@ -6,7 +6,7 @@ import com.zs.mol.model.dungeon_.Dungeon
 class DungeonViewModel : ViewModel() {
     lateinit var dungeon : Dungeon
 
-    fun onEnterDungeon() {
-
+    fun onClickSelection(index: Int) {
+        //dungeon.currentEvent.choice(index)
     }
 }
