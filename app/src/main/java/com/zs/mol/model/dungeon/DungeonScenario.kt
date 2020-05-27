@@ -1,5 +1,7 @@
 package com.zs.mol.model.dungeon
 
+import com.zs.mol.model.dungeon.event.DungeonEvent
+
 class DungeonScenario {
     val events = ArrayList<DungeonEvent>()
     var currentEvent: DungeonEvent? = null

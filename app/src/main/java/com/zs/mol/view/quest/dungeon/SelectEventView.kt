@@ -9,7 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.zs.mol.R
-import com.zs.mol.model.dungeon.SelectEvent
+import com.zs.mol.model.dungeon.event.SelectEvent
 import com.zs.mol.view.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_quest.*
 

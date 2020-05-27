@@ -1,9 +1,21 @@
 package com.zs.mol.model.dungeon
 
-import com.zs.mol.model.quest.detail.reward.QuestReward
+import androidx.lifecycle.MutableLiveData
 
-open class Dungeon {
-    var maxUnitCount = 1
-    var rewards = ArrayList<QuestReward>()
-    var scenario = DungeonScenario()
+class Dungeon(val startPlace: DungeonPlace) {
+    var currentPlace = MutableLiveData<DungeonPlace>().apply {
+        value = startPlace
+    }
+
+    var direction = MutableLiveData<DungeonPlace.Direction>().apply {
+        DungeonPlace.Direction.NONE
+    }
+
+    var currentEvent = MutableLiveData <DungeonEvent<String>>()
+
+    val map = startPlace
+
+    fun onEnter() {
+        currentPlace.value = startPlace
+    }
 }

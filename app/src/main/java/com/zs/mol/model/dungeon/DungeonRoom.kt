@@ -1,4 +1,4 @@
-package com.zs.mol.model.dungeon_
+package com.zs.mol.model.dungeon
 
 class DungeonRoom : DungeonPlace() {
 

@@ -1,6 +1,4 @@
-package com.zs.mol.model.dungeon_
-
-import com.zs.mol.model.dungeon.Dungeon
+package com.zs.mol.model.dungeon
 
 object DungeonMaker {
     /*fun createDungeon(depth: Int): Dungeon {

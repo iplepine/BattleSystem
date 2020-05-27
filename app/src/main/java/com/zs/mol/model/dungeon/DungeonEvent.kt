@@ -1,31 +1,39 @@
 package com.zs.mol.model.dungeon
 
-import kotlin.random.Random
-
-abstract class DungeonEvent {
-    var requireEvents = ArrayList<DungeonEvent>()
-    var preEvents = ArrayList<DungeonEvent>()
-    var nextEvents = ArrayList<DungeonEvent>()
-    var state = State.NONE
-
-    open fun onSuccess() {}
-    open fun onFailed() {}
-    open fun getNextEvent(): DungeonEvent? {
-        val availableEvents = nextEvents.filter {
-            // 선행 이벤트들이 모두 수행된 경우에만 다음 이벤트로 가져옴
-            // 필수 선행 이벤트 중에 성공하지 않은 이벤트가 하나 없을 경우, true
-            requireEvents.find { state != State.SUCCESS } == null
-        }
-
-        if (availableEvents.isEmpty()) {
-            return null
-        }
-
-        val index = Random.nextInt(availableEvents.size)
-        return availableEvents[index]
+class DungeonEvent<T>(var type: EventType) {
+    enum class EventType {
+        MONSTER, TREASURE, TRAP
     }
 
-    enum class State {
-        NONE, SUCCESS, FAILED
+    var isFinished = false
+
+    var title = ""
+    var description = ""
+
+    fun onChoice(listener: EventChoiceListener<T>) {
+        if (checkSuccess(listener)) {
+            onSuccess()
+        } else {
+            onFailed()
+        }
+        finish()
+    }
+
+    open fun checkSuccess(choiceListener: EventChoiceListener<T>): Boolean {
+        return true
+    }
+
+    open fun onSuccess() {
+    }
+
+    open fun onFailed() {
+    }
+
+    fun finish() {
+        isFinished = true
+    }
+
+    interface EventChoiceListener<T> {
+        fun onChoice(choice: T): Boolean
     }
 }

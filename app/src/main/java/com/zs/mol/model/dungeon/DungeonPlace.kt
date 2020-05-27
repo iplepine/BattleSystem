@@ -1,4 +1,4 @@
-package com.zs.mol.model.dungeon_
+package com.zs.mol.model.dungeon
 
 abstract class DungeonPlace {
     companion object {
