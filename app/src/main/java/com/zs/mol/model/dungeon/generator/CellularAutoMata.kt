@@ -73,15 +73,6 @@ class CellularAutoMata(private var mapSize: Int) : MapGenerator() {
         return count
     }
 
-    fun printMap(map: Array<IntArray>) {
-        map.forEach { row ->
-            row.forEach {
-                printField(it)
-            }
-            println()
-        }
-    }
-
     fun stepOnce(cellMap: Array<BooleanArray>): Array<BooleanArray> {
         val aliveMap = checkAlive(cellMap)
         for (i in cellMap.indices) {
@@ -92,15 +83,5 @@ class CellularAutoMata(private var mapSize: Int) : MapGenerator() {
             }
         }
         return cellMap
-    }
-
-    fun printField(field: Int) {
-        val text = when (field) {
-            MapGenerator.FieldType.WATER -> "□"
-            MapGenerator.FieldType.GROUND -> "■"
-            MapGenerator.FieldType.HILL -> "♣"
-            else -> " "
-        }
-        print(text)
     }
 }

@@ -9,4 +9,23 @@ abstract class MapGenerator {
     }
 
     abstract fun createMap(): Array<IntArray>
+
+    fun printMap(map: Array<IntArray>) {
+        map.forEach { row ->
+            row.forEach {
+                printField(it)
+            }
+            println()
+        }
+    }
+
+    private fun printField(field: Int) {
+        val text = when (field) {
+            FieldType.WATER -> "□"
+            FieldType.GROUND -> "■"
+            FieldType.HILL -> "♣"
+            else -> " "
+        }
+        print(text)
+    }
 }

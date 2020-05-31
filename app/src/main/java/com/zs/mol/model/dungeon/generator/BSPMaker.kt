@@ -1,12 +1,14 @@
 package com.zs.mol.model.dungeon.generator
 
+import kotlin.math.max
 import kotlin.random.Random
 
-class BSPMaker(private var mapSize: Int) : MapGenerator() {
+class BSPMaker(private var mapSize: Int, private var limitDepth: Int) : MapGenerator() {
 
     override fun createMap(): Array<IntArray> {
-        return Array(mapSize) { IntArray(mapSize) }.also { map ->
-
+        return Array(mapSize) { IntArray(mapSize) { FieldType.WATER } }.also { map ->
+            val tree = createRandomBspTree()
+            tree.root.markToMap(map)
         }
     }
 
@@ -14,9 +16,9 @@ class BSPMaker(private var mapSize: Int) : MapGenerator() {
         val range = intArrayOf(0, mapSize)
         val root = BspNode(null, range, range, 0)
         return BspTree(root).apply {
+            root.divideRecursive(limitDepth)
         }
     }
-
 
     class BspTree(var root: BspNode) {
     }
@@ -28,62 +30,105 @@ class BSPMaker(private var mapSize: Int) : MapGenerator() {
         val depth: Int
     ) {
         companion object {
+            const val NO_DIVIDABLE = -1
             const val VERTICAL = 0
             const val HORIZONTAL = 1
 
             const val MIN_SIZE = 3
-            const val DIVIDE_RATIO = 0.2
         }
 
         var left: BspNode? = null
         var right: BspNode? = null
 
         var divideValue = 0
-        var divideType = VERTICAL
+        var divideType = NO_DIVIDABLE
 
         var isLeaf = false
 
-        fun checkDividable(): Boolean {
-            if (xRange[1] - xRange[0] < MIN_SIZE && yRange[1] - yRange[0] < MIN_SIZE) {
-                isLeaf = true
-                return false
-            }
-
-            return true
-        }
-
-        fun divide() {
-            if (checkDividable()) {
-                isLeaf = true
+        fun divideRecursive(depthLimit: Int) {
+            if (depthLimit <= depth) {
+                setLeaf()
                 return
             }
 
-            val type = if (xRange[1] - xRange[0] < yRange[1] - yRange[0]) {
-                VERTICAL
-            } else {
-                HORIZONTAL
+            divideType = calculateDivideType()
+            when (divideType) {
+                NO_DIVIDABLE -> {
+                    setLeaf()
+                    return
+                }
+                VERTICAL -> {
+                    divideValue = calculateDivideValue(yRange[0], yRange[1])
+                    left = BspNode(this, xRange, intArrayOf(yRange[0], divideValue), depth + 1)
+                    right = BspNode(this, xRange, intArrayOf(divideValue + 1, yRange[1]), depth + 1)
+                }
+                else -> {
+                    divideValue = calculateDivideValue(xRange[0], xRange[1])
+                    left = BspNode(this, intArrayOf(xRange[0], divideValue), yRange, depth + 1)
+                    right = BspNode(this, intArrayOf(divideValue + 1, xRange[1]), yRange, depth + 1)
+                }
             }
 
+            left?.divideRecursive(depthLimit)
+            right?.divideRecursive(depthLimit)
+        }
 
-            if (type == VERTICAL) {
-                divideValue = calculateDivideValue(yRange[0], yRange[1])
-                left = BspNode(this, xRange, intArrayOf(yRange[0], divideValue - 1), depth + 1)
-                right = BspNode(this, xRange, intArrayOf(divideValue + 1, yRange[1]), depth + 1)
+        private fun setLeaf() {
+            isLeaf = true
+            /*xRange[0] = xRange[0] + 1
+            xRange[1] = xRange[1] - 1
+            yRange[0] = yRange[0] + 1
+            xRange[1] = yRange[1] - 1*/
+        }
+
+        private fun calculateDivideType(): Int {
+            val dividableX = 2 * MIN_SIZE < xRange[1] - xRange[0]
+            val dividableY = 2 * MIN_SIZE < yRange[1] - yRange[0]
+
+            if (dividableX && dividableY) {
+                return if (xRange[1] - xRange[0] < yRange[1] - yRange[0]) {
+                    if (Random.nextFloat() < 0.7) {
+                        VERTICAL
+                    } else {
+                        HORIZONTAL
+                    }
+                } else {
+                    if (Random.nextFloat() < 0.7) {
+                        HORIZONTAL
+                    } else {
+                        VERTICAL
+                    }
+                }
+            } else if (dividableX) {
+                return HORIZONTAL
+            } else if (dividableY) {
+                return VERTICAL
+            }
+            return NO_DIVIDABLE
+        }
+
+        private fun calculateDivideValue(start: Int, end: Int): Int {
+            val mid = (end + start) / 2
+            val fix = max(mid - start - MIN_SIZE, 0)
+
+            return if (fix == 0) {
+                mid
             } else {
-                divideValue = calculateDivideValue(xRange[0], xRange[1])
-                left = BspNode(this, intArrayOf(xRange[0], divideValue - 1), yRange, depth + 1)
-                right = BspNode(this, intArrayOf(divideValue, xRange[1]), yRange, depth + 1)
+                Random.nextInt(mid - fix, mid + fix)
             }
         }
 
-        fun calculateDivideValue(start: Int, end: Int): Int {
-            val diff = end - start
-            var fix = (diff * DIVIDE_RATIO).toInt()
-            if (diff < fix * 2) {
-                fix = 0
+        fun markToMap(map: Array<IntArray>) {
+            if (isLeaf) {
+                for (i in xRange[0] until xRange[1]) {
+                    for (j in yRange[0] until yRange[1]) {
+                        map[i][j] = FieldType.GROUND
+                    }
+                }
             }
 
-            return Random.nextInt(start + fix, end - fix)
+            left?.markToMap(map)
+            right?.markToMap(map)
         }
     }
 }
