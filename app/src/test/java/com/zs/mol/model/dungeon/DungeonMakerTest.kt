@@ -20,7 +20,7 @@ class DungeonMakerTest {
 
     @Test
     fun createBspTreeTest() {
-        val maker = BSPMaker(30, 8)
+        val maker = BSPMaker(42, 8)
         val map = maker.createMap()
 
         maker.printMap(map)
