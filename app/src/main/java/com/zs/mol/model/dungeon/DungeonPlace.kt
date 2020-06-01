@@ -1,14 +1,11 @@
 package com.zs.mol.model.dungeon
 
 abstract class DungeonPlace {
-    companion object {
-        const val DIRECT_NORTH = 0
-        const val DIRECT_EAST = 1
-        const val DIRECT_SOUTH = 2
-        const val DIRECT_WEST = 3
-    }
+    enum class Direction { NORTH, EAST, SOUTH, WEST}
 
-    enum class Direction { NORTH, EAST, SOUTH, WEST, NONE }
+    enum class RoomType {
+        NORMAL,
+    }
 
     //var event: DungeonEvent? = null
     var connects = HashMap<Direction, DungeonPlace>()

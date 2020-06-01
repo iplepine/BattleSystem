@@ -22,6 +22,7 @@ class BSPMaker(private var mapSize: Int, private var limitDepth: Int) : MapGener
     }
 
     class BspTree(var root: BspNode) {
+        
     }
 
     class BspNode(
