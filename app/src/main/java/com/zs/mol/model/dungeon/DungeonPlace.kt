@@ -1,18 +1,21 @@
 package com.zs.mol.model.dungeon
 
+import com.zs.mol.model.user.User
+
 abstract class DungeonPlace {
-    enum class Direction { NORTH, EAST, SOUTH, WEST}
+    enum class Direction { NONE, NORTH, EAST, SOUTH, WEST }
 
     enum class RoomType {
-        NORMAL,
+        EMPTY, ENTRANCE, MONSTER, TRAP, ITEM, BOSS
     }
 
-    //var event: DungeonEvent? = null
-    var connects = HashMap<Direction, DungeonPlace>()
+    var event: DungeonEvent? = null
 
-    open fun onEnter() {
+    open fun onEnter(user: User, dungeon: Dungeon) {
+
     }
 
-    open fun onOut() {
+    open fun onOut(user: User, dungeon: Dungeon) {
+
     }
 }

@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 class Dungeon(val startPlace: DungeonPlace) {
     var currentPlace = MutableLiveData<DungeonPlace>(startPlace)
 
-    var direction = MutableLiveData<DungeonPlace.Direction>()
-    var currentEvent = MutableLiveData <DungeonEvent<String>>()
+    val direction = MutableLiveData<DungeonPlace.Direction>()
+    val currentEvent = MutableLiveData<DungeonEvent>()
 
     val map = startPlace
 

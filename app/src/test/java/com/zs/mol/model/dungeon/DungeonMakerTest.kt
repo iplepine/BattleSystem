@@ -2,6 +2,7 @@ package com.zs.mol.model.dungeon
 
 import com.zs.mol.model.dungeon.generator.BSPMaker
 import com.zs.mol.model.dungeon.generator.CellularAutoMata
+import com.zs.mol.model.dungeon.generator.GridGraphMaker
 import org.junit.Test
 
 class DungeonMakerTest {
@@ -21,6 +22,14 @@ class DungeonMakerTest {
     @Test
     fun createBspTreeTest() {
         val maker = BSPMaker(42, 8)
+        val map = maker.createMap()
+
+        maker.printMap(map)
+    }
+
+    @Test
+    fun createGrid() {
+        val maker = GridGraphMaker(10, 10, 30)
         val map = maker.createMap()
 
         maker.printMap(map)

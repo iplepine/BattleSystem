@@ -1,12 +1,14 @@
 package com.zs.mol.model.dungeon.generator
 
+import com.zs.mol.model.dungeon.generator.BSPMaker.BspNode.Companion.HORIZONTAL
+import com.zs.mol.model.dungeon.generator.BSPMaker.BspNode.Companion.VERTICAL
 import kotlin.math.max
 import kotlin.random.Random
 
 class BSPMaker(private var mapSize: Int, private var limitDepth: Int) : MapGenerator() {
 
     override fun createMap(): Array<IntArray> {
-        return Array(mapSize) { IntArray(mapSize) { FieldType.WATER } }.also { map ->
+        return Array(mapSize) { IntArray(mapSize) { FieldType.WALL } }.also { map ->
             val tree = createRandomBspTree()
             tree.root.markToMap(map)
         }
@@ -22,11 +24,38 @@ class BSPMaker(private var mapSize: Int, private var limitDepth: Int) : MapGener
     }
 
     class BspTree(var root: BspNode) {
-        
+
+        fun findNode(node: BspNode?, x: Int, y: Int): BspNode? {
+            if (node == null) return null
+            if (node.hasPoint(x, y)) return node
+
+            val divideValue = when (node.divideValue) {
+                VERTICAL -> y
+                HORIZONTAL -> x
+                else -> return null
+            }
+
+            return if (divideValue <= node.divideValue) {
+                findNode(node.left, x, y)
+            } else {
+                findNode(node.right, x, y)
+            }
+        }
+
+        fun removeNode(node: BspNode) {
+            if (node.parent?.left == node) {
+                node.parent?.left = null
+            }
+            if (node.parent?.right == node) {
+                node.parent?.right = null
+            }
+
+            node.parent = null
+        }
     }
 
     class BspNode(
-        val parent: BspNode? = null,
+        var parent: BspNode? = null,
         val xRange: IntArray,
         val yRange: IntArray,
         val depth: Int
@@ -36,7 +65,7 @@ class BSPMaker(private var mapSize: Int, private var limitDepth: Int) : MapGener
             const val VERTICAL = 0
             const val HORIZONTAL = 1
 
-            const val MIN_SIZE = 3
+            const val MIN_SIZE = 4
         }
 
         var left: BspNode? = null
@@ -46,6 +75,11 @@ class BSPMaker(private var mapSize: Int, private var limitDepth: Int) : MapGener
         var divideType = NO_DIVIDABLE
 
         var isLeaf = false
+
+        fun hasPoint(x: Int, y: Int): Boolean {
+            return xRange[0] <= x && x <= xRange[1]
+                    && yRange[0] <= y && y <= yRange[1]
+        }
 
         fun divideRecursive(depthLimit: Int) {
             if (depthLimit <= depth) {
@@ -61,13 +95,33 @@ class BSPMaker(private var mapSize: Int, private var limitDepth: Int) : MapGener
                 }
                 VERTICAL -> {
                     divideValue = calculateDivideValue(yRange[0], yRange[1])
-                    left = BspNode(this, xRange.copyOf(), intArrayOf(yRange[0], divideValue), depth + 1)
-                    right = BspNode(this, xRange.copyOf(), intArrayOf(divideValue + 1, yRange[1]), depth + 1)
+                    left = BspNode(
+                        this,
+                        xRange.copyOf(),
+                        intArrayOf(yRange[0], divideValue),
+                        depth + 1
+                    )
+                    right = BspNode(
+                        this,
+                        xRange.copyOf(),
+                        intArrayOf(divideValue + 1, yRange[1]),
+                        depth + 1
+                    )
                 }
                 else -> {
                     divideValue = calculateDivideValue(xRange[0], xRange[1])
-                    left = BspNode(this, intArrayOf(xRange[0], divideValue), yRange.copyOf(), depth + 1)
-                    right = BspNode(this, intArrayOf(divideValue + 1, xRange[1]), yRange.copyOf(), depth + 1)
+                    left = BspNode(
+                        this,
+                        intArrayOf(xRange[0], divideValue),
+                        yRange.copyOf(),
+                        depth + 1
+                    )
+                    right = BspNode(
+                        this,
+                        intArrayOf(divideValue + 1, xRange[1]),
+                        yRange.copyOf(),
+                        depth + 1
+                    )
                 }
             }
 
@@ -77,10 +131,6 @@ class BSPMaker(private var mapSize: Int, private var limitDepth: Int) : MapGener
 
         private fun setLeaf() {
             isLeaf = true
-            xRange[0] = xRange[0] + 1
-            xRange[1] = xRange[1] - 1
-            yRange[0] = yRange[0] + 1
-            yRange[1] = yRange[1] - 1
         }
 
         private fun calculateDivideType(): Int {
@@ -122,8 +172,8 @@ class BSPMaker(private var mapSize: Int, private var limitDepth: Int) : MapGener
 
         fun markToMap(map: Array<IntArray>) {
             if (isLeaf) {
-                for (i in xRange[0]..xRange[1]) {
-                    for (j in yRange[0]..yRange[1]) {
+                for (i in xRange[0] + 1 until xRange[1]) {
+                    for (j in yRange[0] + 1 until yRange[1]) {
                         map[i][j] = FieldType.GROUND
                     }
                 }

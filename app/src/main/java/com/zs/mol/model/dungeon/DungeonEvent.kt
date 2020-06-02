@@ -1,27 +1,10 @@
 package com.zs.mol.model.dungeon
 
-class DungeonEvent<T>(var type: EventType) {
-    enum class EventType {
-        MONSTER, TREASURE, TRAP
-    }
-
-    var isFinished = false
-
+class DungeonEvent {
     var title = ""
     var description = ""
 
-    fun onChoice(listener: EventChoiceListener<T>) {
-        if (checkSuccess(listener)) {
-            onSuccess()
-        } else {
-            onFailed()
-        }
-        finish()
-    }
-
-    open fun checkSuccess(choiceListener: EventChoiceListener<T>): Boolean {
-        return true
-    }
+    var isEnabled = true
 
     open fun onSuccess() {
     }
@@ -30,10 +13,6 @@ class DungeonEvent<T>(var type: EventType) {
     }
 
     fun finish() {
-        isFinished = true
-    }
-
-    interface EventChoiceListener<T> {
-        fun onChoice(choice: T): Boolean
+        isEnabled = false
     }
 }
