@@ -2,7 +2,7 @@ package com.zs.mol.model.dungeon
 
 import com.zs.mol.model.dungeon.generator.BSPMaker
 import com.zs.mol.model.dungeon.generator.CellularAutoMata
-import com.zs.mol.model.dungeon.generator.GridGraphMaker
+import com.zs.mol.model.dungeon.generator.TileAndGraphBasedMaker
 import org.junit.Test
 
 class DungeonMakerTest {
@@ -28,8 +28,8 @@ class DungeonMakerTest {
     }
 
     @Test
-    fun createGrid() {
-        val maker = GridGraphMaker(10, 10, 30)
+    fun createTiledMap() {
+        val maker = TileAndGraphBasedMaker(5, 5, 5)
         val map = maker.createMap()
 
         maker.printMap(map)

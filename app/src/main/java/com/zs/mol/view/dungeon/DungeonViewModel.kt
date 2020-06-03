@@ -7,7 +7,6 @@ import com.zs.mol.model.dungeon.DungeonEvent
 import com.zs.mol.model.dungeon.DungeonPlace
 
 class DungeonViewModel : ViewModel() {
-    lateinit var dungeon: Dungeon
 
     var currentPlace = MutableLiveData<DungeonPlace>()
 

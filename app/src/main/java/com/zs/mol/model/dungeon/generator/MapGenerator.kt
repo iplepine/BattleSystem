@@ -7,7 +7,8 @@ abstract class MapGenerator {
         const val WALL = 1
         const val TRAP = 2
         const val MONSTER = 3
-        const val ITEM = 4
+        const val BOSS = 4
+        const val ITEM = 5
         const val VERTICAL_WAY = 100
         const val HORIZONTAL_WAY = 101
     }
@@ -25,11 +26,12 @@ abstract class MapGenerator {
 
     private fun printField(field: Int) {
         val text = when (field) {
+            FieldType.VERTICAL_WAY -> "│"
+            FieldType.HORIZONTAL_WAY -> "─"
             FieldType.ENTRANCE -> "▣"
             FieldType.WALL -> "■"
             FieldType.GROUND -> "□"
-            FieldType.VERTICAL_WAY -> "─"
-            FieldType.HORIZONTAL_WAY -> "│"
+            FieldType.BOSS -> "Ｂ"
             else -> " "
         }
         print(text)

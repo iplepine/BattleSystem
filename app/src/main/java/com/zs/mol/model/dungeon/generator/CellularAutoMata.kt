@@ -11,7 +11,7 @@ class CellularAutoMata(private var mapSize: Int) : MapGenerator() {
         return Array(mapSize) { IntArray(mapSize) }.also { map ->
             val initialWorld = firstBigBang(mapSize)
             var convertedMap = initialWorld.map {
-                it.map { alive -> if (alive) FieldType.GROUND else FieldType.WALL }.toIntArray()
+                it.map { isGround -> if (isGround) FieldType.GROUND else FieldType.WALL }.toIntArray()
             }.toTypedArray()
             printMap(convertedMap)
             println()
@@ -21,7 +21,8 @@ class CellularAutoMata(private var mapSize: Int) : MapGenerator() {
             }
 
             convertedMap = initialWorld.map {
-                it.map { alive -> if (alive) FieldType.GROUND else FieldType.WALL }.toIntArray()
+                it.map { isGround -> if (isGround) FieldType.GROUND else FieldType.WALL }
+                    .toIntArray()
             }.toTypedArray()
             printMap(convertedMap)
             println()
