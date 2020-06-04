@@ -26,8 +26,8 @@ abstract class MapGenerator {
 
     private fun printField(field: Int) {
         val text = when (field) {
-            FieldType.VERTICAL_WAY -> "│"
-            FieldType.HORIZONTAL_WAY -> "─"
+            FieldType.VERTICAL_WAY -> "─"
+            FieldType.HORIZONTAL_WAY -> "│"
             FieldType.ENTRANCE -> "▣"
             FieldType.WALL -> "■"
             FieldType.GROUND -> "□"

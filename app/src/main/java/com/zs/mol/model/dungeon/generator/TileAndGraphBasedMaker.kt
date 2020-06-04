@@ -4,7 +4,7 @@ import com.zs.mol.model.dungeon.Dungeon
 import com.zs.mol.model.dungeon.DungeonPlace
 import kotlin.random.Random
 
-class TileAndGraphBasedMaker(private val width: Int, private val height: Int, val difficulty: Int) :
+class TileAndGraphBasedMaker(private val width: Int, private val height: Int) :
     MapGenerator() {
 
     var entrance = TiledRoom(Random.nextInt(width), Random.nextInt(height), FieldType.ENTRANCE)
@@ -28,7 +28,6 @@ class TileAndGraphBasedMaker(private val width: Int, private val height: Int, va
 
     override fun createMap(): Array<IntArray> {
         return Array(width * 2) { IntArray(height * 2) { FieldType.WALL } }.also { ret ->
-            makeRooms(difficulty)
             for (i in 0 until map.height) {
                 for (j in 0 until map.width) {
                     ret[i * 2][j * 2] = map.get(i, j)
@@ -52,14 +51,14 @@ class TileAndGraphBasedMaker(private val width: Int, private val height: Int, va
         }
     }
 
-    private fun makeRooms(roomCount: Int) {
+    fun makeRooms(roomCount: Int) {
         var madeCount = 0
         var tryCount = 0
         val TRY_LIMIT = 1000
 
         while (madeCount < roomCount && tryCount++ < TRY_LIMIT) {
             val directionList = DungeonPlace.Direction.values()
-                .filterNot { it == DungeonPlace.Direction.NONE }
+                .filter { it != DungeonPlace.Direction.NONE }
                 .toList()
                 .shuffled()
 
@@ -73,7 +72,7 @@ class TileAndGraphBasedMaker(private val width: Int, private val height: Int, va
         }
     }
 
-    private fun makeRoom(direction: DungeonPlace.Direction): Boolean {
+    fun makeRoom(direction: DungeonPlace.Direction): Boolean {
         val currentRoom = dungeon.getPlace(x, y)
 
         this.direction = direction
@@ -111,12 +110,20 @@ class TileAndGraphBasedMaker(private val width: Int, private val height: Int, va
         return true
     }
 
-    // TODO 여기 문제 있는 듯
     private fun canSpread(map: Dungeon.DungeonMap, x: Int, y: Int): Boolean {
-        return (x + 1 < width && visitMap.isVisit(x + 1, y) || map.get(x + 1, y) != FieldType.WALL)
-                || (0 <= x - 1 && visitMap.isVisit(x - 1, y) && map.get(x - 1, y) != FieldType.WALL)
-                || (y + 1 < height && visitMap.isVisit(x, y + 1) && map.get(x,y + 1) != FieldType.WALL)
-                || (0 <= y - 1 && visitMap.isVisit(x, y - 1) && map.get(x, y - 1) != FieldType.WALL)
+        return (x + 1 < width && !visitMap.isVisit(x + 1, y) && map.get(x + 1, y) == FieldType.WALL)
+                || (0 <= x - 1 && !visitMap.isVisit(x - 1, y) && map.get(
+            x - 1,
+            y
+        ) == FieldType.WALL)
+                || (y + 1 < height && !visitMap.isVisit(x, y + 1) && map.get(
+            x,
+            y + 1
+        ) == FieldType.WALL)
+                || (0 <= y - 1 && !visitMap.isVisit(x, y - 1) && map.get(
+            x,
+            y - 1
+        ) == FieldType.WALL)
     }
 
     private fun moveBack() {
@@ -135,14 +142,10 @@ class TileAndGraphBasedMaker(private val width: Int, private val height: Int, va
             fun createHashKey(x: Int, y: Int): String {
                 return "$x,$y"
             }
-
-            fun getHashKey(place: TiledRoom): String {
-                return createHashKey(place.x, place.y)
-            }
         }
 
-        override fun hashCode(): Int {
-            return getHashKey(this).hashCode()
+        override fun getHashKey(): String {
+            return createHashKey(x, y)
         }
     }
 

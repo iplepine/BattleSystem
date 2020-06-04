@@ -29,9 +29,11 @@ class DungeonMakerTest {
 
     @Test
     fun createTiledMap() {
-        val maker = TileAndGraphBasedMaker(5, 5, 5)
-        val map = maker.createMap()
+        val maker = TileAndGraphBasedMaker(5, 5)
+        maker.makeRooms(10)
 
+        val map = maker.createMap()
         maker.printMap(map)
+        println()
     }
 }

@@ -35,6 +35,10 @@ abstract class DungeonPlace {
         }
     }
 
+    override fun hashCode(): Int {
+        return getHashKey().hashCode()
+    }
+
     open fun getHashKey(): String {
         return toString()
     }
