@@ -1,6 +1,6 @@
 package com.zs.mol.model.dungeon
 
-import com.zs.mol.model.user.User
+import android.text.TextUtils
 
 abstract class DungeonPlace {
     enum class Direction {
@@ -36,18 +36,14 @@ abstract class DungeonPlace {
     }
 
     override fun hashCode(): Int {
-        return getHashKey().hashCode()
+        return if (TextUtils.isEmpty(getId())) {
+            super.hashCode()
+        } else {
+            getId().hashCode()
+        }
     }
 
-    open fun getHashKey(): String {
-        return toString()
-    }
-
-    open fun onEnter(user: User, dungeon: Dungeon<out DungeonPlace>) {
-
-    }
-
-    open fun onOut(user: User, dungeon: Dungeon<out DungeonPlace>) {
-
+    open fun getId(): String {
+        return ""
     }
 }

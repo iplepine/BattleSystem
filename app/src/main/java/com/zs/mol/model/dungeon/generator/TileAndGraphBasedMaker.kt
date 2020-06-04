@@ -1,5 +1,6 @@
 package com.zs.mol.model.dungeon.generator
 
+import com.zs.mol.model.common.Position
 import com.zs.mol.model.dungeon.Dungeon
 import com.zs.mol.model.dungeon.DungeonPlace
 import kotlin.random.Random
@@ -7,27 +8,26 @@ import kotlin.random.Random
 class TileAndGraphBasedMaker(private val width: Int, private val height: Int) :
     MapGenerator() {
 
-    var entrance = TiledRoom(Random.nextInt(width), Random.nextInt(height), FieldType.ENTRANCE)
+    var entrance = TiledPlace(Random.nextInt(width), Random.nextInt(height), FieldType.ENTRANCE)
     val map: Dungeon.DungeonMap = Dungeon.DungeonMap(width, height)
     val dungeon: TiledDungeon = TiledDungeon(entrance, map)
 
     var visitMap = VisitMap(width, height)
 
-    var x = entrance.x
-    var y = entrance.y
+    val currentPosition = Position(entrance.position.x, entrance.position.y)
 
     lateinit var direction: DungeonPlace.Direction
 
     init {
-        visitMap.visit(x, y)
+        visitMap.visit(currentPosition.x, currentPosition.y)
         entrance.apply {
-            map.set(x, y, fieldType)
+            map.set(currentPosition.x, currentPosition.y, fieldType)
             dungeon.addPlace(entrance)
         }
     }
 
     override fun createMap(): Array<IntArray> {
-        return Array(width * 2) { IntArray(height * 2) { FieldType.WALL } }.also { ret ->
+        return Array(width * 2 - 1) { IntArray(height * 2 - 1) { FieldType.WALL } }.also { ret ->
             for (i in 0 until map.height) {
                 for (j in 0 until map.width) {
                     ret[i * 2][j * 2] = map.get(i, j)
@@ -39,11 +39,13 @@ class TileAndGraphBasedMaker(private val width: Int, private val height: Int) :
                     val place = get(key)
                     place?.also { place ->
                         if (place.connects.containsKey(DungeonPlace.Direction.EAST)) {
-                            ret[place.x * 2 + 1][place.y * 2] = FieldType.HORIZONTAL_WAY
+                            ret[place.position.x * 2 + 1][place.position.y * 2] =
+                                FieldType.HORIZONTAL_WAY
                         }
 
                         if (place.connects.containsKey(DungeonPlace.Direction.SOUTH)) {
-                            ret[place.x * 2][place.y * 2 + 1] = FieldType.VERTICAL_WAY
+                            ret[place.position.x * 2][place.position.y * 2 + 1] =
+                                FieldType.VERTICAL_WAY
                         }
                     }
                 }
@@ -51,7 +53,7 @@ class TileAndGraphBasedMaker(private val width: Int, private val height: Int) :
         }
     }
 
-    fun makeRooms(roomCount: Int) {
+    fun makeRooms(roomCount: Int, generation: Int) {
         var madeCount = 0
         var tryCount = 0
         val TRY_LIMIT = 1000
@@ -64,7 +66,7 @@ class TileAndGraphBasedMaker(private val width: Int, private val height: Int) :
 
             for (i in directionList.indices) {
                 val d = directionList[i]
-                if (makeRoom(d)) {
+                if (makeRoom(d, generation)) {
                     madeCount++
                     break
                 }
@@ -72,7 +74,10 @@ class TileAndGraphBasedMaker(private val width: Int, private val height: Int) :
         }
     }
 
-    fun makeRoom(direction: DungeonPlace.Direction): Boolean {
+    fun makeRoom(direction: DungeonPlace.Direction, generation: Int): Boolean {
+        var x = currentPosition.x
+        var y = currentPosition.y
+
         val currentRoom = dungeon.getPlace(x, y)
 
         this.direction = direction
@@ -128,14 +133,14 @@ class TileAndGraphBasedMaker(private val width: Int, private val height: Int) :
 
     private fun moveBack() {
         when (direction) {
-            DungeonPlace.Direction.NORTH -> y += 1
-            DungeonPlace.Direction.EAST -> x -= 1
-            DungeonPlace.Direction.SOUTH -> y -= 1
-            DungeonPlace.Direction.WEST -> x += 1
+            DungeonPlace.Direction.NORTH -> currentPosition.up()
+            DungeonPlace.Direction.EAST -> currentPosition.right()
+            DungeonPlace.Direction.SOUTH -> currentPosition.down()
+            DungeonPlace.Direction.WEST -> currentPosition.left()
         }
     }
 
-    class TiledRoom(var x: Int, var y: Int, var fieldType: Int = FieldType.GROUND) :
+    class TiledPlace(x: Int, y: Int, var fieldType: Int = FieldType.GROUND) :
         DungeonPlace() {
 
         companion object {
@@ -144,14 +149,16 @@ class TileAndGraphBasedMaker(private val width: Int, private val height: Int) :
             }
         }
 
-        override fun getHashKey(): String {
-            return createHashKey(x, y)
+        val position = Position(x, y)
+
+        override fun getId(): String {
+            return createHashKey(position.x, position.y)
         }
     }
 
-    class TiledDungeon(start: TiledRoom, val map: DungeonMap) : Dungeon<TiledRoom>(start) {
-        fun getPlace(x: Int, y: Int): TiledRoom {
-            return getPlace(TiledRoom.createHashKey(x, y)) ?: TiledRoom(x, y)
+    class TiledDungeon(start: TiledPlace, val map: DungeonMap) : Dungeon<TiledPlace>(start) {
+        fun getPlace(x: Int, y: Int): TiledPlace {
+            return getPlace(TiledPlace.createHashKey(x, y)) ?: TiledPlace(x, y)
         }
     }
 
