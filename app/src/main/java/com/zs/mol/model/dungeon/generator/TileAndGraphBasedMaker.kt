@@ -2,13 +2,14 @@ package com.zs.mol.model.dungeon.generator
 
 import com.zs.mol.model.common.Position
 import com.zs.mol.model.dungeon.Dungeon
+import com.zs.mol.model.dungeon.Dungeon.DungeonMap.TileType
 import com.zs.mol.model.dungeon.DungeonPlace
 import kotlin.random.Random
 
 class TileAndGraphBasedMaker(private val width: Int, private val height: Int) :
     MapGenerator() {
 
-    var entrance = TiledPlace(Random.nextInt(width), Random.nextInt(height), FieldType.ENTRANCE)
+    var entrance = TiledPlace(Random.nextInt(width), Random.nextInt(height), TileType.ENTRANCE)
     val map: Dungeon.DungeonMap = Dungeon.DungeonMap(width, height)
     val dungeon: TiledDungeon = TiledDungeon(entrance, map)
 
@@ -21,13 +22,13 @@ class TileAndGraphBasedMaker(private val width: Int, private val height: Int) :
     init {
         visitMap.visit(currentPosition.x, currentPosition.y)
         entrance.apply {
-            map.set(currentPosition.x, currentPosition.y, fieldType)
+            map.set(currentPosition.x, currentPosition.y, tileType)
             dungeon.addPlace(entrance)
         }
     }
 
     override fun createMap(): Array<IntArray> {
-        return Array(width * 2 - 1) { IntArray(height * 2 - 1) { FieldType.WALL } }.also { ret ->
+        return Array(width * 2 - 1) { IntArray(height * 2 - 1) { TileType.WALL } }.also { ret ->
             for (i in 0 until map.height) {
                 for (j in 0 until map.width) {
                     ret[i * 2][j * 2] = map.get(i, j)
@@ -40,17 +41,21 @@ class TileAndGraphBasedMaker(private val width: Int, private val height: Int) :
                     place?.also { place ->
                         if (place.connects.containsKey(DungeonPlace.Direction.EAST)) {
                             ret[place.position.x * 2 + 1][place.position.y * 2] =
-                                FieldType.HORIZONTAL_WAY
+                                TileType.HORIZONTAL_WAY
                         }
 
                         if (place.connects.containsKey(DungeonPlace.Direction.SOUTH)) {
                             ret[place.position.x * 2][place.position.y * 2 + 1] =
-                                FieldType.VERTICAL_WAY
+                                TileType.VERTICAL_WAY
                         }
                     }
                 }
             }
         }
+    }
+
+    fun initStartPosition(x: Int = Random.nextInt(width), y: Int = Random.nextInt(height)) {
+        entrance = TiledPlace(x, y, TileType.ENTRANCE)
     }
 
     fun makeRooms(roomCount: Int, generation: Int) {
@@ -95,7 +100,7 @@ class TileAndGraphBasedMaker(private val width: Int, private val height: Int) :
         }
 
         // 이미 방문하거나 맵이 그려져 있을 경우
-        if (visitMap.isVisit(x, y) || map.get(x, y) != FieldType.WALL) {
+        if (visitMap.isVisit(x, y) || map.get(x, y) != TileType.WALL) {
             moveBack()
             return false
         }
@@ -107,7 +112,7 @@ class TileAndGraphBasedMaker(private val width: Int, private val height: Int) :
         }
 
         visitMap.visit(x, y)
-        map.set(x, y, FieldType.GROUND)
+        map.set(x, y, TileType.GROUND)
 
         val newPlace = dungeon.getPlace(x, y)
         dungeon.connectPlace(currentRoom, direction, newPlace)
@@ -116,19 +121,19 @@ class TileAndGraphBasedMaker(private val width: Int, private val height: Int) :
     }
 
     private fun canSpread(map: Dungeon.DungeonMap, x: Int, y: Int): Boolean {
-        return (x + 1 < width && !visitMap.isVisit(x + 1, y) && map.get(x + 1, y) == FieldType.WALL)
+        return (x + 1 < width && !visitMap.isVisit(x + 1, y) && map.get(x + 1, y) == TileType.WALL)
                 || (0 <= x - 1 && !visitMap.isVisit(x - 1, y) && map.get(
             x - 1,
             y
-        ) == FieldType.WALL)
+        ) == TileType.WALL)
                 || (y + 1 < height && !visitMap.isVisit(x, y + 1) && map.get(
             x,
             y + 1
-        ) == FieldType.WALL)
+        ) == TileType.WALL)
                 || (0 <= y - 1 && !visitMap.isVisit(x, y - 1) && map.get(
             x,
             y - 1
-        ) == FieldType.WALL)
+        ) == TileType.WALL)
     }
 
     private fun moveBack() {
@@ -140,7 +145,7 @@ class TileAndGraphBasedMaker(private val width: Int, private val height: Int) :
         }
     }
 
-    class TiledPlace(x: Int, y: Int, var fieldType: Int = FieldType.GROUND) :
+    class TiledPlace(x: Int, y: Int, var tileType: Int = TileType.GROUND) :
         DungeonPlace() {
 
         companion object {

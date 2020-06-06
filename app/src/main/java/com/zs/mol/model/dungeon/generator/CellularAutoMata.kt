@@ -1,5 +1,6 @@
 package com.zs.mol.model.dungeon.generator
 
+import com.zs.mol.model.dungeon.Dungeon.DungeonMap.TileType
 import kotlin.random.Random
 
 class CellularAutoMata(private var mapSize: Int) : MapGenerator() {
@@ -11,7 +12,7 @@ class CellularAutoMata(private var mapSize: Int) : MapGenerator() {
         return Array(mapSize) { IntArray(mapSize) }.also { map ->
             val initialWorld = firstBigBang(mapSize)
             var convertedMap = initialWorld.map {
-                it.map { isGround -> if (isGround) FieldType.GROUND else FieldType.WALL }.toIntArray()
+                it.map { isGround -> if (isGround) TileType.GROUND else TileType.WALL }.toIntArray()
             }.toTypedArray()
             printMap(convertedMap)
             println()
@@ -21,7 +22,7 @@ class CellularAutoMata(private var mapSize: Int) : MapGenerator() {
             }
 
             convertedMap = initialWorld.map {
-                it.map { isGround -> if (isGround) FieldType.GROUND else FieldType.WALL }
+                it.map { isGround -> if (isGround) TileType.GROUND else TileType.WALL }
                     .toIntArray()
             }.toTypedArray()
             printMap(convertedMap)
