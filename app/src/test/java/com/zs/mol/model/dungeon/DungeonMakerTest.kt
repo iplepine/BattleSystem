@@ -2,8 +2,10 @@ package com.zs.mol.model.dungeon
 
 import com.zs.mol.model.dungeon.generator.BSPMaker
 import com.zs.mol.model.dungeon.generator.CellularAutoMata
+import com.zs.mol.model.dungeon.generator.MapGenerator
 import com.zs.mol.model.dungeon.generator.TileAndGraphBasedMaker
 import org.junit.Test
+import kotlin.random.Random
 
 class DungeonMakerTest {
     @Test
@@ -24,15 +26,17 @@ class DungeonMakerTest {
         val maker = BSPMaker(42, 8)
         val map = maker.createMap()
 
-        maker.printMap(map)
+        MapGenerator.printMap(map)
     }
 
     @Test
     fun createTiledMap() {
-        val maker = TileAndGraphBasedMaker(2, 2)
-        maker.makeRooms(3, 0)
+        val map = TileAndGraphBasedMaker.Builder(2, 2)
+            //.initRandomEntrance()
+            .setEntrance(1,0)
+            .makeRooms(3, 0)
+            .build()
 
-        val map = maker.createMap()
-        maker.printMap(map)
+        MapGenerator.printMap(map)
     }
 }
