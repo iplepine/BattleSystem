@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.zs.mol.R
 import com.zs.mol.view.base.MainFragment
+import kotlinx.android.synthetic.main.fragment_dungeon.*
 
 class DungeonFragment : MainFragment() {
     var viewModel: DungeonViewModel? = null
@@ -25,14 +27,10 @@ class DungeonFragment : MainFragment() {
     }
 
     private fun init() {
-        activity?.application?.also {
-            val viewModelFactory = ViewModelProvider.AndroidViewModelFactory(it)
-            viewModel = ViewModelProvider(this, viewModelFactory).get(DungeonViewModel::class.java)
-        }
+        viewModel = ViewModelProvider(this).get(DungeonViewModel::class.java)
     }
 
     private fun changeDungeon() {
+        recyclerView.adapter = SelectionAdapter(viewLifecycleOwner)
     }
-
-
 }

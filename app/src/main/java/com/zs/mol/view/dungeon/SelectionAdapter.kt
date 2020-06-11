@@ -1,20 +1,31 @@
-/*
 package com.zs.mol.view.dungeon
 
+import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
+import androidx.lifecycle.LifecycleOwner
+import com.zs.lib.view.liverecyclerview.LiveItemViewModel
+import com.zs.lib.view.liverecyclerview.LiveViewAdapter
+import com.zs.lib.view.liverecyclerview.LiveViewHolder
+import com.zs.mol.BR
+import com.zs.mol.databinding.ItemSelectionBinding
 
-class SelectionAdapter<T : BindingViewHolder<BindingItem>> : RecyclerView.Adapter<T>() {
-    var data = ArrayList<BindingViewModel>()
+class SelectionAdapter(lifecycleOwner: LifecycleOwner) :
+    LiveViewAdapter<SelectionAdapter.SelectionItemViewModel, SelectionAdapter.SelectionItemViewHolder>(
+        lifecycleOwner
+    ) {
 
-    override fun getItemCount(): Int {
-        return data.size
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SelectionItemViewHolder {
+        return SelectionItemViewHolder(parent)
     }
 
-    override fun onBindViewHolder(holder: T, position: Int) {
+    class SelectionItemViewModel(val message: String) : LiveItemViewModel() {
+
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return data[position].type
+    class SelectionItemViewHolder(parent: ViewGroup) :
+        LiveViewHolder(ItemSelectionBinding.inflate(LayoutInflater.from(parent.context))) {
+        override fun getVariableId(): Int {
+            return BR.selectionItemViewModel
+        }
     }
-}*/
+}
