@@ -32,13 +32,13 @@ object GameEngine {
             false
         } else {
             UserManager.user = user
-            val inventory = PreferenceManager.loadInventory(context, user.id)
-
+            var inventory = PreferenceManager.loadInventory(context, user.id)
             if (inventory == null) {
-                Inventory.initForNewUser()
+                inventory = Inventory()
             } else {
-                Inventory.putAll(inventory)
+                inventory.putAll(inventory)
             }
+            UserManager.user.inventory = inventory
 
             Logger.d("load previous user")
             true
@@ -46,7 +46,6 @@ object GameEngine {
     }
 
     fun saveGame(context: Context) {
-        PreferenceManager.saveUser(context)
         PreferenceManager.saveInventory(context)
 
         Logger.d("save the game")

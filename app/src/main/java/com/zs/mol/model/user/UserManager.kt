@@ -1,21 +1,18 @@
 package com.zs.mol.model.user
 
+import com.zs.mol.model.consts.ReservedUserId
+import com.zs.mol.model.db.user.UserRepository
 import com.zs.mol.model.unit.BattleUnit
 import io.reactivex.subjects.PublishSubject
+import javax.inject.Inject
 
 object UserManager {
-    object ReservedUserId {
-        const val GUEST = "guest"
-        const val ENEMY = "enemy"
-        const val NPC = "npc"
-    }
-
-    var user: User = User(ReservedUserId.GUEST)
-
+    lateinit var userRepository: UserRepository
+    lateinit var user: User
     val updateSubject = PublishSubject.create<Boolean>()
 
     fun initUser(userId: String) {
-        user = User(userId)
+        user = userRepository.getUser(userId)
         gainGold(5000)
     }
 

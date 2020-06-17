@@ -39,9 +39,8 @@ object PreferenceManager {
         preferences.edit().putString(key, value).commit()
     }
 
-    fun saveUser(context: Context) {
+    fun saveUser(context: Context, user: User) {
         val preferences = context.getSharedPreferences(USER, MODE_PRIVATE)
-        var user = UserManager.user
         preferences.edit()
             .putString(USER_ID, user.id)
             .putString(user.id, toJson(user))
@@ -64,7 +63,8 @@ object PreferenceManager {
     fun saveInventory(context: Context) {
         val preferences = context.getSharedPreferences(INVENTORY, MODE_PRIVATE)
         val userId = UserManager.getUserId()
-        preferences.edit().putString(userId, toJson(Inventory)).commit()
+        val inventory = UserManager.user.inventory
+        preferences.edit().putString(userId, toJson(inventory)).commit()
     }
 
     fun loadInventory(context: Context, userId: String): Inventory? {

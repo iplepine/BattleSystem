@@ -5,11 +5,7 @@ import com.zs.mol.model.item.ItemKey
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.math.max
 
-object Inventory : ConcurrentHashMap<String, Long>() {
-
-    fun initForNewUser() {
-        clear()
-    }
+class Inventory : ConcurrentHashMap<String, Long>() {
 
     fun addItem(id: String, amount: Long) {
         Logger.d("add item to inventory, itemId: $id, amount : $amount")
