@@ -11,4 +11,5 @@ class UserStatusViewModel : ViewModel() {
     init {
         Logger.d("init UserStatusViewModel")
     }
+
 }

@@ -1,5 +1,6 @@
 package com.zs.mol.view.quest.fragment
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.zs.mol.MainActivity
 import com.zs.mol.R
 import com.zs.mol.model.common.Logger
 import com.zs.mol.model.db.text.TextDB
@@ -22,11 +24,17 @@ import com.zs.mol.view.quest.QuestDetailItemAdapter
 import com.zs.mol.view.quest.viewmodel.NewQuestViewModel
 import com.zs.mol.view.quest.viewmodel.UserStatusViewModel
 import kotlinx.android.synthetic.main.fragment_new_quest.*
+import javax.inject.Inject
 
 
 open class NewQuestFragment : BaseDialogFragment() {
 
-    private val viewModel = NewQuestViewModel()
+    @Inject
+    lateinit var viewModel: NewQuestViewModel
+
+    @Inject
+    lateinit var questManager: QuestManager
+
     lateinit var userStatusViewModel: UserStatusViewModel
 
     private var detailItemView: View? = null
@@ -47,10 +55,15 @@ open class NewQuestFragment : BaseDialogFragment() {
         init()
     }
 
+    override fun onAttach(activity: Activity) {
+        super.onAttach(activity)
+        (requireActivity() as MainActivity).component.inject(this)
+    }
+
     private fun handleArguments() {
         arguments?.apply {
             val questId = get("questId").toString()
-            val quest = QuestManager.getQuest(questId)
+            val quest = questManager.getQuest(questId)
             if (quest == null) {
                 showToast(TextDB.getText(TextDB.Key.ERROR_QUEST_NOT_FOUND))
                 dismiss()

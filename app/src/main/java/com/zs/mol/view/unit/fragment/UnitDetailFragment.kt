@@ -1,5 +1,6 @@
 package com.zs.mol.view.unit.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.text.InputType
 import android.util.TypedValue
@@ -11,6 +12,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
+import com.zs.mol.MainActivity
 import com.zs.mol.R
 import com.zs.mol.model.stat.BaseStat.Companion.CHA
 import com.zs.mol.model.stat.BaseStat.Companion.CON
@@ -30,14 +32,15 @@ import com.zs.mol.model.stat.SecondStat.Companion.MP
 import com.zs.mol.model.stat.SecondStat.Companion.SPEED
 import com.zs.mol.model.stat.SecondStat.Companion.WILL
 import com.zs.mol.model.unit.BattleUnit
-import com.zs.mol.model.unit.UnitManager
 import com.zs.mol.view.base.BaseFragment
 import com.zs.mol.view.unit.viewmodel.UnitDetailViewModel
 import kotlinx.android.synthetic.main.fragment_unit_detail.*
+import javax.inject.Inject
 
 class UnitDetailFragment : BaseFragment() {
 
-    private val viewModel = UnitDetailViewModel()
+    @Inject
+    lateinit var viewModel: UnitDetailViewModel
 
     private val baseStatSequence = arrayOf(STR, DEX, INT, CON, WIS, CHA)
     private val secondStatSequence = arrayOf(ATK, MATK, DEF, MDEF, HIT, EVADE, SPEED, CRI)
@@ -58,6 +61,11 @@ class UnitDetailFragment : BaseFragment() {
         init()
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (requireActivity() as MainActivity).component.inject(this)
+    }
+
     private fun init() {
         handleArguments()
         initStatViews(baseStatSequence, baseStatViews, baseStatLayout)
@@ -71,7 +79,7 @@ class UnitDetailFragment : BaseFragment() {
         arguments?.apply {
             getString(KEY_UNIT_ID)?.also { id ->
                 // 퀘스트로 들어오는 유닛도 일종의 유닛 매니저에 저장해서 거기서 찾아야함
-                viewModel.unit.value = UnitManager.getUnit(id)
+                viewModel.unit.value = viewModel.findUnit(id)
             }
         }
     }

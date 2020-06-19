@@ -5,7 +5,6 @@ import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.zs.mol.model.common.Logger
 import com.zs.mol.model.stat.SecondStat
 import com.zs.mol.model.unit.BattleUnit
 

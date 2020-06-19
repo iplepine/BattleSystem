@@ -1,16 +1,15 @@
 package com.zs.mol.model.quest.detail.condition
 
-import com.zs.mol.model.db.inventory.Inventory
-import com.zs.mol.model.user.UserManager
+import com.zs.mol.model.user.User
 
 class ItemRequirement(key: String, value: Long) : QuestRequirement(key, value) {
     val amount = value
 
-    override fun checkRequire(): Boolean {
-        return amount <= UserManager.user.inventory.getAmount(key)
+    override fun checkRequire(user: User): Boolean {
+        return amount <= user.inventory.getAmount(key)
     }
 
-    override fun onSuccess() {
-        UserManager.user.inventory.removeItem(key, amount)
+    override fun onSuccess(user: User) {
+        user.inventory.removeItem(key, amount)
     }
 }

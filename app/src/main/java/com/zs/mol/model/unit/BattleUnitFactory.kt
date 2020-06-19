@@ -1,23 +1,25 @@
 package com.zs.mol.model.unit
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.zs.mol.model.consts.ManNamePool
 import com.zs.mol.model.consts.WomanNamePool
 import com.zs.mol.model.stat.StatFactory
 import com.zs.mol.model.user.UserManager
 import java.util.concurrent.ArrayBlockingQueue
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.random.Random
 
-object BattleUnitFactory {
+class BattleUnitFactory @Inject constructor(private val userManager: UserManager) {
 
-    private const val MAN_FACE_SIZE = 71
-    private const val WOMAN_FACE_SIZE = 58
+    companion object {
+        private const val MAN_FACE_SIZE = 71
+        private const val WOMAN_FACE_SIZE = 58
 
-    private val usedNameCache = ArrayBlockingQueue<String>(7)
-    private val usedFaceCache = ArrayBlockingQueue<String>(7)
+        private val usedNameCache = ArrayBlockingQueue<String>(7)
+        private val usedFaceCache = ArrayBlockingQueue<String>(7)
 
-    private const val RETRY_COUNT = 3
+        private const val RETRY_COUNT = 3
+    }
 
     fun createUnit(owner: String, name: String?): BattleUnit {
         return BattleUnit(owner).apply {
@@ -31,11 +33,11 @@ object BattleUnitFactory {
     }
 
     fun createMyUnit(name: String = getRandomName()): BattleUnit {
-        return createUnit(UserManager.getUserId(), name)
+        return createUnit(userManager.getUserId(), name)
     }
 
     fun createEnemy(name: String = getRandomName()): BattleUnit {
-        return createUnit(UserManager.getEnemyId(), name)
+        return createUnit(userManager.getEnemyId(), name)
     }
 
     fun getSmartRandomName(isMale: Boolean = Random.nextBoolean(), retryCount: Int = 0): String {

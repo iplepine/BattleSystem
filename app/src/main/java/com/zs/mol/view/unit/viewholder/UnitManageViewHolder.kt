@@ -8,14 +8,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.zs.mol.R
-import com.zs.mol.model.game.GameEngine
 import com.zs.mol.model.stat.SecondStat.Companion.HP
 import com.zs.mol.model.stat.SecondStat.Companion.MP
 import com.zs.mol.model.unit.BattleUnit
-import com.zs.mol.model.unit.BattleUnitFactory
 import com.zs.mol.model.unit.action.UnitAction
 import com.zs.mol.view.unit.viewmodel.UnitViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.item_unit.view.*
 
@@ -65,11 +62,12 @@ class UnitManageViewHolder(parent: ViewGroup, private val viewModel: UnitViewMod
     }
 
     fun onAttached() {
-        disposable = GameEngine.timeSubject
+        //TODO
+        /*disposable = GameEngine.timeSubject
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 updateView()
-            }
+            }*/
 
         startAnimation()
     }
@@ -110,7 +108,7 @@ class UnitManageViewHolder(parent: ViewGroup, private val viewModel: UnitViewMod
         // face
         face.context?.apply {
             if (TextUtils.isEmpty(unit.status.faceImage)) {
-                unit.status.faceImage = BattleUnitFactory.getSmartRandomName()
+                unit.status.faceImage = viewModel.getRandomFace()
             }
 
             val id = resources.getIdentifier(unit.status.faceImage, "drawable", packageName)

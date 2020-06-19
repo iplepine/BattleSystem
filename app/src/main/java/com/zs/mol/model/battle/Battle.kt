@@ -3,13 +3,22 @@ package com.zs.mol.model.battle
 import com.zs.mol.model.battle.controller.UserInputTimer
 import com.zs.mol.model.common.Logger
 import com.zs.mol.model.common.MonoBehaviour
+import com.zs.mol.model.game.GameEngine
 import com.zs.mol.model.unit.BattleUnit
 import com.zs.mol.model.user.UserManager
+import javax.inject.Inject
 
 class Battle : MonoBehaviour {
     companion object {
         const val GAME_SPEED = 1000L// / 60L    // 1 프레임 당 시간 흐름
     }
+
+    @Inject
+    lateinit var engine: GameEngine
+
+    @Inject
+    lateinit var userManager: UserManager
+
 
     var useRealTime = false
     private var isRunning = true
@@ -98,12 +107,12 @@ class Battle : MonoBehaviour {
 
         battleUnits.forEach {
             // 내 유닛일 때, 모두가 죽었는지 체크
-            if (it.isMine(UserManager.getUserId()) && !it.isDie()) {
+            if (it.isMine(userManager.getUserId()) && !it.isDie()) {
                 isDieAllMyUnits = false
             }
 
             // 내 유닛이 아닐 때, 하나라도 살았는지 체크
-            if (it.isEnemy(UserManager.getUserId()) && !it.isDie()) {
+            if (it.isEnemy(userManager.getUserId()) && !it.isDie()) {
                 return false
             }
         }
@@ -116,7 +125,7 @@ class Battle : MonoBehaviour {
      */
     fun checkLose(): Boolean {
         battleUnits.forEach {
-            if (UserManager.isMyUnit(it.owner) && !it.isDie()) {
+            if (userManager.isMyUnit(it.owner) && !it.isDie()) {
                 return false
             }
         }

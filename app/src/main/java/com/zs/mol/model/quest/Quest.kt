@@ -3,7 +3,7 @@ package com.zs.mol.model.quest
 import com.zs.mol.model.quest.detail.condition.QuestRequirement
 import com.zs.mol.model.quest.detail.penalty.QuestPenalty
 import com.zs.mol.model.quest.detail.reward.QuestReward
-import com.zs.mol.model.quest.detail.reward.UnitReward
+import com.zs.mol.model.user.User
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -20,22 +20,22 @@ abstract class Quest(var type: QuestType) {
         return true
     }
 
-    open fun checkSuccess(): Boolean {
-        return requires.find { !it.checkRequire() } == null
+    open fun checkSuccess(user: User): Boolean {
+        return requires.find { !it.checkRequire(user) } == null
     }
 
-    open fun onSuccess() {
+    open fun onSuccess(user: User) {
         requires.forEach {
-            it.onSuccess()
+            it.onSuccess(user)
         }
         rewards.forEach {
-            it.onSuccess()
+            it.onSuccess(user)
         }
     }
 
-    open fun onFailed() {
+    open fun onFailed(user: User) {
         penalty.forEach {
-            it.onFailed()
+            it.onFailed(user)
         }
     }
 

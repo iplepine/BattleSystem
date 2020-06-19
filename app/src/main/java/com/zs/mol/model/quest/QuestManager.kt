@@ -2,9 +2,13 @@ package com.zs.mol.model.quest
 
 import androidx.lifecycle.MutableLiveData
 import com.zs.mol.model.quest.factory.QuestFactory
+import com.zs.mol.model.user.User
 import java.util.concurrent.ConcurrentHashMap
+import javax.inject.Inject
+import javax.inject.Singleton
 
-object QuestManager {
+@Singleton
+class QuestManager @Inject constructor(private val questFactory: QuestFactory) {
     val acceptedQuests = ArrayList<Quest>()
     val requests = ConcurrentHashMap<String, Quest>()
 
@@ -12,7 +16,7 @@ object QuestManager {
     val newQuestLiveData = MutableLiveData<ConcurrentHashMap<String, Quest>>()
 
     fun createNewRequest(type: QuestType): Quest? {
-        return QuestFactory.createQuest(type)?.apply {
+        return questFactory.createQuest(type)?.apply {
             requests[id] = this
             newQuestLiveData.value = requests
         }
@@ -23,14 +27,14 @@ object QuestManager {
         return createNewRequest(QuestType.values()[randIndex])
     }
 
-    fun accept(id: String) {
+    fun accept(user: User, id: String) {
         requests[id]?.also {
             when (it.type) {
                 QuestType.HIRE -> {
-                    if (it.checkSuccess()) {
-                        it.onSuccess()
+                    if (it.checkSuccess(user)) {
+                        it.onSuccess(user)
                     } else {
-                        it.onFailed()
+                        it.onFailed(user)
                     }
                 }
                 else -> {
@@ -58,6 +62,6 @@ object QuestManager {
 
     fun clearNewQuests() {
         requests.clear()
-        newQuestLiveData.value= requests
+        newQuestLiveData.value = requests
     }
 }

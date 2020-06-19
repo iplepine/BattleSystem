@@ -13,18 +13,19 @@ import android.view.WindowManager
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
+import com.zs.mol.MainActivity
 import com.zs.mol.databinding.FragmentHireBinding
 import com.zs.mol.model.quest.HireQuest
 import com.zs.mol.view.base.BaseDialogFragment
 import com.zs.mol.view.quest.viewmodel.QuestViewModel
 import com.zs.mol.view.unit.viewmodel.UnitStatusViewModel
+import javax.inject.Inject
 
 class UnitHireFragment : BaseDialogFragment(), QuestView {
     lateinit var binding: FragmentHireBinding
 
-    private val questViewModel: QuestViewModel by lazy {
-        ViewModelProvider(requireActivity()).get(QuestViewModel::class.java)
-    }
+    @Inject
+    lateinit var questViewModel: QuestViewModel
 
     private val unitStatusViewModel: UnitStatusViewModel by lazy {
         ViewModelProvider(requireParentFragment()).get(UnitStatusViewModel::class.java)
@@ -42,6 +43,11 @@ class UnitHireFragment : BaseDialogFragment(), QuestView {
         binding = FragmentHireBinding.inflate(inflater)
         binding.lifecycleOwner = this
         return binding.root
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (requireActivity() as MainActivity).component.inject(this)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

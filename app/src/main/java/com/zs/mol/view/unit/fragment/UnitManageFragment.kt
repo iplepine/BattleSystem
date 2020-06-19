@@ -1,5 +1,6 @@
 package com.zs.mol.view.unit.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,19 +8,22 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.zs.mol.MainActivity
 import com.zs.mol.R
 import com.zs.mol.model.common.Logger
-import com.zs.mol.model.game.GameEngine
 import com.zs.mol.model.unit.BattleUnit
 import com.zs.mol.view.base.MainFragment
 import com.zs.mol.view.unit.adapter.UnitAdapter
 import com.zs.mol.view.unit.viewmodel.UnitViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_unit_manage.*
+import javax.inject.Inject
 
 class UnitManageFragment : MainFragment() {
 
-    val viewModel = UnitViewModel()
+    @Inject
+    lateinit var viewModel: UnitViewModel
+
     var adapter: UnitAdapter? = null
 
     override fun onCreateView(
@@ -33,6 +37,11 @@ class UnitManageFragment : MainFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (requireActivity() as MainActivity).component.inject(this)
     }
 
     private fun init() {
@@ -50,7 +59,7 @@ class UnitManageFragment : MainFragment() {
                 showFieldMap(unit)
             })
 
-        addDisposable(GameEngine.timeSubject
+        addDisposable(gameEngine.timeSubject
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 //adapter?.notifyDataSetChanged()

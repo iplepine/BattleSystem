@@ -4,6 +4,7 @@ import android.content.Context
 import com.zs.mol.model.common.Logger
 import com.zs.mol.model.db.PreferenceManager
 import com.zs.mol.model.db.inventory.Inventory
+import com.zs.mol.model.db.user.UserRepository
 import com.zs.mol.model.unit.action.UnitActionManager
 import com.zs.mol.model.user.UserManager
 import io.reactivex.Observable
@@ -11,16 +12,25 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
 import java.util.*
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
+import javax.inject.Singleton
 
-object GameEngine {
-    private const val TIME_PERIOD = 100L
+@Singleton
+class GameEngine @Inject constructor(
+    private val userManager: UserManager,
+    private val userRepository: UserRepository,
+    private val unitActionManager: UnitActionManager
+) {
+    companion object {
+        private const val TIME_PERIOD = 100L
+    }
 
     val timeSubject: PublishSubject<Long> = PublishSubject.create<Long>()
     private var disposable: Disposable? = null
 
     fun newGame(context: Context) {
         if (!loadGame(context)) {
-            UserManager.initUser(UUID.randomUUID().toString())
+            userManager.initUser(UUID.randomUUID().toString())
 
             Logger.d("start new user")
         }
@@ -31,14 +41,14 @@ object GameEngine {
         return if (user == null) {
             false
         } else {
-            UserManager.user = user
+            userManager.user = user
             var inventory = PreferenceManager.loadInventory(context, user.id)
             if (inventory == null) {
                 inventory = Inventory()
             } else {
                 inventory.putAll(inventory)
             }
-            UserManager.user.inventory = inventory
+            userManager.user.inventory = inventory
 
             Logger.d("load previous user")
             true
@@ -46,8 +56,6 @@ object GameEngine {
     }
 
     fun saveGame(context: Context) {
-        PreferenceManager.saveInventory(context)
-
         Logger.d("save the game")
     }
 
@@ -81,6 +89,6 @@ object GameEngine {
     }
 
     private fun updateUnitAction(time: Long) {
-        UnitActionManager.updateTime(time)
+        unitActionManager.updateTime(time)
     }
 }

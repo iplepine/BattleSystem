@@ -4,20 +4,25 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.zs.mol.model.quest.Quest
 import com.zs.mol.model.quest.QuestManager
+import com.zs.mol.model.user.UserManager
+import javax.inject.Inject
 
-class NewQuestViewModel : ViewModel() {
+class NewQuestViewModel @Inject constructor(
+    private val questManager: QuestManager,
+    private val userManager: UserManager
+) : ViewModel() {
 
     val questData = MutableLiveData<Quest>()
 
     fun accept() {
         questData.value?.also {
-            QuestManager.accept(it.id)
+            questManager.accept(userManager.user, it.id)
         }
     }
 
     fun reject() {
         questData.value?.also {
-            QuestManager.reject(it.id)
+            questManager.reject(it.id)
         }
     }
 }
