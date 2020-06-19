@@ -5,7 +5,6 @@ import android.content.Context.MODE_PRIVATE
 import com.google.gson.Gson
 import com.zs.mol.model.db.inventory.Inventory
 import com.zs.mol.model.user.User
-import com.zs.mol.model.user.UserManager
 
 object PreferenceManager {
 
@@ -60,10 +59,10 @@ object PreferenceManager {
         }
     }
 
-    fun saveInventory(context: Context) {
+    fun saveInventory(context: Context, user: User) {
         val preferences = context.getSharedPreferences(INVENTORY, MODE_PRIVATE)
-        val userId = UserManager.getUserId()
-        val inventory = UserManager.user.inventory
+        val userId = user.id
+        val inventory = user.inventory
         preferences.edit().putString(userId, toJson(inventory)).commit()
     }
 

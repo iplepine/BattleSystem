@@ -17,4 +17,5 @@ class AppModule(val molApp: MolApp) {
     fun provideContext(): Context {
         return molApp.applicationContext
     }
+
 }

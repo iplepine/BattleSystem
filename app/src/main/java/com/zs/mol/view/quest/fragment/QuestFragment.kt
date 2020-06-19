@@ -12,25 +12,24 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zs.mol.R
 import com.zs.mol.databinding.FragmentQuestBinding
-import com.zs.mol.model.common.Logger
 import com.zs.mol.model.quest.Quest
 import com.zs.mol.model.quest.QuestManager
 import com.zs.mol.model.quest.QuestType
-import com.zs.mol.model.user.UserManager
 import com.zs.mol.view.base.MainFragment
 import com.zs.mol.view.quest.adapter.QuestAdapter
 import com.zs.mol.view.quest.viewmodel.QuestViewModel
 import com.zs.mol.view.quest.viewmodel.UserStatusViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_quest.*
-import kotlinx.android.synthetic.main.view_user_status.view.*
 
 class QuestFragment : MainFragment() {
     val viewModel: QuestViewModel by lazy {
         ViewModelProvider(requireActivity()).get(QuestViewModel::class.java)
     }
 
-    lateinit var userStatusViewModel: UserStatusViewModel
+    val userStatusViewModel: UserStatusViewModel by lazy {
+        ViewModelProvider(requireActivity()).get(UserStatusViewModel::class.java)
+    }
+
     var emptyQuestView: TextView? = null
 
     lateinit var binding: FragmentQuestBinding
@@ -51,22 +50,12 @@ class QuestFragment : MainFragment() {
 
     fun init() {
         initViewModels()
-        updateUserStatusView()
         initRecyclerView()
         refreshButton.setOnClickListener { onClickRefresh() }
         newQuestButton.setOnClickListener { onClickQuestItem() }
     }
 
     private fun initViewModels() {
-        userStatusViewModel =
-            ViewModelProvider(requireActivity()).get(UserStatusViewModel::class.java)
-
-        addDisposable(UserManager.updateSubject
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                updateUserStatusView()
-            })
-
         viewModel.listType.observe(viewLifecycleOwner, Observer {
             //refresh()
         })
@@ -113,17 +102,6 @@ class QuestFragment : MainFragment() {
                 visibility = View.GONE
             }
         }
-    }
-
-    private fun updateUserStatusView() {
-        UserManager.user?.apply {
-            userStatusView.levelText.text = "${userStatus.level}"
-            userStatusView.nickname.text = id
-            //userStatusView.gemText.text = "${UserManager.getGem()}"
-            userStatusView.goldText.text = "${UserManager.getGold()}"
-        }
-
-        Logger.d("update user status, gold : ${UserManager.getGold()} G")
     }
 
     private fun onClickQuestItem() {

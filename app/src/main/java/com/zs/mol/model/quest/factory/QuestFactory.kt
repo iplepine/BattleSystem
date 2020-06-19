@@ -6,9 +6,10 @@ import com.zs.mol.model.quest.QuestType
 import com.zs.mol.model.quest.detail.condition.GoldRequirement
 import com.zs.mol.model.quest.detail.reward.UnitReward
 import com.zs.mol.model.unit.BattleUnitFactory
-import com.zs.mol.model.unit.UnitManager
+import com.zs.mol.model.unit.UnitRepository
+import javax.inject.Inject
 
-object QuestFactory {
+class QuestFactory @Inject constructor(private val battleUnitFactory: BattleUnitFactory, private val unitRepository: UnitRepository) {
     fun createQuest(type: QuestType): Quest? {
         when (type) {
             QuestType.HIRE -> return createHireQuest()
@@ -19,8 +20,8 @@ object QuestFactory {
     }
 
     private fun createHireQuest(): HireQuest {
-        val unit = BattleUnitFactory.createMyUnit()
-        UnitManager.addUnit(unit)
+        val unit = battleUnitFactory.createMyUnit()
+        unitRepository.addUnit(unit)
 
         return Quest.Builder(HireQuest::class.java)
             .setTitle("새로운 인물")

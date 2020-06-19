@@ -8,11 +8,13 @@ import com.zs.mol.di.module.AppModule
 import com.zs.mol.model.db.user.UserRepository
 import com.zs.mol.model.game.GameEngine
 import com.zs.mol.model.notification.NotiManager
-import com.zs.mol.model.user.UserManager
 import javax.inject.Inject
 
 
 class MolApp : MultiDexApplication() {
+
+    @Inject
+    lateinit var engine: GameEngine
 
     @Inject
     lateinit var repo: UserRepository
@@ -32,13 +34,12 @@ class MolApp : MultiDexApplication() {
 
     private fun initTest() {
         NotiManager.createChannels(applicationContext)
-        GameEngine.newGame(applicationContext)
+        engine.newGame(applicationContext)
     }
 
     private fun initDagger() {
         appComponent.apply {
             inject(this@MolApp)
-            inject(UserManager)
         }
     }
 }

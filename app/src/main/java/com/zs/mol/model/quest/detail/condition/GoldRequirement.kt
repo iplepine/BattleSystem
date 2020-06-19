@@ -1,20 +1,20 @@
 package com.zs.mol.model.quest.detail.condition
 
 import com.zs.mol.model.item.ItemKey
-import com.zs.mol.model.user.UserManager
+import com.zs.mol.model.user.User
 
 class GoldRequirement(value: Long) : QuestRequirement(ItemKey.GOLD, value) {
     val amount = value
 
-    override fun checkRequire(): Boolean {
-        return amount <= UserManager.user.userStatus.gold
+    override fun checkRequire(user: User): Boolean {
+        return amount <= user.userStatus.gold
     }
 
-    override fun onSuccess() {
-        UserManager.useGold(amount)
+    override fun onSuccess(user: User) {
+        user.userStatus.useGold(amount)
     }
 
     override fun toDescription(): String {
-        return "Gold (${UserManager.user.userStatus.gold}/$amount)"
+        return "Gold $amount required"
     }
 }

@@ -5,9 +5,10 @@ import com.zs.mol.model.db.user.UserRepository
 import com.zs.mol.model.unit.BattleUnit
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
+import javax.inject.Singleton
 
-object UserManager {
-    lateinit var userRepository: UserRepository
+@Singleton
+class UserManager @Inject constructor(val userRepository: UserRepository) {
     lateinit var user: User
     val updateSubject = PublishSubject.create<Boolean>()
 

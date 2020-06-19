@@ -9,8 +9,12 @@ import com.zs.mol.view.base.BaseActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_main.*
+import javax.inject.Inject
 
 class MainActivity : BaseActivity() {
+
+    @Inject
+    lateinit var engine: GameEngine
 
     var timeDisposable: Disposable? = null
     var time = 0L
@@ -26,9 +30,9 @@ class MainActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        GameEngine.onResume()
+        engine.onResume()
 
-        timeDisposable = GameEngine.timeSubject
+        timeDisposable = engine.timeSubject
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 time += it
@@ -37,7 +41,7 @@ class MainActivity : BaseActivity() {
 
     override fun onPause() {
         super.onPause()
-        GameEngine.onPause()
+        engine.onPause()
 
         timeDisposable?.dispose()
     }

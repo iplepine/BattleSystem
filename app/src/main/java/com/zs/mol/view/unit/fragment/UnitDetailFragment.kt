@@ -30,7 +30,7 @@ import com.zs.mol.model.stat.SecondStat.Companion.MP
 import com.zs.mol.model.stat.SecondStat.Companion.SPEED
 import com.zs.mol.model.stat.SecondStat.Companion.WILL
 import com.zs.mol.model.unit.BattleUnit
-import com.zs.mol.model.unit.UnitManager
+import com.zs.mol.model.unit.UnitRepository
 import com.zs.mol.view.base.BaseFragment
 import com.zs.mol.view.unit.viewmodel.UnitDetailViewModel
 import kotlinx.android.synthetic.main.fragment_unit_detail.*
@@ -71,7 +71,7 @@ class UnitDetailFragment : BaseFragment() {
         arguments?.apply {
             getString(KEY_UNIT_ID)?.also { id ->
                 // 퀘스트로 들어오는 유닛도 일종의 유닛 매니저에 저장해서 거기서 찾아야함
-                viewModel.unit.value = UnitManager.getUnit(id)
+                viewModel.unit.value = UnitRepository.getUnit(id)
             }
         }
     }
