@@ -1,12 +1,10 @@
 package com.zs.mol.view.base
 
 import android.app.Activity
-import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.zs.mol.MolApp
 import com.zs.mol.model.common.Logger
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -14,12 +12,6 @@ import io.reactivex.disposables.Disposable
 open class BaseFragment : Fragment(), BaseGameView {
 
     val compositeDisposable = CompositeDisposable()
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        (activity?.applicationContext as? MolApp)?.appComponent?.inject(this)
-    }
 
     override fun onResume() {
         super.onResume()
