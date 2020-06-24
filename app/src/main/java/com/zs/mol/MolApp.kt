@@ -4,42 +4,39 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.multidex.MultiDexApplication
 import com.zs.mol.di.component.AppComponent
 import com.zs.mol.di.component.DaggerAppComponent
-import com.zs.mol.di.module.AppModule
-import com.zs.mol.model.db.user.UserRepository
-import com.zs.mol.model.game.GameEngine
+import com.zs.mol.di.component.GameComponent
 import com.zs.mol.model.notification.NotiManager
-import javax.inject.Inject
 
 
 class MolApp : MultiDexApplication() {
 
-    @Inject
-    lateinit var engine: GameEngine
-
-    @Inject
-    lateinit var repo: UserRepository
-
     val component: AppComponent by lazy {
-        DaggerAppComponent.builder()
-            .appModule(AppModule(this))
-            .build()
+        DaggerAppComponent.factory().create(this)
+    }
+
+    val gameComponent: GameComponent by lazy {
+        component.gameComponent().create()
     }
 
     override fun onCreate() {
         super.onCreate()
         initDagger()
         ViewModelProvider.AndroidViewModelFactory(this)
-        initTest()
+        startGame()
     }
 
     private fun initTest() {
         NotiManager.createChannels(applicationContext)
-        engine.newGame(applicationContext)
     }
 
     private fun initDagger() {
         component.apply {
             inject(this@MolApp)
         }
+    }
+
+    private fun startGame() {
+        val userId = gameComponent.getLastUserId()
+        gameComponent.userComponent().create(userId)
     }
 }

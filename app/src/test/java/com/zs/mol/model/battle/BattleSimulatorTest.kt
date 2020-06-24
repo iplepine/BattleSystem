@@ -1,7 +1,6 @@
 package com.zs.mol.model.battle
 
 import com.zs.mol.model.unit.BattleUnitFactory
-import com.zs.mol.model.user.UserManager
 import org.junit.Test
 
 class BattleSimulatorTest {

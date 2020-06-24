@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
-import com.zs.mol.di.component.MainActivityComponent
+import com.zs.mol.di.component.GameComponent
 import com.zs.mol.model.game.GameEngine
 import com.zs.mol.view.base.BaseActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -14,20 +14,17 @@ import javax.inject.Inject
 
 class MainActivity : BaseActivity() {
 
-    lateinit var component: MainActivityComponent
-
     @Inject
     lateinit var engine: GameEngine
+
+    lateinit var component: GameComponent
 
     var timeDisposable: Disposable? = null
     var time = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        component = (applicationContext as MolApp).component.mainActivityComponent()
-            .create()
-            .apply {
-                inject(this@MainActivity)
-            }
+        component = (applicationContext as MolApp).gameComponent
+        component.inject(this)
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

@@ -6,10 +6,10 @@ class ItemRequirement(key: String, value: Long) : QuestRequirement(key, value) {
     val amount = value
 
     override fun checkRequire(user: User): Boolean {
-        return amount <= user.inventory.getAmount(key)
+        return amount <= user.getItemAmount(key)
     }
 
     override fun onSuccess(user: User) {
-        user.inventory.removeItem(key, amount)
+        user.useItem(key, amount)
     }
 }

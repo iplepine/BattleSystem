@@ -4,8 +4,8 @@ import com.zs.mol.model.user.User
 import javax.inject.Inject
 
 class UserRemoteSource @Inject constructor() {
-    fun getUser(id: String): User {
-        return User(id)
+    fun getUser(id: String): User? {
+        return null
     }
 
     fun saveUser(user: User) {

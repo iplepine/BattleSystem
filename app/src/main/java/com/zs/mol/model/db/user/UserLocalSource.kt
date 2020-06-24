@@ -12,8 +12,8 @@ class UserLocalSource @Inject constructor(private val context: Context) {
         return ReservedUserId.GUEST
     }
 
-    fun getUser(): User {
-        return PreferenceManager.loadUser(context) ?: User("guest")
+    fun getUser(): User? {
+        return PreferenceManager.loadUser(context)
     }
 
     fun saveUser(user: User) {

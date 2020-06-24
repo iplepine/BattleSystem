@@ -3,7 +3,7 @@ package com.zs.mol.model.db
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import com.google.gson.Gson
-import com.zs.mol.model.db.inventory.Inventory
+import com.zs.mol.model.consts.ReservedUserId
 import com.zs.mol.model.user.User
 
 object PreferenceManager {
@@ -28,9 +28,9 @@ object PreferenceManager {
         preferences.edit().putInt(key, value).commit()
     }
 
-    fun getString(context: Context, key: String, value: String): String {
+    fun getString(context: Context, key: String, default: String): String {
         val preferences = context.getSharedPreferences(PREF, MODE_PRIVATE)
-        return preferences.getString(key, "")
+        return preferences.getString(key, default)
     }
 
     fun setString(context: Context, key: String, value: String) {
@@ -46,6 +46,11 @@ object PreferenceManager {
             .commit()
     }
 
+    fun getUserId(context: Context): String? {
+        val preferences = context.getSharedPreferences(USER, MODE_PRIVATE)
+        return preferences.getString(USER_ID, null)
+    }
+
     fun loadUser(context: Context): User? {
         val preferences = context.getSharedPreferences(USER, MODE_PRIVATE)
 
@@ -54,24 +59,6 @@ object PreferenceManager {
 
         return try {
             Gson().fromJson(json, User::class.java)
-        } catch (e: Exception) {
-            null
-        }
-    }
-
-    fun saveInventory(context: Context, user: User) {
-        val preferences = context.getSharedPreferences(INVENTORY, MODE_PRIVATE)
-        val userId = user.id
-        val inventory = user.inventory
-        preferences.edit().putString(userId, toJson(inventory)).commit()
-    }
-
-    fun loadInventory(context: Context, userId: String): Inventory? {
-        val preferences = context.getSharedPreferences(INVENTORY, MODE_PRIVATE)
-        val json = preferences.getString(userId, "")
-
-        return try {
-            Gson().fromJson(json, Inventory::class.java)
         } catch (e: Exception) {
             null
         }

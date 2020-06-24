@@ -7,6 +7,6 @@ class GoldReward(value: Long) : QuestReward(ItemKey.GOLD, value) {
     val amount = value
 
     override fun onSuccess(user: User) {
-        user.userStatus.gainGold(amount)
+        user.addItem(key, amount)
     }
 }

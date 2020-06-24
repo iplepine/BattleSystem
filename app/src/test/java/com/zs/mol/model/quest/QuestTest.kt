@@ -1,12 +1,26 @@
 package com.zs.mol.model.quest
 
+import com.zs.mol.di.component.DaggerAppComponent
+import com.zs.mol.di.component.GameComponent
 import com.zs.mol.model.quest.detail.condition.GoldRequirement
 import com.zs.mol.model.quest.detail.reward.UnitReward
 import com.zs.mol.model.unit.BattleUnitFactory
-import com.zs.mol.model.user.UserManager
+import org.junit.Before
 import org.junit.Test
+import javax.inject.Inject
 
 class QuestTest {
+
+    lateinit var component: GameComponent
+
+    @Before
+    fun before() {
+
+    }
+
+    @Inject
+    lateinit var battleUnitFactory: BattleUnitFactory
+
     @Test
     fun questBuilderTest() {
         val quest = Quest.Builder(HireQuest::class.java)
@@ -18,9 +32,12 @@ class QuestTest {
 
     @Test
     fun hireQuestAcceptSuccessTest() {
-        val unit = BattleUnitFactory.createMyUnit()
+        component = DaggerAppComponent.factory().create(app)
+        component.questFactory().createQuest(QuestType.HIRE)
 
-        QuestManager.createNewRequest(QuestType.HIRE)?.apply {
+        val unit = component.battleUnitFactory().createUnit()
+
+        component.questRepository().createNewRequest(QuestType.HIRE)?.apply {
             requires.clear()
             requires.add(GoldRequirement(500L))
             rewards.clear()

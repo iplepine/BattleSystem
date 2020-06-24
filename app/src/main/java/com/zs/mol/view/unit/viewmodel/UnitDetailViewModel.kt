@@ -4,10 +4,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.zs.mol.model.unit.BattleUnit
 import com.zs.mol.model.unit.UnitRepository
+import com.zs.mol.model.user.User
 import javax.inject.Inject
 
 class UnitDetailViewModel @Inject constructor(
-    private val unitRepository: UnitRepository
+    private val unitRepository: UnitRepository,
+    private val user: User
 ) : ViewModel() {
     val unit: MutableLiveData<BattleUnit> = MutableLiveData()
 
@@ -17,6 +19,6 @@ class UnitDetailViewModel @Inject constructor(
     }
 
     fun findUnit(id: String): BattleUnit? {
-        return unitRepository.getUnit(id)
+        return unitRepository.getUnit(user, id)
     }
 }

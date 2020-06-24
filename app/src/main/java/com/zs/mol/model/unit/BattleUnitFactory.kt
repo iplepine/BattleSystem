@@ -3,13 +3,11 @@ package com.zs.mol.model.unit
 import com.zs.mol.model.consts.ManNamePool
 import com.zs.mol.model.consts.WomanNamePool
 import com.zs.mol.model.stat.StatFactory
-import com.zs.mol.model.user.UserManager
 import java.util.concurrent.ArrayBlockingQueue
 import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.random.Random
 
-class BattleUnitFactory @Inject constructor(private val userManager: UserManager) {
+class BattleUnitFactory @Inject constructor() {
 
     companion object {
         private const val MAN_FACE_SIZE = 71
@@ -21,7 +19,7 @@ class BattleUnitFactory @Inject constructor(private val userManager: UserManager
         private const val RETRY_COUNT = 3
     }
 
-    fun createUnit(owner: String, name: String?): BattleUnit {
+    fun createUnit(owner: String, name: String? = getRandomName()): BattleUnit {
         return BattleUnit(owner).apply {
             val isMan = Random.nextBoolean()
             val rename = name ?: getSmartRandomName(isMan)
@@ -30,14 +28,6 @@ class BattleUnitFactory @Inject constructor(private val userManager: UserManager
             originalStat = StatFactory.randomStat()
             updateStat()
         }
-    }
-
-    fun createMyUnit(name: String = getRandomName()): BattleUnit {
-        return createUnit(userManager.getUserId(), name)
-    }
-
-    fun createEnemy(name: String = getRandomName()): BattleUnit {
-        return createUnit(userManager.getEnemyId(), name)
     }
 
     fun getSmartRandomName(isMale: Boolean = Random.nextBoolean(), retryCount: Int = 0): String {

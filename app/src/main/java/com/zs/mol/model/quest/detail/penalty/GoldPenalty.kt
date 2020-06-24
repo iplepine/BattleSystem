@@ -6,6 +6,6 @@ class GoldPenalty(key: String, value: Long) : QuestPenalty(key, value) {
     val amount = value
 
     override fun onFailed(user: User) {
-        user.userStatus.useGold(amount)
+        user.useItem(key, amount)
     }
 }

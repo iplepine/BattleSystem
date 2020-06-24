@@ -1,58 +1,40 @@
 package com.zs.mol.model.game
 
 import android.content.Context
+import com.zs.mol.di.scope.GameScope
 import com.zs.mol.model.common.Logger
-import com.zs.mol.model.db.PreferenceManager
-import com.zs.mol.model.db.inventory.Inventory
+import com.zs.mol.model.consts.ReservedUserId
+import com.zs.mol.model.db.item.ItemRepository
 import com.zs.mol.model.db.user.UserRepository
 import com.zs.mol.model.unit.action.UnitActionManager
-import com.zs.mol.model.user.UserManager
+import com.zs.mol.model.user.User
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
-import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-import javax.inject.Singleton
+import javax.inject.Provider
 
-@Singleton
+@GameScope
 class GameEngine @Inject constructor(
-    private val userManager: UserManager,
     private val userRepository: UserRepository,
-    private val unitActionManager: UnitActionManager
+    private val itemRepository: ItemRepository
 ) {
     companion object {
         private const val TIME_PERIOD = 100L
     }
 
-    val timeSubject: PublishSubject<Long> = PublishSubject.create<Long>()
+    lateinit var userProvider: Provider<User>
+
+    lateinit var user: User
+    lateinit var unitActionManager: UnitActionManager
+
+    val timeSubject: PublishSubject<Long> = PublishSubject.create()
     private var disposable: Disposable? = null
 
-    fun newGame(context: Context) {
-        if (!loadGame(context)) {
-            userManager.initUser(UUID.randomUUID().toString())
-
-            Logger.d("start new user")
-        }
-    }
-
-    private fun loadGame(context: Context): Boolean {
-        val user = PreferenceManager.loadUser(context)
-        return if (user == null) {
-            false
-        } else {
-            userManager.user = user
-            var inventory = PreferenceManager.loadInventory(context, user.id)
-            if (inventory == null) {
-                inventory = Inventory()
-            } else {
-                inventory.putAll(inventory)
-            }
-            userManager.user.inventory = inventory
-
-            Logger.d("load previous user")
-            true
-        }
+    fun startGame() {
+        user = userRepository.getUser(ReservedUserId.GUEST) ?: userProvider.get()
+        unitActionManager = UnitActionManager(user)
     }
 
     fun saveGame(context: Context) {
@@ -90,5 +72,13 @@ class GameEngine @Inject constructor(
 
     private fun updateUnitAction(time: Long) {
         unitActionManager.updateTime(time)
+    }
+
+    fun login() {
+
+    }
+
+    fun logout() {
+
     }
 }

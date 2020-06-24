@@ -1,13 +1,12 @@
 package com.zs.mol.model.unit.action
 
 import com.zs.mol.model.unit.BattleUnit
-import com.zs.mol.model.user.UserManager
-import javax.inject.Inject
+import com.zs.mol.model.user.User
 
-class UnitActionManager @Inject constructor(private val userManager: UserManager) {
+class UnitActionManager(private val user: User) {
 
     fun updateTime(time: Long) {
-        userManager.getUnits().forEach {
+        user.getUnits().forEach {
             updateAction(it, time)
         }
     }

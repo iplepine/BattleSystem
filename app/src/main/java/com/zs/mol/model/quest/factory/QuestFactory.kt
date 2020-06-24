@@ -9,7 +9,11 @@ import com.zs.mol.model.unit.BattleUnitFactory
 import com.zs.mol.model.unit.UnitRepository
 import javax.inject.Inject
 
-class QuestFactory @Inject constructor(private val battleUnitFactory: BattleUnitFactory, private val unitRepository: UnitRepository) {
+class QuestFactory @Inject constructor(
+    private val battleUnitFactory: BattleUnitFactory,
+    private val unitRepository: UnitRepository
+) {
+
     fun createQuest(type: QuestType): Quest? {
         when (type) {
             QuestType.HIRE -> return createHireQuest()
@@ -20,7 +24,7 @@ class QuestFactory @Inject constructor(private val battleUnitFactory: BattleUnit
     }
 
     private fun createHireQuest(): HireQuest {
-        val unit = battleUnitFactory.createMyUnit()
+        val unit = battleUnitFactory.createUnit("npc")
         unitRepository.addUnit(unit)
 
         return Quest.Builder(HireQuest::class.java)

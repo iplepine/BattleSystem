@@ -1,13 +1,13 @@
 package com.zs.mol.model.unit
 
-import com.zs.mol.model.user.UserManager
+import com.zs.mol.model.user.User
 import javax.inject.Inject
 
-class UnitRepository @Inject constructor(private val userManager: UserManager) {
+class UnitRepository @Inject constructor() {
     val units = HashMap<String, BattleUnit>()
 
-    fun getUnit(id: String): BattleUnit? {
-        return userManager.user.getUnit(id) ?: units[id]
+    fun getUnit(user: User, id: String): BattleUnit? {
+        return user.getUnit(id) ?: units[id]
     }
 
     fun removeUnit(id: String) {

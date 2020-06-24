@@ -7,11 +7,11 @@ class GoldRequirement(value: Long) : QuestRequirement(ItemKey.GOLD, value) {
     val amount = value
 
     override fun checkRequire(user: User): Boolean {
-        return amount <= user.userStatus.gold
+        return amount <= user.getItemAmount(key)
     }
 
     override fun onSuccess(user: User) {
-        user.userStatus.useGold(amount)
+        user.useItem(key, amount)
     }
 
     override fun toDescription(): String {
