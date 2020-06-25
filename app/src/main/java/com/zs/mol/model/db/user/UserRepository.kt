@@ -1,22 +1,25 @@
 package com.zs.mol.model.db.user
 
-import com.zs.mol.di.scope.AppScope
+import com.zs.mol.di.scope.GameScope
 import com.zs.mol.model.user.User
 import javax.inject.Inject
 import javax.inject.Provider
 
-@AppScope
+@GameScope
 class UserRepository @Inject constructor(
     private val local: UserLocalSource,
     private val remote: UserRemoteSource
 ) {
 
-    fun getUser(id: String?): User? {
-        return if (id == null) {
-            local.getUser()
-        } else {
-            remote.getUser(id)
-        }
+    @Inject
+    lateinit var userProvider: Provider<User>
+
+    fun getUser(id: String): User {
+        return local.getUser(id) ?: userProvider.get()
+    }
+
+    fun saveUser(user: User) {
+        local.saveUser(user)
     }
 }
 

@@ -3,7 +3,6 @@ package com.zs.mol.model.db
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import com.google.gson.Gson
-import com.zs.mol.model.consts.ReservedUserId
 import com.zs.mol.model.user.User
 
 object PreferenceManager {
@@ -51,10 +50,9 @@ object PreferenceManager {
         return preferences.getString(USER_ID, null)
     }
 
-    fun loadUser(context: Context): User? {
+    fun loadUser(context: Context, userId: String): User? {
         val preferences = context.getSharedPreferences(USER, MODE_PRIVATE)
 
-        val userId = preferences.getString(USER_ID, "")
         val json = preferences.getString(userId, "")
 
         return try {

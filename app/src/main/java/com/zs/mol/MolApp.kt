@@ -15,7 +15,12 @@ class MolApp : MultiDexApplication() {
     }
 
     val gameComponent: GameComponent by lazy {
-        component.gameComponent().create()
+        component.gameComponent().create().apply {
+            userComponent().create()
+            unitComponent().create()
+            questComponent().create()
+            dungeonComponent().create()
+        }
     }
 
     override fun onCreate() {
@@ -36,7 +41,5 @@ class MolApp : MultiDexApplication() {
     }
 
     private fun startGame() {
-        val userId = gameComponent.getLastUserId()
-        gameComponent.userComponent().create(userId)
     }
 }

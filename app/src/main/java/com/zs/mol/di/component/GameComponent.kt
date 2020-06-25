@@ -1,8 +1,7 @@
 package com.zs.mol.di.component
 
 import com.zs.mol.MainActivity
-import com.zs.mol.di.module.GameModule
-import com.zs.mol.di.module.UserModule
+import com.zs.mol.di.module.*
 import com.zs.mol.di.scope.GameScope
 import com.zs.mol.model.game.GameEngine
 import com.zs.mol.model.quest.QuestRepository
@@ -18,7 +17,15 @@ import com.zs.mol.view.unit.fragment.UnitManageFragment
 import dagger.Subcomponent
 
 @GameScope
-@Subcomponent(modules = [GameModule::class, UserModule::class])
+@Subcomponent(
+    modules = [
+        GameModule::class,
+        UserModule::class,
+        QuestModule::class,
+        UnitModule::class,
+        DungeonModule::class
+    ]
+)
 interface GameComponent {
 
     @Subcomponent.Factory
@@ -34,9 +41,13 @@ interface GameComponent {
     fun inject(fragment: QuestFragment)
     fun inject(fragment: NewQuestFragment)
 
+    // subcomponents
     fun userComponent(): UserComponent.Factory
+    fun questComponent(): QuestComponent.Factory
+    fun unitComponent(): UnitComponent.Factory
+    fun dungeonComponent(): DungeonComponent.Factory
 
-    fun getLastUserId(): String
+
     fun gameEngine(): GameEngine
     fun unitRepository(): UnitRepository
     fun questRepository(): QuestRepository

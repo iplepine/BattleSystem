@@ -3,7 +3,6 @@ package com.zs.mol.model.game
 import android.content.Context
 import com.zs.mol.di.scope.GameScope
 import com.zs.mol.model.common.Logger
-import com.zs.mol.model.consts.ReservedUserId
 import com.zs.mol.model.db.item.ItemRepository
 import com.zs.mol.model.db.user.UserRepository
 import com.zs.mol.model.unit.action.UnitActionManager
@@ -13,7 +12,6 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-import javax.inject.Provider
 
 @GameScope
 class GameEngine @Inject constructor(
@@ -24,8 +22,7 @@ class GameEngine @Inject constructor(
         private const val TIME_PERIOD = 100L
     }
 
-    lateinit var userProvider: Provider<User>
-
+    @Inject
     lateinit var user: User
     lateinit var unitActionManager: UnitActionManager
 
@@ -33,7 +30,6 @@ class GameEngine @Inject constructor(
     private var disposable: Disposable? = null
 
     fun startGame() {
-        user = userRepository.getUser(ReservedUserId.GUEST) ?: userProvider.get()
         unitActionManager = UnitActionManager(user)
     }
 
