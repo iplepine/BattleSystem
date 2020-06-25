@@ -30,10 +30,13 @@ class BattleUnitFactory @Inject constructor() {
         }
     }
 
-    fun getSmartRandomName(isMale: Boolean = Random.nextBoolean(), retryCount: Int = 0): String {
+    fun getSmartRandomName(
+        isMale: Boolean = Random.nextBoolean(),
+        retryCount: Int = RETRY_COUNT
+    ): String {
         val name = getRandomName(isMale)
-        return if (usedNameCache.contains(name) && RETRY_COUNT < retryCount) {
-            getSmartRandomName(isMale, retryCount + 1)
+        return if (usedNameCache.contains(name) && 0 < RETRY_COUNT) {
+            getSmartRandomName(isMale, retryCount - 1)
         } else {
             usedNameCache.add(name)
             name
@@ -52,7 +55,7 @@ class BattleUnitFactory @Inject constructor() {
         }
     }
 
-    private fun getStartRandomFace(isMale: Boolean, retryCount: Int = 0): String {
+    fun getStartRandomFace(isMale: Boolean, retryCount: Int = 0): String {
         val name = getRandomFace(isMale)
         return if (usedFaceCache.contains(name) && RETRY_COUNT < retryCount) {
             getStartRandomFace(isMale, retryCount + 1)

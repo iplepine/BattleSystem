@@ -3,16 +3,20 @@ package com.zs.mol.view.quest.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.zs.mol.di.scope.GameScope
 import com.zs.mol.model.quest.Quest
 import com.zs.mol.model.quest.QuestRepository
 import com.zs.mol.model.quest.QuestType
+import com.zs.mol.model.quest.factory.QuestFactory
 import com.zs.mol.model.user.User
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 
+@GameScope
 class QuestViewModel @Inject constructor(
     private val user: User,
-    private val questRepository: QuestRepository
+    private val questRepository: QuestRepository,
+    private val questFactory: QuestFactory
 ) : ViewModel() {
     var selectedQuest = MutableLiveData<Quest?>()
     var listType = MutableLiveData<QuestListType>().apply { value = QuestListType.ACCEPTED }
@@ -62,7 +66,9 @@ class QuestViewModel @Inject constructor(
 
     fun refresh() {
         questRepository.clearNewQuests()
-        questRepository.createNewRequest(QuestType.HIRE)
+        questFactory.createQuest(QuestType.HIRE)?.also {
+            questRepository.addNewRequest(it)
+        }
     }
 
     fun selectQuest(quest: Quest?) {
@@ -71,5 +77,10 @@ class QuestViewModel @Inject constructor(
 
     fun unSelectQuest() {
         selectedQuest.value = null
+    }
+
+    fun onClickRequest() {
+        val quest = questRepository.requests.elements().nextElement()
+        selectQuest(quest)
     }
 }

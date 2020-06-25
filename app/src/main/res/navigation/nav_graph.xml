@@ -90,7 +90,7 @@
         android:id="@+id/townFragment"
         android:name="com.zs.mol.view.town.fragment.TownFragment"
         android:label="@string/bottom_menu_town"
-        tools:layout="@layout/fragment_town" >
+        tools:layout="@layout/fragment_town">
 
         <action
             android:id="@+id/action_town_to_dungeon"

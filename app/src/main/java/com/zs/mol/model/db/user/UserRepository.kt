@@ -22,4 +22,3 @@ class UserRepository @Inject constructor(
         local.saveUser(user)
     }
 }
-

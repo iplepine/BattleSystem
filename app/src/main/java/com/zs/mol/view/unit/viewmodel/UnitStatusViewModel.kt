@@ -50,14 +50,16 @@ class UnitStatusViewModel : ViewModel() {
     companion object {
         @BindingAdapter("setFaceImage")
         @JvmStatic
-        fun setFaceImage(view: ImageView, faceImage: String) {
-            val context = view.context.applicationContext
-            val id = context.resources.getIdentifier(faceImage, "drawable", context.packageName)
-            if (id <= 0) {
-                //Logger.e("face image not found : $faceImage")
-                Log.e("face image not found", "imageUrl: $faceImage")
+        fun setFaceImage(view: ImageView, faceImage: String?) {
+            faceImage?.apply {
+                val context = view.context.applicationContext
+                val id = context.resources.getIdentifier(faceImage, "drawable", context.packageName)
+                if (id <= 0) {
+                    //Logger.e("face image not found : $faceImage")
+                    Log.e("face image not found", "imageUrl: $faceImage")
+                }
+                view.setImageResource(id)
             }
-            view.setImageResource(id)
         }
     }
 }

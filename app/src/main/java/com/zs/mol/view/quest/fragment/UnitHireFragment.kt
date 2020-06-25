@@ -29,8 +29,6 @@ class UnitHireFragment : BaseDialogFragment(), QuestView {
 
     private val unitStatusViewModel: UnitStatusViewModel by lazy {
         ViewModelProvider(requireParentFragment()).get(UnitStatusViewModel::class.java)
-        /*ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
-            .create(UnitStatusViewModel::class.java)*/
     }
 
     override fun onCreateView(

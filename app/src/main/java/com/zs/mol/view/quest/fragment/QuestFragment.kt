@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.zs.mol.MainActivity
 import com.zs.mol.R
 import com.zs.mol.databinding.FragmentQuestBinding
+import com.zs.mol.di.scope.GameScope
 import com.zs.mol.model.quest.Quest
-import com.zs.mol.model.quest.QuestRepository
 import com.zs.mol.model.quest.QuestType
 import com.zs.mol.view.base.MainFragment
 import com.zs.mol.view.quest.adapter.QuestAdapter
@@ -24,10 +24,8 @@ import com.zs.mol.view.quest.viewmodel.UserStatusViewModel
 import kotlinx.android.synthetic.main.fragment_quest.*
 import javax.inject.Inject
 
-class QuestFragment : MainFragment() {
 
-    @Inject
-    lateinit var questRepository: QuestRepository
+class QuestFragment : MainFragment() {
 
     @Inject
     lateinit var viewModel: QuestViewModel
@@ -116,9 +114,7 @@ class QuestFragment : MainFragment() {
     }
 
     private fun onClickQuestItem() {
-        // TODO 테스트용 코드
-        val testQuest = questRepository.requests.elements().nextElement()
-        viewModel.selectQuest(testQuest)
+        viewModel.onClickRequest()
     }
 
     private fun onClickRefresh() {
