@@ -6,23 +6,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zs.mol.MainActivity
 import com.zs.mol.R
 import com.zs.mol.model.common.Logger
 import com.zs.mol.model.unit.BattleUnit
-import com.zs.mol.view.base.MainFragment
+import com.zs.mol.view.base.MainTabFragment
 import com.zs.mol.view.unit.adapter.UnitAdapter
 import com.zs.mol.view.unit.viewmodel.UnitViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_unit_manage.*
-import javax.inject.Inject
 
-class UnitManageFragment : MainFragment() {
+class UnitManageTabFragment : MainTabFragment() {
 
-    @Inject
-    lateinit var viewModel: UnitViewModel
+    val viewModel: UnitViewModel by lazy {
+        ViewModelProvider(this, viewModelFactory).get(UnitViewModel::class.java)
+    }
 
     var adapter: UnitAdapter? = null
 
@@ -41,7 +42,7 @@ class UnitManageFragment : MainFragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (requireActivity() as MainActivity).component.inject(this)
+        (requireActivity() as MainActivity).component.unitTabComponent().create().inject(this)
     }
 
     private fun init() {

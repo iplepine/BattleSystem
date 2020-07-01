@@ -1,6 +1,8 @@
 package com.zs.mol.view.unit.viewmodel
 
 import androidx.lifecycle.ViewModel
+import com.zs.mol.di.scope.GameScope
+import com.zs.mol.di.scope.MainTabScope
 import com.zs.mol.model.unit.BattleUnit
 import com.zs.mol.model.unit.BattleUnitFactory
 import com.zs.mol.model.user.User
@@ -8,6 +10,7 @@ import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 class UnitViewModel @Inject constructor(
+    @GameScope
     private val user: User,
     private val battleUnitFactory: BattleUnitFactory
 ) : ViewModel() {

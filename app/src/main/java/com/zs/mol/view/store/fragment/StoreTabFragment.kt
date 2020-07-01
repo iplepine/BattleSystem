@@ -5,9 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.zs.mol.R
-import com.zs.mol.view.base.MainFragment
+import com.zs.mol.view.base.MainTabFragment
 
-class StoreFragment : MainFragment() {
+class StoreTabFragment : MainTabFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

@@ -3,8 +3,6 @@ package com.zs.mol.model.game
 import android.content.Context
 import com.zs.mol.di.scope.GameScope
 import com.zs.mol.model.common.Logger
-import com.zs.mol.model.consts.ReservedUserId
-import com.zs.mol.model.db.item.ItemRepository
 import com.zs.mol.model.db.user.UserRepository
 import com.zs.mol.model.unit.action.UnitActionManager
 import com.zs.mol.model.user.User
@@ -13,32 +11,23 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-import javax.inject.Provider
 
 @GameScope
 class GameEngine @Inject constructor(
     private val userRepository: UserRepository,
-    private val itemRepository: ItemRepository
+    private val user: User,
+    private val unitActionManager: UnitActionManager
 ) {
     companion object {
         private const val TIME_PERIOD = 100L
     }
 
-    lateinit var userProvider: Provider<User>
-
-    lateinit var user: User
-    lateinit var unitActionManager: UnitActionManager
-
     val timeSubject: PublishSubject<Long> = PublishSubject.create()
     private var disposable: Disposable? = null
 
-    fun startGame() {
-        user = userRepository.getUser(ReservedUserId.GUEST) ?: userProvider.get()
-        unitActionManager = UnitActionManager(user)
-    }
-
-    fun saveGame(context: Context) {
+    fun saveGame() {
         Logger.d("save the game")
+        userRepository.saveUser(user)
     }
 
     fun onResume() {
@@ -72,13 +61,5 @@ class GameEngine @Inject constructor(
 
     private fun updateUnitAction(time: Long) {
         unitActionManager.updateTime(time)
-    }
-
-    fun login() {
-
-    }
-
-    fun logout() {
-
     }
 }

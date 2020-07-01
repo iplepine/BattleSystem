@@ -2,9 +2,12 @@ package com.zs.mol
 
 import android.os.Bundle
 import android.util.Log
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.zs.mol.di.component.GameComponent
+import com.zs.mol.di.component.QuestTabComponent
+import com.zs.mol.di.component.UnitTabComponent
 import com.zs.mol.model.game.GameEngine
 import com.zs.mol.view.base.BaseActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -17,7 +20,12 @@ class MainActivity : BaseActivity() {
     @Inject
     lateinit var engine: GameEngine
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
     lateinit var component: GameComponent
+    lateinit var questTabComponent: QuestTabComponent
+    lateinit var unitTabComponent: UnitTabComponent
 
     var timeDisposable: Disposable? = null
     var time = 0L
@@ -25,6 +33,9 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         component = (applicationContext as MolApp).gameComponent
         component.inject(this)
+
+        questTabComponent = component.questTabComponent().create()
+        unitTabComponent = component.unitTabComponent().create()
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -48,7 +59,6 @@ class MainActivity : BaseActivity() {
     override fun onPause() {
         super.onPause()
         engine.onPause()
-
         timeDisposable?.dispose()
     }
 

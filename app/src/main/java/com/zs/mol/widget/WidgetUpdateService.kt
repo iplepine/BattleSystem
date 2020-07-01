@@ -7,7 +7,6 @@ import com.zs.mol.model.common.Logger
 import com.zs.mol.model.db.PreferenceManager
 import org.json.JSONArray
 
-
 class WidgetUpdateService : JobIntentService() {
     companion object {
         const val JOB_ID = 21994
@@ -23,10 +22,11 @@ class WidgetUpdateService : JobIntentService() {
     }
 
     override fun onHandleWork(intent: Intent) {
+        val preferenceManager = PreferenceManager(applicationContext)
         Logger.d("위젯 업데이트 서비스 핸들워크")
 
         var widgetData =
-            WidgetData.parse(PreferenceManager.getString(applicationContext, "widget_data", ""))
+            WidgetData.parse(preferenceManager.getString("widget_data", ""))
 
         if (widgetData == null) {
             widgetData = WidgetData()
@@ -69,7 +69,8 @@ class WidgetUpdateService : JobIntentService() {
                     }
                 }
 
-                PreferenceManager.setString(applicationContext, "widget_data", widgetData.toJson())
+                val preferenceManager = PreferenceManager(applicationContext)
+                preferenceManager.setString("widget_data", widgetData.toJson())
             } catch (e: java.lang.Exception) {
                 e.printStackTrace()
                 widgetData.status = (WidgetData.STATUS_ERROR)

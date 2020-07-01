@@ -1,24 +1,22 @@
-package com.zs.mol.view.dungeon
+package com.zs.mol.view.field
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.zs.mol.R
-import com.zs.mol.view.base.MainFragment
-import kotlinx.android.synthetic.main.fragment_dungeon.*
+import com.zs.mol.view.base.MainTabFragment
 
-class DungeonFragment : MainFragment() {
-    var viewModel: DungeonViewModel? = null
+class FieldTabFragment : MainTabFragment() {
+    var viewModel: FieldViewModel? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_dungeon, container, false)
+        return inflater.inflate(R.layout.fragment_field, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -27,10 +25,12 @@ class DungeonFragment : MainFragment() {
     }
 
     private fun init() {
-        viewModel = ViewModelProvider(this).get(DungeonViewModel::class.java)
+        activity?.application?.also {
+            val viewModelFactory = ViewModelProvider.AndroidViewModelFactory(it)
+            viewModel = ViewModelProvider(this, viewModelFactory).get(FieldViewModel::class.java)
+        }
     }
 
     private fun changeDungeon() {
-        recyclerView.adapter = SelectionAdapter(viewLifecycleOwner)
     }
 }

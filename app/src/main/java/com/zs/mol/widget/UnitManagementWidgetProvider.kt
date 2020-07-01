@@ -48,13 +48,13 @@ class UnitManagementWidgetProvider : AppWidgetProvider() {
         }
 
         fun updateViews(context: Context) {
+            val preferenceManager = PreferenceManager(context.applicationContext)
             val appWidgetManager = AppWidgetManager.getInstance(context)
             val widget = ComponentName(context, UnitManagementWidgetProvider::class.java)
             val appWidgetIds = appWidgetManager.getAppWidgetIds(widget)
 
             val widgetData = WidgetData.parse(
-                PreferenceManager.getString(
-                    context.applicationContext,
+                preferenceManager.getString(
                     "widget_data",
                     ""
                 )
@@ -75,8 +75,7 @@ class UnitManagementWidgetProvider : AppWidgetProvider() {
 
             widgetData?.apply {
                 rankUp()
-                PreferenceManager.setString(
-                    context.applicationContext,
+                preferenceManager.setString(
                     "widget_data",
                     toJson()
                 )

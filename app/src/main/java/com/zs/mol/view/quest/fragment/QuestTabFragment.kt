@@ -17,23 +17,24 @@ import com.zs.mol.databinding.FragmentQuestBinding
 import com.zs.mol.model.quest.Quest
 import com.zs.mol.model.quest.QuestRepository
 import com.zs.mol.model.quest.QuestType
-import com.zs.mol.view.base.MainFragment
+import com.zs.mol.view.base.MainTabFragment
 import com.zs.mol.view.quest.adapter.QuestAdapter
 import com.zs.mol.view.quest.viewmodel.QuestViewModel
 import com.zs.mol.view.quest.viewmodel.UserStatusViewModel
 import kotlinx.android.synthetic.main.fragment_quest.*
 import javax.inject.Inject
 
-class QuestFragment : MainFragment() {
+class QuestTabFragment : MainTabFragment() {
 
     @Inject
     lateinit var questRepository: QuestRepository
 
-    @Inject
-    lateinit var viewModel: QuestViewModel
+    val viewModel: QuestViewModel by lazy {
+        ViewModelProvider(requireActivity(), viewModelFactory).get(QuestViewModel::class.java)
+    }
 
     val userStatusViewModel: UserStatusViewModel by lazy {
-        ViewModelProvider(requireActivity()).get(UserStatusViewModel::class.java)
+        ViewModelProvider(requireActivity(), viewModelFactory).get(UserStatusViewModel::class.java)
     }
 
     var emptyQuestView: TextView? = null
@@ -56,7 +57,7 @@ class QuestFragment : MainFragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (requireActivity() as MainActivity).component.inject(this)
+        (requireActivity() as MainActivity).component.questTabComponent().create().inject(this)
     }
 
     fun init() {
@@ -72,9 +73,7 @@ class QuestFragment : MainFragment() {
         })
 
         viewModel.selectedQuest.observe(viewLifecycleOwner, Observer {
-            if (it == null) {
-                closeQuestPopup()
-            } else {
+            if (it != null) {
                 openQuestPopup(it)
             }
         })
@@ -90,6 +89,9 @@ class QuestFragment : MainFragment() {
                 newQuestButton.visibility = View.VISIBLE
             }
         })
+
+        binding.userStatusView.viewModel = userStatusViewModel
+        binding.userStatusView.lifecycleOwner = viewLifecycleOwner
     }
 
     private fun initRecyclerView() {

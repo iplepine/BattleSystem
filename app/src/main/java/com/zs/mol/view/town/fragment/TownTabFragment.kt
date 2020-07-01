@@ -9,10 +9,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.zs.mol.R
 import com.zs.mol.databinding.FragmentTownBinding
-import com.zs.mol.view.base.MainFragment
+import com.zs.mol.view.base.MainTabFragment
 import com.zs.mol.view.town.TownViewModel
 
-class TownFragment : MainFragment() {
+class TownTabFragment : MainTabFragment() {
     lateinit var binding: FragmentTownBinding
     val viewModel: TownViewModel by lazy {
         ViewModelProvider(requireActivity()).get(TownViewModel::class.java)

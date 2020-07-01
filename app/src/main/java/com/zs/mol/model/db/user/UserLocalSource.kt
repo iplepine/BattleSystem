@@ -1,22 +1,23 @@
 package com.zs.mol.model.db.user
 
-import android.content.Context
 import com.zs.mol.model.consts.ReservedUserId
 import com.zs.mol.model.db.PreferenceManager
 import com.zs.mol.model.user.User
+import com.zs.mol.model.user.UserData
 import javax.inject.Inject
+import javax.inject.Provider
 
-class UserLocalSource @Inject constructor(private val context: Context) {
+class UserLocalSource @Inject constructor(private val preferenceManager: PreferenceManager) {
 
     fun getGuestId(): String {
         return ReservedUserId.GUEST
     }
 
-    fun getUser(): User? {
-        return PreferenceManager.loadUser(context)
+    fun load(userId: String): UserData? {
+        return preferenceManager.loadUserData(userId)
     }
 
-    fun saveUser(user: User) {
-        PreferenceManager.saveUser(context, user)
+    fun save(user: User) {
+        preferenceManager.saveUserData(user)
     }
 }

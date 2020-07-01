@@ -19,18 +19,16 @@ import com.zs.mol.model.quest.HireQuest
 import com.zs.mol.view.base.BaseDialogFragment
 import com.zs.mol.view.quest.viewmodel.QuestViewModel
 import com.zs.mol.view.unit.viewmodel.UnitStatusViewModel
-import javax.inject.Inject
 
 class UnitHireFragment : BaseDialogFragment(), QuestView {
     lateinit var binding: FragmentHireBinding
 
-    @Inject
-    lateinit var questViewModel: QuestViewModel
+    private val questViewModel: QuestViewModel by lazy {
+        ViewModelProvider(requireActivity(), viewModelFactory).get(QuestViewModel::class.java)
+    }
 
     private val unitStatusViewModel: UnitStatusViewModel by lazy {
-        ViewModelProvider(requireParentFragment()).get(UnitStatusViewModel::class.java)
-        /*ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
-            .create(UnitStatusViewModel::class.java)*/
+        ViewModelProvider(this).get(UnitStatusViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -47,7 +45,7 @@ class UnitHireFragment : BaseDialogFragment(), QuestView {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (requireActivity() as MainActivity).component.inject(this)
+        (requireActivity() as MainActivity).component.questTabComponent().create().inject(this)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -98,14 +96,17 @@ class UnitHireFragment : BaseDialogFragment(), QuestView {
 
     override fun onClickAccept() {
         questViewModel.acceptQuest()
+        dismiss()
     }
 
     override fun onClickReject() {
         questViewModel.rejectQuest()
+        dismiss()
     }
 
     override fun onClickClose() {
         questViewModel.unSelectQuest()
+        dismiss()
     }
 
     override fun onClickDetail() {

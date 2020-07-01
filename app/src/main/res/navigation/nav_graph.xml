@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/questFragment"
-        android:name="com.zs.mol.view.quest.fragment.QuestFragment"
+        android:name="com.zs.mol.view.quest.fragment.QuestTabFragment"
         android:label="@string/bottom_menu_quest"
         tools:layout="@layout/fragment_quest">
 
@@ -56,7 +56,7 @@
 
     <fragment
         android:id="@+id/unitManageFragment"
-        android:name="com.zs.mol.view.unit.fragment.UnitManageFragment"
+        android:name="com.zs.mol.view.unit.fragment.UnitManageTabFragment"
         android:label="@string/bottom_menu_unit"
         tools:layout="@layout/fragment_unit_manage">
 
@@ -88,7 +88,7 @@
 
     <fragment
         android:id="@+id/townFragment"
-        android:name="com.zs.mol.view.town.fragment.TownFragment"
+        android:name="com.zs.mol.view.town.fragment.TownTabFragment"
         android:label="@string/bottom_menu_town"
         tools:layout="@layout/fragment_town" >
 
@@ -114,7 +114,7 @@
 
     <fragment
         android:id="@+id/storeFragment"
-        android:name="com.zs.mol.view.store.fragment.StoreFragment"
+        android:name="com.zs.mol.view.store.fragment.StoreTabFragment"
         android:label="@string/bottom_menu_store"
         tools:layout="@layout/fragment_store" />
 
@@ -125,12 +125,12 @@
 
     <fragment
         android:id="@+id/fieldFragment"
-        android:name="com.zs.mol.view.field.FieldFragment"
+        android:name="com.zs.mol.view.field.FieldTabFragment"
         tools:layout="@layout/fragment_field" />
 
     <fragment
         android:id="@+id/dungeonFragment"
-        android:name="com.zs.mol.view.dungeon.DungeonFragment"
+        android:name="com.zs.mol.view.dungeon.DungeonTabFragment"
         tools:layout="@layout/fragment_dungeon" />
 
 </navigation>

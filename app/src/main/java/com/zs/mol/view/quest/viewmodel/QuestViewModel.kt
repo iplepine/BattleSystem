@@ -3,6 +3,7 @@ package com.zs.mol.view.quest.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.zs.mol.di.scope.GameScope
 import com.zs.mol.model.quest.Quest
 import com.zs.mol.model.quest.QuestRepository
 import com.zs.mol.model.quest.QuestType
@@ -11,6 +12,7 @@ import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 
 class QuestViewModel @Inject constructor(
+    @GameScope
     private val user: User,
     private val questRepository: QuestRepository
 ) : ViewModel() {

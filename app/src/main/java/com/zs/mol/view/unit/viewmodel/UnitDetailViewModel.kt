@@ -2,6 +2,7 @@ package com.zs.mol.view.unit.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.zs.mol.di.scope.GameScope
 import com.zs.mol.model.unit.BattleUnit
 import com.zs.mol.model.unit.UnitRepository
 import com.zs.mol.model.user.User
@@ -9,7 +10,7 @@ import javax.inject.Inject
 
 class UnitDetailViewModel @Inject constructor(
     private val unitRepository: UnitRepository,
-    private val user: User
+    @GameScope private val user: User
 ) : ViewModel() {
     val unit: MutableLiveData<BattleUnit> = MutableLiveData()
 

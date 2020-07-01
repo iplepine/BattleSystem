@@ -1,35 +1,34 @@
 package com.zs.mol.model.user
 
+import androidx.lifecycle.LiveData
 import com.zs.mol.model.db.item.ItemRepository
-import com.zs.mol.model.db.user.UserRepository
 import com.zs.mol.model.quest.Quest
 import com.zs.mol.model.quest.QuestRepository
 import com.zs.mol.model.unit.BattleUnit
 import io.reactivex.subjects.PublishSubject
-import javax.inject.Inject
 
-class User @Inject constructor(
+class User constructor(
     val id: String,
-    private val userRepository: UserRepository,
+    var userData: UserData,
     private val itemRepository: ItemRepository,
     private val questRepository: QuestRepository
 ) {
-    @Volatile
-    var userStatus = UserStatus(1, 0)
-    val units = ArrayList<BattleUnit>()
-
     val updateSubject = PublishSubject.create<Boolean>()
 
-    fun initUser() {
-        itemRepository.setItem(id, "gold", 5000)
+    init {
+        val k = 0
     }
 
     fun getUnits(): List<BattleUnit> {
-        return units
+        return userData.units
     }
 
     fun isMyUnit(id: String): Boolean {
         return id === id
+    }
+
+    fun getItemLiveData(itemId: String): LiveData<Long> {
+        return itemRepository.getItemLiveData(id, itemId)
     }
 
     fun getItemAmount(itemId: String): Long {
@@ -47,11 +46,11 @@ class User @Inject constructor(
     }
 
     fun getUnit(id: String): BattleUnit? {
-        return units.find { id == it.id }
+        return userData.units.find { id == it.id }
     }
 
     fun addUnit(unit: BattleUnit) {
-        units.add(unit)
+        userData.units.add(unit)
     }
 
     fun acceptQuest(quest: Quest) {

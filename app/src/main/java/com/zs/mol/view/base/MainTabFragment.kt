@@ -5,7 +5,7 @@ import com.zs.mol.MainActivity
 import com.zs.mol.model.game.GameEngine
 import javax.inject.Inject
 
-open class MainFragment : BaseFragment() {
+open class MainTabFragment : BaseFragment() {
 
     @Inject
     lateinit var gameEngine: GameEngine
@@ -17,8 +17,6 @@ open class MainFragment : BaseFragment() {
 
     override fun onStop() {
         super.onStop()
-        context?.apply {
-            gameEngine.saveGame(applicationContext)
-        }
+        gameEngine.saveGame()
     }
 }

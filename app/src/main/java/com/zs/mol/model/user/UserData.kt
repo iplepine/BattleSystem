@@ -1,6 +1,11 @@
 package com.zs.mol.model.user
 
-class UserStatus(var level: Int = 1, var exp: Long = 0) {
+import com.zs.mol.model.unit.BattleUnit
+
+class UserData(var level: Int = 1, var exp: Long = 0) {
+
+    val units = ArrayList<BattleUnit>()
+
     fun addExp(amount: Long) {
         exp += amount
     }

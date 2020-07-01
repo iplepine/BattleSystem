@@ -12,6 +12,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.zs.mol.MainActivity
 import com.zs.mol.R
 import com.zs.mol.model.stat.BaseStat.Companion.CHA
@@ -35,12 +36,12 @@ import com.zs.mol.model.unit.BattleUnit
 import com.zs.mol.view.base.BaseFragment
 import com.zs.mol.view.unit.viewmodel.UnitDetailViewModel
 import kotlinx.android.synthetic.main.fragment_unit_detail.*
-import javax.inject.Inject
 
 class UnitDetailFragment : BaseFragment() {
 
-    @Inject
-    lateinit var viewModel: UnitDetailViewModel
+    val viewModel: UnitDetailViewModel by lazy {
+        ViewModelProvider(this, viewModelFactory).get(UnitDetailViewModel::class.java)
+    }
 
     private val baseStatSequence = arrayOf(STR, DEX, INT, CON, WIS, CHA)
     private val secondStatSequence = arrayOf(ATK, MATK, DEF, MDEF, HIT, EVADE, SPEED, CRI)
@@ -63,7 +64,7 @@ class UnitDetailFragment : BaseFragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (requireActivity() as MainActivity).component.inject(this)
+        (requireActivity() as MainActivity).component.unitTabComponent().create().inject(this)
     }
 
     private fun init() {
