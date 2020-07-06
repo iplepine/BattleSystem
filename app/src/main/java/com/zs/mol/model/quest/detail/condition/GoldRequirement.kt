@@ -2,6 +2,7 @@ package com.zs.mol.model.quest.detail.condition
 
 import com.zs.mol.model.item.ItemKey
 import com.zs.mol.model.user.User
+import io.reactivex.Single
 
 class GoldRequirement(value: Long) : QuestRequirement(ItemKey.GOLD, value) {
     val amount = value
@@ -10,8 +11,8 @@ class GoldRequirement(value: Long) : QuestRequirement(ItemKey.GOLD, value) {
         return amount <= user.getItemAmount(key)
     }
 
-    override fun onSuccess(user: User) {
-        user.useItem(key, amount)
+    override fun onSuccess(user: User): Single<Boolean> {
+        return user.useItem(key, amount)
     }
 
     override fun toDescription(): String {

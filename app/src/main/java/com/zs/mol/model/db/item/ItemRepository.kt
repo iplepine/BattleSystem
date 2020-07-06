@@ -4,56 +4,62 @@ import androidx.lifecycle.LiveData
 import com.zs.mol.di.scope.GameScope
 import com.zs.mol.model.common.DefaultLiveData
 import com.zs.mol.model.common.Logger
-import java.util.concurrent.ConcurrentHashMap
+import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 @GameScope
-class ItemRepository @Inject constructor() {
-    private val db = ConcurrentHashMap<String, ConcurrentHashMap<String, Long>>()
+class ItemRepository @Inject constructor(private val itemDao: ItemDao) {
 
     private val liveDataCache = HashMap<String, DefaultLiveData<Long>>()
 
-    fun addItem(userId: String, id: String, amount: Long) {
-        Logger.d("add item to inventory, itemId: $id, amount : $amount")
+    fun addItem(userId: String, id: String, amount: Long): Single<Boolean> {
+        return Single.create<Boolean> {
+            Logger.d("add item to inventory, itemId: $id, amount : $amount")
+            val item = itemDao.getItem(userId, id)?.value
+            var newAmount = amount
 
-        var inventory = db[userId]
-        if (inventory == null) {
-            inventory = ConcurrentHashMap()
-            db[userId] = inventory
-        }
+            if (item == null) {
+                itemDao.insertItem(Item(userId, id, amount))
+            } else {
+                newAmount += item.amount
+                item.amount = newAmount
+                itemDao.updateItem(item)
+            }
 
-        val newAmount = getAmount(userId, id) + amount
-        if (0 < newAmount) {
-            inventory[id] = newAmount
-            updateLiveData(id, newAmount)
-        }
+            Logger.d("current Inventory, itemId: $id, amount : ${getAmount(userId, id)}")
 
-        Logger.d("current Inventory, itemId: $id, amount : ${getAmount(userId, id)}")
+            it.onSuccess(true)
+        }.subscribeOn(Schedulers.io())
     }
 
-    fun removeItem(userId: String, id: String, amount: Long) {
-        Logger.d("remove item from inventory, itemId: $id, amount : $amount")
+    fun removeItem(userId: String, id: String, amount: Long): Single<Boolean> {
+        return Single.create<Boolean> {
+            Logger.d("remove item from inventory, itemId: $id, amount : $amount")
 
-        val newAmount = (getAmount(userId, id) - amount).coerceAtLeast(0)
+            val item = itemDao.getItem(userId, id)?.value
+            if (item == null) {
+                it.onError(Throwable("not enough items, itemId : $id"))
+                return@create
+            } else {
+                val newAmount = (item.amount - amount).coerceAtLeast(0)
+                item.amount = newAmount
+                itemDao.updateItem(item)
 
-        val inventory = db[userId] ?: return
-        if (inventory.containsKey(id)) {
-            inventory[id] = newAmount
-        }
+                updateLiveData(id, newAmount)
 
-        updateLiveData(id, newAmount)
-
-        Logger.d("remove Inventory, itemId: $id, amount : ${getAmount(userId, id)}")
+                Logger.d("remove Inventory, itemId: $id, amount : ${getAmount(userId, id)}")
+                it.onSuccess(true)
+            }
+        }.subscribeOn(Schedulers.io())
     }
 
     fun getAmount(userId: String, id: String): Long {
-        return db[userId]?.get(id) ?: 0
+        return itemDao.getItem(userId, id)?.value?.amount ?: 0
     }
 
-    fun getItemLiveData(userId: String, id: String): LiveData<Long> {
-        return liveDataCache[id] ?: DefaultLiveData(getAmount(userId, id)).apply {
-            liveDataCache[id] = this
-        }
+    fun getItemLiveData(userId: String, id: String): LiveData<Item?> {
+        return itemDao.getItem(userId, id)
     }
 
     private fun updateLiveData(id: String, amount: Long) {

@@ -20,6 +20,7 @@ class UserRepository @Inject constructor(
         return if (userData == null) {
             User(userId, UserData(), itemRepository, questRepository).apply {
                 addItem(ItemKey.GOLD, 5000)
+                    .subscribe()
             }
         } else {
             User(userId, userData, itemRepository, questRepository)

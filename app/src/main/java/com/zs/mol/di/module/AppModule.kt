@@ -2,10 +2,11 @@ package com.zs.mol.di.module
 
 import android.content.Context
 import com.zs.mol.MolApp
+import com.zs.mol.di.component.GameComponent
 import dagger.Module
 import dagger.Provides
 
-@Module
+@Module(subcomponents = [GameComponent::class])
 class AppModule {
 
     @Provides

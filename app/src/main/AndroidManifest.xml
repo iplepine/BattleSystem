@@ -42,6 +42,13 @@
         <service
             android:name=".widget.WidgetUpdateService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <uses-library android:name="android.test.runner"
+            android:required="false" />
+        <uses-library android:name="android.test.base"
+            android:required="false" />
+        <uses-library android:name="android.test.mock"
+            android:required="false" />
     </application>
 
 </manifest>

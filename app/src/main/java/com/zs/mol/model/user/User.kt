@@ -1,10 +1,12 @@
 package com.zs.mol.model.user
 
 import androidx.lifecycle.LiveData
+import com.zs.mol.model.db.item.Item
 import com.zs.mol.model.db.item.ItemRepository
 import com.zs.mol.model.quest.Quest
 import com.zs.mol.model.quest.QuestRepository
 import com.zs.mol.model.unit.BattleUnit
+import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
 
 class User constructor(
@@ -27,7 +29,7 @@ class User constructor(
         return id === id
     }
 
-    fun getItemLiveData(itemId: String): LiveData<Long> {
+    fun getItemLiveData(itemId: String): LiveData<Item?> {
         return itemRepository.getItemLiveData(id, itemId)
     }
 
@@ -35,22 +37,23 @@ class User constructor(
         return itemRepository.getAmount(id, itemId)
     }
 
-    fun addItem(itemId: String, amount: Long) {
-        itemRepository.addItem(id, itemId, amount)
-        updateSubject.onNext(true)
+    fun addItem(itemId: String, amount: Long): Single<Boolean> {
+        return itemRepository.addItem(id, itemId, amount)
+        //updateSubject.onNext(true)
     }
 
-    fun useItem(itemId: String, amount: Long) {
-        itemRepository.removeItem(id, itemId, amount)
-        updateSubject.onNext(true)
+    fun useItem(itemId: String, amount: Long): Single<Boolean> {
+        return itemRepository.removeItem(id, itemId, amount)
+        //updateSubject.onNext(true)
     }
 
     fun getUnit(id: String): BattleUnit? {
         return userData.units.find { id == it.id }
     }
 
-    fun addUnit(unit: BattleUnit) {
+    fun addUnit(unit: BattleUnit): Single<Boolean> {
         userData.units.add(unit)
+        return Single.just(true)
     }
 
     fun acceptQuest(quest: Quest) {

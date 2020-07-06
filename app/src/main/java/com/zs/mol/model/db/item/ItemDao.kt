@@ -1,24 +1,25 @@
 package com.zs.mol.model.db.item
 
-import androidx.room.*
+import androidx.lifecycle.LiveData
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.Update
 
 @Dao
 interface ItemDao {
-    @Query("SELECT * FROM ItemInfo")
-    fun getAll(): List<ItemInfo>
+    @Query("SELECT * FROM Item")
+    fun getAll(): LiveData<List<Item>>
 
-    @Query("SELECT * FROM ItemInfo WHERE id = :id")
-    fun findItem(id: Int): ItemInfo
+    @Query("SELECT * FROM Item WHERE userId = :userId AND itemKey = :itemKey")
+    fun getItem(userId: String, itemKey: String): LiveData<Item?>
 
-    @Query("SELECT * FROM InventoryItem WHERE userId = :userId & itemKey = :itemKey")
-    fun getInventoryItem(userId: String, itemKey: String): InventoryItem
-
-    @Update
-    fun updateInventoryItem(item: InventoryItem): Long
+    @Query("SELECT * FROM Item WHERE userId = :userId AND itemKey = :itemKey")
+    fun findItem(userId: String, itemKey: String): Item
 
     @Insert
-    fun insertAll(vararg item: ItemInfo)
+    fun insertItem(item: Item): Long
 
-    @Delete
-    fun delete(user: ItemInfo)
+    @Update
+    fun updateItem(item: Item)
 }

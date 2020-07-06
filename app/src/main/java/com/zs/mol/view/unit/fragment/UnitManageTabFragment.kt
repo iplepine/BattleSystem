@@ -14,6 +14,7 @@ import com.zs.mol.R
 import com.zs.mol.model.common.Logger
 import com.zs.mol.model.unit.BattleUnit
 import com.zs.mol.view.base.MainTabFragment
+import com.zs.mol.view.quest.viewmodel.UserStatusViewModel
 import com.zs.mol.view.unit.adapter.UnitAdapter
 import com.zs.mol.view.unit.viewmodel.UnitViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -23,6 +24,10 @@ class UnitManageTabFragment : MainTabFragment() {
 
     val viewModel: UnitViewModel by lazy {
         ViewModelProvider(this, viewModelFactory).get(UnitViewModel::class.java)
+    }
+
+    val userStatusViewModel: UserStatusViewModel by lazy {
+        ViewModelProvider(requireActivity(), viewModelFactory).get(UserStatusViewModel::class.java)
     }
 
     var adapter: UnitAdapter? = null

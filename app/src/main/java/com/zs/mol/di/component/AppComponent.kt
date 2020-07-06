@@ -2,16 +2,17 @@ package com.zs.mol.di.component
 
 import com.zs.mol.MolApp
 import com.zs.mol.di.module.AppModule
-import com.zs.mol.di.module.ViewModelFactoryModule
-import com.zs.mol.di.scope.AppScope
+import com.zs.mol.di.module.GameModule
 import com.zs.mol.model.db.PreferenceManager
 import dagger.BindsInstance
 import dagger.Component
+import javax.inject.Singleton
 
-@AppScope
+@Singleton
 @Component(
     modules = [
-        AppModule::class
+        AppModule::class,
+        GameModule::class
     ]
 )
 interface AppComponent {
@@ -20,6 +21,8 @@ interface AppComponent {
     interface Factory {
         fun create(@BindsInstance app: MolApp): AppComponent
     }
+
+    fun gameComponent(): GameComponent.Factory
 
     fun inject(app: MolApp)
 

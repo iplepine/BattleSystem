@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.multidex.MultiDexApplication
 import com.zs.mol.di.component.AppComponent
 import com.zs.mol.di.component.DaggerAppComponent
-import com.zs.mol.di.component.DaggerGameComponent
 import com.zs.mol.di.component.GameComponent
 import com.zs.mol.model.notification.NotiManager
 
@@ -16,7 +15,7 @@ class MolApp : MultiDexApplication() {
     }
 
     val gameComponent: GameComponent by lazy {
-        DaggerGameComponent.factory().create(component)
+        component.gameComponent().create()
     }
 
     override fun onCreate() {
