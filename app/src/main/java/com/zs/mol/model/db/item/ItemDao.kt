@@ -12,14 +12,11 @@ interface ItemDao {
     fun getAll(): LiveData<List<Item>>
 
     @Query("SELECT * FROM Item WHERE userId = :userId AND itemKey = :itemKey")
-    fun getItem(userId: String, itemKey: String): LiveData<Item?>
-
-    @Query("SELECT * FROM Item WHERE userId = :userId AND itemKey = :itemKey")
-    fun findItem(userId: String, itemKey: String): Item
+    fun findItem(userId: String, itemKey: String): Item?
 
     @Insert
     fun insertItem(item: Item): Long
 
     @Update
-    fun updateItem(item: Item)
+    fun updateItem(vararg item: Item)
 }

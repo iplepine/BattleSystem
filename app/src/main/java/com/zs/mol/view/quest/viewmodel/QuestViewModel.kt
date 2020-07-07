@@ -8,6 +8,8 @@ import com.zs.mol.model.quest.Quest
 import com.zs.mol.model.quest.QuestRepository
 import com.zs.mol.model.quest.QuestType
 import com.zs.mol.model.user.User
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 
@@ -50,10 +52,14 @@ class QuestViewModel @Inject constructor(
         return getQuests().getOrNull(index)
     }
 
-    fun acceptQuest() {
-        val id = selectedQuest?.value?.id ?: return
-        questRepository.accept(user, id)
-        unSelectQuest()
+    fun acceptQuest(): Single<Boolean> {
+        val id = selectedQuest?.value?.id
+        requireNotNull(id)
+        return questRepository.accept(user, id)
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSuccess {
+                unSelectQuest()
+            }
     }
 
     fun rejectQuest() {

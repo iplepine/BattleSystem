@@ -12,6 +12,7 @@ public class MolAppTest {
         System.out.println(solution3(new int[]{3, 4, 5, 3, 7}));
         /*System.out.println(isGoodTrees(newM int[]{3}));
         System.out.println(isGoodTrees(new int[]{3, 5, 3, 7}));*/
+        assert(false);
     }
 
     public int solution1(int[] A) {

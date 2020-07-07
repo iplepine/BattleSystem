@@ -4,6 +4,8 @@ import com.zs.mol.model.quest.detail.condition.QuestRequirement
 import com.zs.mol.model.quest.detail.penalty.QuestPenalty
 import com.zs.mol.model.quest.detail.reward.QuestReward
 import com.zs.mol.model.user.User
+import io.reactivex.Single
+import io.reactivex.functions.BiFunction
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -24,18 +26,28 @@ abstract class Quest(var type: QuestType) {
         return requires.find { !it.checkRequire(user) } == null
     }
 
-    open fun onSuccess(user: User) {
+    open fun onSuccess(user: User): Single<Boolean> {
+        var ret = Single.just(true)
         requires.forEach {
-            it.onSuccess(user)
+            ret = ret.zipWith(
+                it.onSuccess(user),
+                BiFunction<Boolean, Boolean, Boolean> { t1, t2 -> t1 && t2 })
         }
         rewards.forEach {
-            it.onSuccess(user)
+            ret = ret.zipWith(
+                it.onSuccess(user),
+                BiFunction<Boolean, Boolean, Boolean> { t1, t2 -> t1 && t2 })
         }
+
+        return ret
     }
 
-    open fun onFailed(user: User) {
-        penalty.forEach {
-            it.onFailed(user)
+    open fun onFailed(user: User): Single<Boolean> {
+        return Single.just(true).apply {
+            penalty.forEach {
+                zipWith(it.onFailed(user),
+                    BiFunction<Boolean, Boolean, Boolean> { t1, t2 -> t1 && t2 })
+            }
         }
     }
 

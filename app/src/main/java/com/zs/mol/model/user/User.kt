@@ -1,13 +1,13 @@
 package com.zs.mol.model.user
 
 import androidx.lifecycle.LiveData
+import com.zs.mol.model.common.DefaultLiveData
 import com.zs.mol.model.db.item.Item
 import com.zs.mol.model.db.item.ItemRepository
 import com.zs.mol.model.quest.Quest
 import com.zs.mol.model.quest.QuestRepository
 import com.zs.mol.model.unit.BattleUnit
 import io.reactivex.Single
-import io.reactivex.subjects.PublishSubject
 
 class User constructor(
     val id: String,
@@ -15,11 +15,6 @@ class User constructor(
     private val itemRepository: ItemRepository,
     private val questRepository: QuestRepository
 ) {
-    val updateSubject = PublishSubject.create<Boolean>()
-
-    init {
-        val k = 0
-    }
 
     fun getUnits(): List<BattleUnit> {
         return userData.units
@@ -29,7 +24,7 @@ class User constructor(
         return id === id
     }
 
-    fun getItemLiveData(itemId: String): LiveData<Item?> {
+    fun getItemLiveData(itemId: String): DefaultLiveData<Item> {
         return itemRepository.getItemLiveData(id, itemId)
     }
 
@@ -39,12 +34,10 @@ class User constructor(
 
     fun addItem(itemId: String, amount: Long): Single<Boolean> {
         return itemRepository.addItem(id, itemId, amount)
-        //updateSubject.onNext(true)
     }
 
     fun useItem(itemId: String, amount: Long): Single<Boolean> {
         return itemRepository.removeItem(id, itemId, amount)
-        //updateSubject.onNext(true)
     }
 
     fun getUnit(id: String): BattleUnit? {

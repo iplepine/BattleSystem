@@ -90,8 +90,8 @@ class QuestTabFragment : MainTabFragment() {
             }
         })
 
-        binding.userStatusView.viewModel = userStatusViewModel
         binding.userStatusView.lifecycleOwner = viewLifecycleOwner
+        binding.userStatusView.viewModel = userStatusViewModel
     }
 
     private fun initRecyclerView() {

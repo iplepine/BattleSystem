@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.zs.mol.di.scope.GameScope
 import com.zs.mol.model.quest.factory.QuestFactory
 import com.zs.mol.model.user.User
+import io.reactivex.Single
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 
@@ -36,32 +37,39 @@ class QuestRepository @Inject constructor(private val questFactory: QuestFactory
         newQuestLiveData.value = requests
     }
 
-    fun accept(user: User, id: String) {
-        requests[id]?.also {
-            when (it.type) {
+    fun accept(user: User, id: String): Single<Boolean> {
+        acceptedQuestLiveData.postValue(acceptedQuests)
+        newQuestLiveData.postValue(requests)
+
+        val quest = requests[id]
+        if (quest == null) {
+            throw Throwable("quest not found")
+        } else {
+            requests.remove(quest.id)
+
+            return when (quest.type) {
                 QuestType.HIRE -> {
-                    if (it.checkSuccess(user)) {
-                        it.onSuccess(user)
-                    } else {
-                        it.onFailed(user)
+                    Single.defer {
+                        if (quest.checkSuccess(user)) {
+                            quest.onSuccess(user)
+                        } else {
+                            quest.onFailed(user)
+                        }
                     }
                 }
                 else -> {
-                    acceptedQuests.add(it)
+                    acceptedQuests.add(quest)
+                    return Single.just(true)
                 }
             }
-            requests.remove(it.id)
         }
-
-        acceptedQuestLiveData.value = acceptedQuests
-        newQuestLiveData.value = requests
     }
 
-    fun reject(id: String) {
-        requests[id]?.apply {
+    fun reject(id: String): Single<Boolean> {
+        return Single.create<Boolean> {
             requests.remove(id)
+            newQuestLiveData.postValue(requests)
+            it.onSuccess(true)
         }
-
-        newQuestLiveData.value = requests
     }
 }

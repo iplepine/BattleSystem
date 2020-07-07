@@ -1,6 +1,5 @@
 package com.zs.mol.model.db.item
 
-import androidx.lifecycle.LiveData
 import com.zs.mol.di.scope.GameScope
 import com.zs.mol.model.common.DefaultLiveData
 import com.zs.mol.model.common.Logger
@@ -11,12 +10,14 @@ import javax.inject.Inject
 @GameScope
 class ItemRepository @Inject constructor(private val itemDao: ItemDao) {
 
-    private val liveDataCache = HashMap<String, DefaultLiveData<Long>>()
+    fun addItem(item: Item): Single<Boolean> {
+        return addItem(item.userId, item.itemKey, item.amount)
+    }
 
     fun addItem(userId: String, id: String, amount: Long): Single<Boolean> {
         return Single.create<Boolean> {
             Logger.d("add item to inventory, itemId: $id, amount : $amount")
-            val item = itemDao.getItem(userId, id)?.value
+            val item = itemDao.findItem(userId, id)
             var newAmount = amount
 
             if (item == null) {
@@ -33,11 +34,14 @@ class ItemRepository @Inject constructor(private val itemDao: ItemDao) {
         }.subscribeOn(Schedulers.io())
     }
 
+    private val liveDataCache = HashMap<String, DefaultLiveData<Item>>()
+
+    // 이거 처리를 트랜잭션으로 한번에 처리해야함... removeAllItem 같은걸로
     fun removeItem(userId: String, id: String, amount: Long): Single<Boolean> {
         return Single.create<Boolean> {
             Logger.d("remove item from inventory, itemId: $id, amount : $amount")
 
-            val item = itemDao.getItem(userId, id)?.value
+            val item = itemDao.findItem(userId, id)
             if (item == null) {
                 it.onError(Throwable("not enough items, itemId : $id"))
                 return@create
@@ -46,7 +50,7 @@ class ItemRepository @Inject constructor(private val itemDao: ItemDao) {
                 item.amount = newAmount
                 itemDao.updateItem(item)
 
-                updateLiveData(id, newAmount)
+                updateLiveData(id, item)
 
                 Logger.d("remove Inventory, itemId: $id, amount : ${getAmount(userId, id)}")
                 it.onSuccess(true)
@@ -55,14 +59,21 @@ class ItemRepository @Inject constructor(private val itemDao: ItemDao) {
     }
 
     fun getAmount(userId: String, id: String): Long {
-        return itemDao.getItem(userId, id)?.value?.amount ?: 0
+        return itemDao.findItem(userId, id)?.amount ?: 0
     }
 
-    fun getItemLiveData(userId: String, id: String): LiveData<Item?> {
-        return itemDao.getItem(userId, id)
+    fun getItemLiveData(userId: String, id: String): DefaultLiveData<Item> {
+        return liveDataCache[id] ?: let {
+            val item = itemDao.findItem(userId, id) ?: Item(userId, id, 0).also {
+                itemDao.insertItem(it)
+            }
+            DefaultLiveData(item).apply {
+                liveDataCache[id] = this
+            }
+        }
     }
 
-    private fun updateLiveData(id: String, amount: Long) {
-        liveDataCache[id]?.value = amount
+    private fun updateLiveData(id: String, item: Item) {
+        liveDataCache[id]?.postValue(item)
     }
 }

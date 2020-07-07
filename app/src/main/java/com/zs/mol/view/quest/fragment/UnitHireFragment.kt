@@ -19,6 +19,8 @@ import com.zs.mol.model.quest.HireQuest
 import com.zs.mol.view.base.BaseDialogFragment
 import com.zs.mol.view.quest.viewmodel.QuestViewModel
 import com.zs.mol.view.unit.viewmodel.UnitStatusViewModel
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 class UnitHireFragment : BaseDialogFragment(), QuestView {
     lateinit var binding: FragmentHireBinding
@@ -95,8 +97,15 @@ class UnitHireFragment : BaseDialogFragment(), QuestView {
     }
 
     override fun onClickAccept() {
-        questViewModel.acceptQuest()
-        dismiss()
+        addDisposable(
+            questViewModel.acceptQuest()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { dismiss() },
+                    { dismiss() }
+                )
+        )
     }
 
     override fun onClickReject() {
