@@ -1,6 +1,7 @@
 package com.zs.mol.model.db.user
 
 import com.zs.mol.di.scope.GameScope
+import com.zs.mol.model.common.Logger
 import com.zs.mol.model.db.item.ItemRepository
 import com.zs.mol.model.item.ItemKey
 import com.zs.mol.model.quest.QuestRepository
@@ -18,6 +19,7 @@ class UserRepository @Inject constructor(
     fun getUser(userId: String): User {
         val userData = local.load(userId)
         return if (userData == null) {
+            Logger.d("user data is null")
             User(userId, UserData(), itemRepository, questRepository).apply {
                 addItem(ItemKey.GOLD, 5000)
                     .subscribe()

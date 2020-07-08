@@ -1,23 +1,22 @@
 package com.zs.mol.model.db.item
 
 import android.content.Context
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.zs.mol.model.db.AppDatabase
-import io.reactivex.Single
-import io.reactivex.functions.BiFunction
-import org.junit.After
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Test
+import org.junit.*
 import org.junit.runner.RunWith
-import kotlin.random.Random
 
 @RunWith(AndroidJUnit4::class)
 class ItemTest {
     private lateinit var itemDao: ItemDao
     private lateinit var db: AppDatabase
+
+    @JvmField
+    @Rule
+    val rule = InstantTaskExecutorRule()
 
     @Before
     fun createDb() {
@@ -54,42 +53,21 @@ class ItemTest {
         Assert.assertEquals(5, updatedItem?.amount)
     }
 
-
     @Test
-    fun rxZipTest() {
-        println("================ test start ================")
-        var a = Single.create<Boolean> {
-            println("Aaaaaaaaaaaa")
-            it.onSuccess(true)
+    fun getItemLiveDataTest() {
+        itemDao.insertItem(Item("userId", "itemId", 3))
+        val dbItem = itemDao.findItem("userId", "itemId") ?: return
+
+        val liveData = itemDao.getItemLiveData("userId", "itemId")
+        liveData.observeForever {
+            println(it?.amount)
         }
-        var b = Single.create<Boolean> {
-            println("BBBBBBBBBBB")
-            it.onSuccess(true)
-        }
+        dbItem.amount = 5
+        itemDao.updateItem(dbItem)
 
-        val arr = arrayOf(1, 2, 3, 4, 5)
+        dbItem.amount = 7
+        itemDao.updateItem(dbItem)
 
-        arr.forEach {
-            a = a.zipWith(
-                createSingle((it * 111111).toString()),
-                BiFunction<Boolean, Boolean, Boolean> { t1, t2 -> t1 && t2 })
-        }
-
-        Single.defer {
-            if (Random.nextBoolean()) {
-                a
-            } else {
-                b
-            }
-        }.subscribe({ println("cccc") }, {})
-
-        println("================ test finish ================")
-    }
-
-    fun createSingle(text: String): Single<Boolean> {
-        return Single.create<Boolean> {
-            println(text)
-            it.onSuccess(true)
-        }
+        Thread.sleep(2000)
     }
 }

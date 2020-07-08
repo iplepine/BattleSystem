@@ -24,7 +24,7 @@ class User constructor(
         return id === id
     }
 
-    fun getItemLiveData(itemId: String): DefaultLiveData<Item> {
+    fun getItemLiveData(itemId: String): LiveData<Item?> {
         return itemRepository.getItemLiveData(id, itemId)
     }
 

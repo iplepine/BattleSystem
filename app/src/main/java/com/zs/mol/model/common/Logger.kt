@@ -1,5 +1,7 @@
 package com.zs.mol.model.common
 
+import android.util.Log
+
 object Logger {
     var logLevel = LogLevel.ALL
 
@@ -11,10 +13,10 @@ object Logger {
     }
 
     private fun log(log: String) {
-        /*Log.d("TTEST", getLogTagWithMethod())
-        Log.d("TTEST", log)*/
+        Log.d("TTEST", getLogTagWithMethod())
+        Log.d("TTEST", log)
 
-        println(log)
+        //println(log)
     }
 
     private fun getLogTagWithMethod(): String {

@@ -14,6 +14,9 @@ interface ItemDao {
     @Query("SELECT * FROM Item WHERE userId = :userId AND itemKey = :itemKey")
     fun findItem(userId: String, itemKey: String): Item?
 
+    @Query("SELECT * FROM Item WHERE userId = :userId AND itemKey = :itemKey")
+    fun getItemLiveData(userId: String, itemKey: String): LiveData<Item?>
+
     @Insert
     fun insertItem(item: Item): Long
 

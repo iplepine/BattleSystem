@@ -1,5 +1,6 @@
 package com.zs.mol.model.db.item
 
+import androidx.lifecycle.LiveData
 import com.zs.mol.di.scope.GameScope
 import com.zs.mol.model.common.DefaultLiveData
 import com.zs.mol.model.common.Logger
@@ -62,7 +63,7 @@ class ItemRepository @Inject constructor(private val itemDao: ItemDao) {
         return itemDao.findItem(userId, id)?.amount ?: 0
     }
 
-    fun getItemLiveData(userId: String, id: String): DefaultLiveData<Item> {
+    fun getItemLiveData(userId: String, id: String): LiveData<Item?> {
         return liveDataCache[id] ?: let {
             val item = itemDao.findItem(userId, id) ?: Item(userId, id, 0).also {
                 itemDao.insertItem(it)

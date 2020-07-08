@@ -1,8 +1,8 @@
 package com.zs.mol.view.quest.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.zs.mol.di.scope.GameScope
-import com.zs.mol.model.common.DefaultLiveData
 import com.zs.mol.model.common.Logger
 import com.zs.mol.model.db.item.Item
 import com.zs.mol.model.item.ItemKey
@@ -17,11 +17,11 @@ class UserStatusViewModel @Inject constructor(
         return user.userData.level.toString()
     }
 
-    fun getGem(): DefaultLiveData<Item> {
+    fun getGem(): LiveData<Item?> {
         return user.getItemLiveData(ItemKey.GEM)
     }
 
-    fun getGold(): DefaultLiveData<Item> {
+    fun getGold(): LiveData<Item?> {
         return user.getItemLiveData(ItemKey.GOLD)
     }
 

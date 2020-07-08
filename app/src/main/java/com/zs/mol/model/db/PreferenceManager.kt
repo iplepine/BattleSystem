@@ -47,16 +47,13 @@ class PreferenceManager @Inject constructor(private val context: Context) {
     fun saveUserData(user: User) {
         val preferences = context.getSharedPreferences(USER, MODE_PRIVATE)
         preferences.edit()
-            .putString(USER_ID, user.id)
             .putString(user.id, toJson(user.userData))
             .commit()
     }
 
     fun loadUserData(userId: String): UserData? {
         val preferences = context.getSharedPreferences(USER, MODE_PRIVATE)
-
         val json = preferences.getString(userId, "")
-
         return try {
             Gson().fromJson(json, UserData::class.java)
         } catch (e: Exception) {
