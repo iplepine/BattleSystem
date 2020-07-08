@@ -1,7 +1,7 @@
 package com.zs.mol.view.town
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
+import com.zs.mol.model.common.Logger
 
 class TownViewModel : ViewModel() {
     fun getDungeonText(): String {
@@ -9,6 +9,6 @@ class TownViewModel : ViewModel() {
     }
 
     fun onClickDungeon() {
-        Log.e("aaaa", "aaaaaaa")
+        Logger.e("온클릭던전")
     }
 }

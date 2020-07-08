@@ -56,7 +56,7 @@
 
     <fragment
         android:id="@+id/unitManageFragment"
-        android:name="com.zs.mol.view.unit.fragment.UnitManageTabFragment"
+        android:name="com.zs.mol.view.unit.fragment.UnitTabFragment"
         android:label="@string/bottom_menu_unit"
         tools:layout="@layout/fragment_unit_manage">
 

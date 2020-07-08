@@ -11,6 +11,7 @@ import com.zs.mol.R
 import com.zs.mol.databinding.FragmentTownBinding
 import com.zs.mol.view.base.MainTabFragment
 import com.zs.mol.view.town.TownViewModel
+import kotlinx.android.synthetic.main.fragment_town.*
 
 class TownTabFragment : MainTabFragment() {
     lateinit var binding: FragmentTownBinding
@@ -35,7 +36,7 @@ class TownTabFragment : MainTabFragment() {
 
     private fun init() {
         binding.viewModel = viewModel
-        //dungeon.setOnClickListener { onClickDungeon() }
+        dungeon.setOnClickListener { onClickDungeon() }
     }
 
     private fun onClickDungeon() {

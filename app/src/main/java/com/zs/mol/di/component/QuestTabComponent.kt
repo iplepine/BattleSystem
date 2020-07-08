@@ -16,7 +16,7 @@ interface QuestTabComponent {
         fun create(): QuestTabComponent
     }
 
-    fun inject(fragment: QuestTabFragment)
+    fun inject(tabFragment: QuestTabFragment)
     fun inject(fragment: NewQuestFragment)
     fun inject(fragment: UnitHireFragment)
 }

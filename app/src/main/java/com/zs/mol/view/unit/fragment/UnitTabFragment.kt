@@ -20,7 +20,7 @@ import com.zs.mol.view.unit.viewmodel.UnitViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_unit_manage.*
 
-class UnitManageTabFragment : MainTabFragment() {
+class UnitTabFragment : MainTabFragment() {
 
     val viewModel: UnitViewModel by lazy {
         ViewModelProvider(this, viewModelFactory).get(UnitViewModel::class.java)
