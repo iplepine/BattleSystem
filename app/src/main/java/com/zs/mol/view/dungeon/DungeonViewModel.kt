@@ -2,6 +2,7 @@ package com.zs.mol.view.dungeon
 
 import androidx.lifecycle.MutableLiveData
 import com.zs.lib.view.liverecyclerview.LiveViewModel
+import com.zs.mol.model.common.DefaultLiveData
 import com.zs.mol.model.dungeon.DungeonEvent
 import com.zs.mol.model.dungeon.DungeonPlace
 
@@ -14,5 +15,6 @@ class DungeonViewModel : LiveViewModel() {
 
     var adapter: SelectionAdapter? = null
 
+    val actionLimit = DefaultLiveData(10)
 
 }

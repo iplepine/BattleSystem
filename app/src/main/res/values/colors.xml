@@ -6,4 +6,11 @@
     <color name="background_quest">#3c2811</color>
     <color name="background_dungeon">#162b29</color>
     <color name="background_unit">#63000000</color>
+    <color name="text_white">#c8c9c7</color>
+    <color name="text_black">#000000</color>
+    <color name="text_gold">#d4ae37</color>
+
+    <color name="hp">#710c04</color>
+    <color name="mp">#0052a5</color>
+    <color name="mp_warm">#413bf7</color>
 </resources>
