@@ -5,7 +5,6 @@ import com.zs.mol.model.dungeon.generator.CellularAutoMata
 import com.zs.mol.model.dungeon.generator.MapGenerator
 import com.zs.mol.model.dungeon.generator.TileAndGraphBasedMaker
 import org.junit.Test
-import kotlin.random.Random
 
 class DungeonMakerTest {
     @Test
@@ -31,10 +30,11 @@ class DungeonMakerTest {
 
     @Test
     fun createTiledMap() {
-        val map = TileAndGraphBasedMaker.Builder(2, 2)
+        val map = TileAndGraphBasedMaker.Builder(10, 10)
             //.initRandomEntrance()
-            .setEntrance(1,0)
-            .makeRooms(3, 0)
+            .setEntrance(5, 5)
+            .makeRooms(10, 3)
+            //.addRoom(DungeonPlace.Direction.SOUTH)
             .build()
 
         MapGenerator.printMap(map)

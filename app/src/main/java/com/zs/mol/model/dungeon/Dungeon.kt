@@ -96,15 +96,15 @@ open class Dungeon<T : DungeonPlace>(start: T) {
             const val HORIZONTAL_WAY = 101
         }
 
-        val tiles = Array(height) { IntArray(width) { TileType.WALL } }
+        val tiles = Array(width) { IntArray(height) { TileType.WALL } }
 
         fun get(x: Int, y: Int): Int {
-            return tiles[y][x]
+            return tiles[x][y]
         }
 
         fun set(x: Int, y: Int, type: Int) {
             if (x in 0 until width && y in 0 until height) {
-                tiles[y][x] = type
+                tiles[x][y] = type
             }
         }
     }
