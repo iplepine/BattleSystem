@@ -1,16 +1,16 @@
 package com.zs.mol.model.dungeon.generator
 
-import com.zs.mol.model.dungeon.Dungeon.DungeonMap.TileType
+import com.zs.mol.model.dungeon.DungeonPlace
 
 abstract class MapGenerator {
-    abstract fun createMap(): Array<IntArray>
+    abstract fun createMap(): Array<Array<DungeonPlace>>
 
     companion object {
-        fun printMap(map: Array<IntArray>) {
+        fun printMap(map: Array<Array<DungeonPlace>>) {
             val width = map.size
             val height = map[0].size
 
-            val convertMap = Array(map[0].size) { IntArray(map.size) }
+            val convertMap = Array(map[0].size) { Array(map.size) { DungeonPlace() } }
             for (j in 0 until height) {
                 for (i in 0 until width) {
                     convertMap[i][j] = map[j][i]
@@ -25,15 +25,17 @@ abstract class MapGenerator {
             }
         }
 
-        private fun printField(field: Int) {
-            val text = when (field) {
-                TileType.VERTICAL_WAY -> "│"
-                TileType.HORIZONTAL_WAY -> "─"
-                TileType.ENTRANCE -> "▣"
-                TileType.WALL -> "■"
-                TileType.GROUND -> "□"
-                TileType.BOSS -> "Ｂ"
-                else -> " "
+        private fun printField(place: DungeonPlace) {
+            val text = when (place.type) {
+                DungeonPlace.PlaceType.VERTICAL_WAY -> "│"
+                DungeonPlace.PlaceType.HORIZONTAL_WAY -> "─"
+                DungeonPlace.PlaceType.ENTRANCE -> "▣"
+                DungeonPlace.PlaceType.WALL -> "■"
+                DungeonPlace.PlaceType.GROUND -> "□"
+                DungeonPlace.PlaceType.BOSS -> "Β"
+                DungeonPlace.PlaceType.ITEM -> "ⓘ"
+                DungeonPlace.PlaceType.TRAP -> "Τ"
+                DungeonPlace.PlaceType.MONSTER -> "ｍ"
             }
             print(text)
         }

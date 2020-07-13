@@ -2,21 +2,20 @@ package com.zs.mol.model.dungeon.generator
 
 import com.zs.mol.model.common.Position
 import com.zs.mol.model.dungeon.Dungeon
-import com.zs.mol.model.dungeon.Dungeon.DungeonMap.TileType
 import com.zs.mol.model.dungeon.DungeonPlace
 import kotlin.random.Random
 
 class TileAndGraphBasedMaker(private val width: Int, private val height: Int) :
     MapGenerator() {
 
-    override fun createMap(): Array<IntArray> {
+    override fun createMap(): Array<Array<DungeonPlace>> {
         return Builder(width, height).initRandomEntrance()
             .makeRooms(10)
             .build()
     }
 
-    class TiledPlace(x: Int, y: Int, var tileType: Int = TileType.GROUND) :
-        DungeonPlace() {
+    class TiledPlace(x: Int, y: Int, type: PlaceType = PlaceType.GROUND) :
+        DungeonPlace(type) {
 
         companion object {
             fun createHashKey(x: Int, y: Int): String {
@@ -31,7 +30,7 @@ class TileAndGraphBasedMaker(private val width: Int, private val height: Int) :
         }
     }
 
-    class TiledDungeon(start: TiledPlace, val map: DungeonMap) : Dungeon<TiledPlace>(start) {
+    class TiledDungeon(start: TiledPlace, map: DungeonMap) : Dungeon<TiledPlace>(map, start) {
         fun getPlace(x: Int, y: Int): TiledPlace {
             return getPlace(TiledPlace.createHashKey(x, y)) ?: TiledPlace(x, y)
         }
@@ -64,12 +63,12 @@ class TileAndGraphBasedMaker(private val width: Int, private val height: Int) :
         var currentPosition = Position(0, 0)
         lateinit var direction: DungeonPlace.Direction
 
-        val map: Dungeon.DungeonMap = Dungeon.DungeonMap(width, height)
+        val map: Dungeon.DungeonMap = Dungeon.DungeonMap(width, height, DungeonPlace.PlaceType.WALL)
         var visitMap = VisitMap(width, height)
         lateinit var dungeon: TiledDungeon
 
-        fun build(): Array<IntArray> {
-            return Array(2 * width - 1) { IntArray(2 * height - 1) { TileType.WALL } }.also { ret ->
+        fun build(): Array<Array<DungeonPlace>> {
+            return Array(2 * width - 1) { Array(2 * height - 1) { DungeonPlace(DungeonPlace.PlaceType.WALL) } }.also { ret ->
                 for (i in 0 until map.width) {
                     for (j in 0 until map.height) {
                         ret[i * 2][j * 2] = map.get(i, j)
@@ -81,12 +80,12 @@ class TileAndGraphBasedMaker(private val width: Int, private val height: Int) :
                         get(key)?.apply {
                             if (connects.containsKey(DungeonPlace.Direction.EAST)) {
                                 ret[position.x * 2 + 1][position.y * 2] =
-                                    TileType.HORIZONTAL_WAY
+                                    DungeonPlace(DungeonPlace.PlaceType.HORIZONTAL_WAY)
                             }
 
                             if (connects.containsKey(DungeonPlace.Direction.SOUTH)) {
                                 ret[position.x * 2][position.y * 2 + 1] =
-                                    TileType.VERTICAL_WAY
+                                    DungeonPlace(DungeonPlace.PlaceType.VERTICAL_WAY)
                             }
                         }
                     }
@@ -120,10 +119,10 @@ class TileAndGraphBasedMaker(private val width: Int, private val height: Int) :
             if (entrance != null) {
                 throw IllegalStateException("Entrance is already initialized.")
             }
-            entrance = TiledPlace(x, y, TileType.ENTRANCE)?.also {
+            entrance = TiledPlace(x, y, DungeonPlace.PlaceType.ENTRANCE)?.also {
                 currentPosition = Position(x, y)
                 visitMap.visit(it.position.x, it.position.y)
-                map.set(it.position.x, it.position.y, it.tileType)
+                map.set(it.position.x, it.position.y, it.type)
                 dungeon = TiledDungeon(it, map)
                 dungeon.addPlace(it)
             }
@@ -163,7 +162,7 @@ class TileAndGraphBasedMaker(private val width: Int, private val height: Int) :
         fun addRoom(current: Position, direction: DungeonPlace.Direction): Builder {
             val currentRoom = dungeon.getPlace(current.x, current.y)
             current.moveDirection(direction)
-            map.set(current.x, current.y, TileType.GROUND)
+            map.set(current.x, current.y, DungeonPlace.PlaceType.GROUND)
             val newPlace = dungeon.getPlace(current.x, current.y)
             dungeon.connectPlace(currentRoom, direction, newPlace)
 

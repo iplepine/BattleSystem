@@ -1,6 +1,6 @@
 package com.zs.mol.model.dungeon.generator
 
-import com.zs.mol.model.dungeon.Dungeon.DungeonMap.TileType
+import com.zs.mol.model.dungeon.DungeonPlace
 import com.zs.mol.model.dungeon.generator.BSPMaker.BspNode.Companion.HORIZONTAL
 import com.zs.mol.model.dungeon.generator.BSPMaker.BspNode.Companion.VERTICAL
 import kotlin.math.max
@@ -8,11 +8,12 @@ import kotlin.random.Random
 
 class BSPMaker(private var mapSize: Int, private var limitDepth: Int) : MapGenerator() {
 
-    override fun createMap(): Array<IntArray> {
-        return Array(mapSize) { IntArray(mapSize) { TileType.WALL } }.also { map ->
-            val tree = createRandomBspTree()
-            tree.root.markToMap(map)
-        }
+    override fun createMap(): Array<Array<DungeonPlace>> {
+        return Array(mapSize) { Array(mapSize) { DungeonPlace(DungeonPlace.PlaceType.WALL) } }
+            .also { map ->
+                val tree = createRandomBspTree()
+                tree.root.markToMap(map)
+            }
     }
 
     fun createRandomBspTree(): BspTree {
@@ -171,11 +172,11 @@ class BSPMaker(private var mapSize: Int, private var limitDepth: Int) : MapGener
             }
         }
 
-        fun markToMap(map: Array<IntArray>) {
+        fun markToMap(map: Array<Array<DungeonPlace>>) {
             if (isLeaf) {
                 for (i in xRange[0] + 1 until xRange[1]) {
                     for (j in yRange[0] + 1 until yRange[1]) {
-                        map[i][j] = TileType.GROUND
+                        map[i][j] = DungeonPlace(DungeonPlace.PlaceType.GROUND)
                     }
                 }
             }

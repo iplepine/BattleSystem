@@ -1,4 +1,5 @@
 package com.zs.mol.model.dungeon
 
-class DungeonManager {
+class PlaceHint {
+
 }

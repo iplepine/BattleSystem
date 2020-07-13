@@ -6,15 +6,15 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-open class Dungeon<T : DungeonPlace>(start: T) {
-    val places = HashMap<String, T>()
-    val startPlace: T = start
+open class Dungeon<T : DungeonPlace>(val map: DungeonMap, val entrance: T) {
 
+    val places = HashMap<String, T>()
     val mainStream = ArrayList<Position>()
 
     init {
-        addPlace(startPlace)
+        addPlace(entrance)
     }
+
 
     fun getPlace(key: String): T? {
         return places[key]
@@ -83,28 +83,20 @@ open class Dungeon<T : DungeonPlace>(start: T) {
         lateinit var end: DungeonPlace
     }
 
-    class DungeonMap(val width: Int, val height: Int) {
-        object TileType {
-            const val ENTRANCE = 99
-            const val GROUND = 0
-            const val WALL = 1
-            const val TRAP = 2
-            const val MONSTER = 3
-            const val BOSS = 4
-            const val ITEM = 5
-            const val VERTICAL_WAY = 100
-            const val HORIZONTAL_WAY = 101
-        }
+    class DungeonMap(
+        val width: Int,
+        val height: Int,
+        initialType: DungeonPlace.PlaceType = DungeonPlace.PlaceType.GROUND
+    ) {
+        val tiles = Array(width) { Array(height) { DungeonPlace(initialType) } }
 
-        val tiles = Array(width) { IntArray(height) { TileType.WALL } }
-
-        fun get(x: Int, y: Int): Int {
+        fun get(x: Int, y: Int): DungeonPlace {
             return tiles[x][y]
         }
 
-        fun set(x: Int, y: Int, type: Int) {
+        fun set(x: Int, y: Int, type: DungeonPlace.PlaceType) {
             if (x in 0 until width && y in 0 until height) {
-                tiles[x][y] = type
+                tiles[x][y].type = type
             }
         }
     }

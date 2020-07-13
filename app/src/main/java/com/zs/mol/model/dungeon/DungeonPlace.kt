@@ -2,7 +2,7 @@ package com.zs.mol.model.dungeon
 
 import android.text.TextUtils
 
-abstract class DungeonPlace {
+open class DungeonPlace(var type: PlaceType = PlaceType.GROUND) {
     enum class Direction {
         NONE, NORTH, EAST, SOUTH, WEST;
 
@@ -18,7 +18,7 @@ abstract class DungeonPlace {
     }
 
     enum class PlaceType {
-        EMPTY, ENTRANCE, MONSTER, TRAP, ITEM, BOSS
+        ENTRANCE, MONSTER, TRAP, ITEM, BOSS, GROUND, WALL, VERTICAL_WAY, HORIZONTAL_WAY
     }
 
     val connects = HashMap<Direction, DungeonPlace>()

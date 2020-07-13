@@ -21,4 +21,13 @@
 
     <string name="title_hire_Unit">새로운 인물</string>
     <string name="message_empty_skill">스킬이 없습니다</string>
+
+
+    <string name="dungeon_hint_monster_lv1_1">앞에 무언가 있습니다.</string>
+    <string name="dungeon_hint_monster_lv1_2">스킬이 없습니다</string>
+    <string name="dungeon_hint_monster_lv1_3">스킬이 없습니다</string>
+    <string name="dungeon_hint_monster_lv1_4">스킬이 없습니다</string>
+    <string name="dungeon_hint_monster_lv1_5">스킬이 없습니다</string>
+    <string name="dungeon_hint_monster_lv1_6">스킬이 없습니다</string>
+
 </resources>

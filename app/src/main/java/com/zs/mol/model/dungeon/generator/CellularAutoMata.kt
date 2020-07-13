@@ -1,6 +1,6 @@
 package com.zs.mol.model.dungeon.generator
 
-import com.zs.mol.model.dungeon.Dungeon.DungeonMap.TileType
+import com.zs.mol.model.dungeon.DungeonPlace
 import kotlin.random.Random
 
 class CellularAutoMata(private var mapSize: Int) : MapGenerator() {
@@ -8,11 +8,14 @@ class CellularAutoMata(private var mapSize: Int) : MapGenerator() {
     private val aliveLimit = 5
     private val stepCount = 3
 
-    override fun createMap(): Array<IntArray> {
-        return Array(mapSize) { IntArray(mapSize) }.also { map ->
+    override fun createMap(): Array<Array<DungeonPlace>> {
+        return Array(mapSize) { Array(mapSize) { DungeonPlace() } }.also { map ->
             val initialWorld = firstBigBang(mapSize)
             var convertedMap = initialWorld.map {
-                it.map { isGround -> if (isGround) TileType.GROUND else TileType.WALL }.toIntArray()
+                it.map { isGround ->
+                    if (isGround) DungeonPlace(DungeonPlace.PlaceType.GROUND)
+                    else DungeonPlace(DungeonPlace.PlaceType.WALL)
+                }.toTypedArray()
             }.toTypedArray()
             printMap(convertedMap)
             println()
@@ -22,8 +25,10 @@ class CellularAutoMata(private var mapSize: Int) : MapGenerator() {
             }
 
             convertedMap = initialWorld.map {
-                it.map { isGround -> if (isGround) TileType.GROUND else TileType.WALL }
-                    .toIntArray()
+                it.map { isGround ->
+                    if (isGround) DungeonPlace(DungeonPlace.PlaceType.GROUND)
+                    else DungeonPlace(DungeonPlace.PlaceType.WALL)
+                }.toTypedArray()
             }.toTypedArray()
             printMap(convertedMap)
             println()

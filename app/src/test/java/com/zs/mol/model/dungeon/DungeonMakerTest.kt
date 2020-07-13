@@ -33,7 +33,7 @@ class DungeonMakerTest {
         val map = TileAndGraphBasedMaker.Builder(10, 10)
             //.initRandomEntrance()
             .setEntrance(5, 5)
-            .makeRooms(10, 3)
+            .makeRooms(10, 2)
             //.addRoom(DungeonPlace.Direction.SOUTH)
             .build()
 
