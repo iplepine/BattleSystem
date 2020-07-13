@@ -1,3 +1,4 @@
+/*
 package com.zs.mol.model.battle
 
 import com.zs.mol.model.db.skill.SkillDB
@@ -126,4 +127,4 @@ class BattleTest {
         unit.updateTime(testSkill.skillData.coolTime / 2)
         assert(unitSkill.getCoolDown() == 0L)
     }
-}
+}*/

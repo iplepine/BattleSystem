@@ -1,14 +1,15 @@
 package com.zs.mol.model.battle
 
+import com.zs.mol.model.common.Logger
 import com.zs.mol.model.stat.SecondStat.Companion.CRI
 import com.zs.mol.model.stat.SecondStat.Companion.EVADE
-import com.zs.mol.model.common.Logger
 import com.zs.mol.model.unit.BattleUnitFactory
 import org.junit.Test
 
 class BattleFunctionTest {
-    private val unit1 = BattleUnitFactory.createMyUnit("유닛 1")
-    private val unit2 = BattleUnitFactory.createEnemy("유닛 2")
+    private val battleUnitFactory = BattleUnitFactory()
+    private val unit1 by lazy { battleUnitFactory.createUnit("guest", "유닛 1") }
+    private val unit2 by lazy { battleUnitFactory.createUnit("guest", "유닛 2") }
 
     @Test
     fun checkCritical() {

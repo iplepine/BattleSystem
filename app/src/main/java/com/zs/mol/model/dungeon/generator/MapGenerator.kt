@@ -7,7 +7,17 @@ abstract class MapGenerator {
 
     companion object {
         fun printMap(map: Array<IntArray>) {
-            map.forEach { row ->
+            val width = map.size
+            val height = map[0].size
+
+            val convertMap = Array(map[0].size) { IntArray(map.size) }
+            for (j in 0 until height) {
+                for (i in 0 until width) {
+                    convertMap[i][j] = map[j][i]
+                }
+            }
+
+            convertMap.forEach { row ->
                 row.forEach {
                     printField(it)
                 }
@@ -17,8 +27,8 @@ abstract class MapGenerator {
 
         private fun printField(field: Int) {
             val text = when (field) {
-                TileType.VERTICAL_WAY -> "─"
-                TileType.HORIZONTAL_WAY -> "│"
+                TileType.VERTICAL_WAY -> "│"
+                TileType.HORIZONTAL_WAY -> "─"
                 TileType.ENTRANCE -> "▣"
                 TileType.WALL -> "■"
                 TileType.GROUND -> "□"

@@ -7,7 +7,7 @@ class BattleUnitFactoryTest {
     @Test
     fun createUnitTest() {
         for (i in 1 until 10) {
-            val unit = BattleUnitFactory.createMyUnit("test")
+            val unit = BattleUnitFactory().createUnit("guest","test")
             Logger.d(unit.toString())
         }
     }

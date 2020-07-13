@@ -11,7 +11,7 @@ class BattleUnitTest {
 
     @Test
     fun buffTest() {
-        val unit = BattleUnitFactory.createMyUnit("BuffTester")
+        val unit = BattleUnitFactory().createUnit("guest","BuffTester")
         val defaultStat = 100.0
 
         unit.originalStat.secondStat[ATK] = defaultStat
