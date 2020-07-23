@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.zs.mol.MainActivity
 import com.zs.mol.databinding.FragmentDungeonBinding
@@ -13,6 +14,7 @@ import kotlinx.android.synthetic.main.fragment_dungeon.*
 
 class DungeonTabFragment : MainTabFragment() {
     lateinit var binding: FragmentDungeonBinding
+
     val viewModel: DungeonViewModel by lazy {
         ViewModelProvider(this).get(DungeonViewModel::class.java).apply {
             binding.viewModel = this
@@ -41,9 +43,28 @@ class DungeonTabFragment : MainTabFragment() {
     }
 
     private fun init() {
+        viewModel.currentPlace.observe(viewLifecycleOwner, Observer { onChangePlace() })
+        viewModel.enterDungeon()
+
+        initDungeonMap()
     }
 
-    private fun changeDungeon() {
-        recyclerView.adapter = SelectionAdapter(viewLifecycleOwner)
+    private fun initDungeonMap() {
+        viewModel.dungeon.observe(viewLifecycleOwner, Observer {
+            dungeonMapView?.apply {
+                adapter = DungeonMapAdapter(viewModel)
+            }
+        })
+    }
+
+    private fun onChangePlace() {
+        // 클릭이벤트 처리해야해
+        dungeonMapView?.apply {
+            adapter = DungeonMapAdapter(viewModel)
+        }
+
+        viewModel.currentPlace.value?.position?.apply {
+            showToast("이동 ($x, $y)")
+        }
     }
 }

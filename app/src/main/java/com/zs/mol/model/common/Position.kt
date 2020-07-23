@@ -4,7 +4,7 @@ import com.zs.mol.model.dungeon.DungeonPlace
 
 class Position(var x: Int = 0, var y: Int = 0) {
     override fun toString(): String {
-        return "$x,$y"
+        return "($x,$y)"
     }
 
     fun moveDirection(direction: DungeonPlace.Direction) {

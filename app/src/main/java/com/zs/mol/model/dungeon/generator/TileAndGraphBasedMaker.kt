@@ -30,7 +30,8 @@ class TileAndGraphBasedMaker(private val width: Int, private val height: Int) :
         }
     }
 
-    class TiledDungeon(start: TiledPlace, map: DungeonMap) : Dungeon<TiledPlace>(map, start) {
+    class TiledDungeon(start: TiledPlace, map: DungeonMap<TiledPlace>) :
+        Dungeon<TiledPlace>(map, start) {
         fun getPlace(x: Int, y: Int): TiledPlace {
             return getPlace(TiledPlace.createHashKey(x, y)) ?: TiledPlace(x, y)
         }
@@ -63,7 +64,7 @@ class TileAndGraphBasedMaker(private val width: Int, private val height: Int) :
         var currentPosition = Position(0, 0)
         lateinit var direction: DungeonPlace.Direction
 
-        val map: Dungeon.DungeonMap = Dungeon.DungeonMap(width, height, DungeonPlace.PlaceType.WALL)
+        val map = Dungeon.DungeonMap<TiledPlace>(width, height)
         var visitMap = VisitMap(width, height)
         lateinit var dungeon: TiledDungeon
 
@@ -71,7 +72,8 @@ class TileAndGraphBasedMaker(private val width: Int, private val height: Int) :
             return Array(2 * width - 1) { Array(2 * height - 1) { DungeonPlace(DungeonPlace.PlaceType.WALL) } }.also { ret ->
                 for (i in 0 until map.width) {
                     for (j in 0 until map.height) {
-                        ret[i * 2][j * 2] = map.get(i, j)
+                        ret[i * 2][j * 2] =
+                            map.get(Position(i, j)) ?: DungeonPlace(DungeonPlace.PlaceType.WALL)
                     }
                 }
 
@@ -122,7 +124,7 @@ class TileAndGraphBasedMaker(private val width: Int, private val height: Int) :
             entrance = TiledPlace(x, y, DungeonPlace.PlaceType.ENTRANCE)?.also {
                 currentPosition = Position(x, y)
                 visitMap.visit(it.position.x, it.position.y)
-                map.set(it.position.x, it.position.y, it.type)
+                map.set(it.position, it)
                 dungeon = TiledDungeon(it, map)
                 dungeon.addPlace(it)
             }
@@ -162,8 +164,8 @@ class TileAndGraphBasedMaker(private val width: Int, private val height: Int) :
         fun addRoom(current: Position, direction: DungeonPlace.Direction): Builder {
             val currentRoom = dungeon.getPlace(current.x, current.y)
             current.moveDirection(direction)
-            map.set(current.x, current.y, DungeonPlace.PlaceType.GROUND)
             val newPlace = dungeon.getPlace(current.x, current.y)
+            map.set(current, newPlace)
             dungeon.connectPlace(currentRoom, direction, newPlace)
 
             return this

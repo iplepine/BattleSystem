@@ -17,8 +17,7 @@ class SimpleDungeonTest {
 
 
         for (i in 0 until width * height) {
-            val place = createRandomPlace(width, height)
-            builder.addPlace(place.position.x, place.position.y, place)
+            builder.addRandomPlace()
         }
 
         val bossY = Random.nextInt(height)
@@ -30,20 +29,5 @@ class SimpleDungeonTest {
 
         val dungeon = builder.build()
         MapGenerator.printMap(dungeon.map.tiles)
-    }
-
-    private fun createRandomPlace(width: Int, height: Int): TileAndGraphBasedMaker.TiledPlace {
-        val x = Random.nextInt(width)
-        val y = Random.nextInt(height)
-        return TileAndGraphBasedMaker.TiledPlace(x, y).apply {
-            type = DungeonPlace.PlaceType.values()
-                .filter {
-                    it == DungeonPlace.PlaceType.ITEM
-                            || it == DungeonPlace.PlaceType.MONSTER
-                            || it == DungeonPlace.PlaceType.TRAP
-                            || it == DungeonPlace.PlaceType.GROUND
-                }
-                .random()
-        }
     }
 }

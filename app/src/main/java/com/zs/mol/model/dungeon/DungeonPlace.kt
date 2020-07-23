@@ -22,7 +22,7 @@ open class DungeonPlace(var type: PlaceType = PlaceType.GROUND) {
     }
 
     val connects = HashMap<Direction, DungeonPlace>()
-    var events: DungeonEvent? = null
+    var events: ArrayList<DungeonEvent> = ArrayList()
 
     fun connect(direction: Direction, place: DungeonPlace) {
         connects[direction] = place

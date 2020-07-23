@@ -6,22 +6,21 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-open class Dungeon<T : DungeonPlace>(val map: DungeonMap, val entrance: T) {
+open class Dungeon<T : DungeonPlace>(val map: DungeonMap<T>, val entrance: T) {
 
-    val places = HashMap<String, T>()
+    val places = HashMap<String, T>()       // 필요없어서 지워질듯
     val mainStream = ArrayList<Position>()
 
     init {
         addPlace(entrance)
     }
 
-
     fun getPlace(key: String): T? {
-        return places[key]
+        return map.get(key)
     }
 
     fun addPlace(place: T) {
-        places[place.getId()] = place
+        map.set(place.getId(), place)
     }
 
     fun connectPlace(
@@ -37,7 +36,7 @@ open class Dungeon<T : DungeonPlace>(val map: DungeonMap, val entrance: T) {
 
     }
 
-    class DungeonNavigator<T : DungeonPlace>(val dungeon: Dungeon<T>, val map: DungeonMap) {
+    class DungeonNavigator<T : DungeonPlace>(val dungeon: Dungeon<T>, val map: DungeonMap<T>) {
         fun findWay(start: DungeonPlace, end: DungeonPlace): Way? {
             val visitMap = HashMap<String, Boolean>()
 
@@ -83,20 +82,27 @@ open class Dungeon<T : DungeonPlace>(val map: DungeonMap, val entrance: T) {
         lateinit var end: DungeonPlace
     }
 
-    class DungeonMap(
+    class DungeonMap<T : DungeonPlace>(
         val width: Int,
-        val height: Int,
-        initialType: DungeonPlace.PlaceType = DungeonPlace.PlaceType.GROUND
+        val height: Int
     ) {
-        val tiles = Array(width) { Array(height) { DungeonPlace(initialType) } }
+        val tiles = HashMap<String, T>()
 
-        fun get(x: Int, y: Int): DungeonPlace {
-            return tiles[x][y]
+        fun get(position: Position): T? {
+            return get(position.toString())
         }
 
-        fun set(x: Int, y: Int, type: DungeonPlace.PlaceType) {
-            if (x in 0 until width && y in 0 until height) {
-                tiles[x][y].type = type
+        fun get(key: String): T? {
+            return tiles[key]
+        }
+
+        fun set(key: String, place: T) {
+            tiles[key] = place
+        }
+
+        fun set(position: Position, place: T) {
+            if (position.x in 0 until width && position.y in 0 until height) {
+                tiles[position.toString()] = place
             }
         }
     }
