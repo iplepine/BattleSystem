@@ -28,6 +28,6 @@ class SimpleDungeonTest {
         )
 
         val dungeon = builder.build()
-        MapGenerator.printMap(dungeon.map.tiles)
+        //MapGenerator.printMap(dungeon.map.tiles)
     }
 }

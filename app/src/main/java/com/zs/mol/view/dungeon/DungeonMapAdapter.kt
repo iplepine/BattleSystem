@@ -32,30 +32,33 @@ class DungeonMapAdapter(var viewModel: DungeonViewModel) :
         }
 
         val mapPosition = get2DPosition(position)
-        val place = getDungeonPlace(mapPosition)
-
-        if (place == null) {
-            holder.clear()
-        } else {
-            holder.bind(place)
+        // current 가 무조건 중앙에 와야함 (2,2)에 올 수 있게 처리
+        val current = viewModel.currentPosition.value ?: Position(0, 0)
+        mapPosition.apply {
+            x = x - 2 + current.x
+            y = y - 2 + current.y
         }
+
+        val place = getDungeonPlace(mapPosition)
+        holder.bind(place, mapPosition)
     }
 
     private fun get2DPosition(position: Int): Position {
         val x = position % 5
         val y = position / 5
-        
+
         return Position(x, y)
     }
 
-    private fun getDungeonPlace(position: Position): TileAndGraphBasedMaker.TiledPlace? {
-        val current = viewModel.currentPlace.value?.position
-
-        if (current != null && 2 < abs(current.x - position.x) + abs(current.y - position.y)) {
+    private fun getDungeonPlace(mapPosition: Position): TileAndGraphBasedMaker.TiledPlace? {
+        // 시야 처리
+        val eyeSight = viewModel.eyesight
+        val current = viewModel.currentPosition.value ?: Position(0, 0)
+        if (eyeSight < abs(mapPosition.x - current.x) + abs(mapPosition.y - current.y)) {
             return null
         }
 
-        return dungeon?.getPlace(position)
+        return dungeon?.getPlace(mapPosition)
     }
 
     inner class DungeonMapItemViewHolder(parent: ViewGroup) :
@@ -69,11 +72,11 @@ class DungeonMapAdapter(var viewModel: DungeonViewModel) :
 
         val typeIcon = itemView.findViewById<ImageView>(R.id.typeIcon)
         val text = itemView.findViewById<TextView>(R.id.text)
-        var place: TileAndGraphBasedMaker.TiledPlace? = null
+        var position = Position(0, 0)
 
         init {
             itemView.setOnClickListener {
-                viewModel.changePlace(place)
+                viewModel.changePosition(position)
             }
         }
 
@@ -82,12 +85,15 @@ class DungeonMapAdapter(var viewModel: DungeonViewModel) :
             text.visibility = View.INVISIBLE
         }
 
-        fun bind(place: TileAndGraphBasedMaker.TiledPlace) {
-            this.place = place
-            typeIcon.visibility = View.VISIBLE
-            text.visibility = View.VISIBLE
-
-            typeIcon.setImageResource(getTypeImage(place))
+        fun bind(place: TileAndGraphBasedMaker.TiledPlace?, position: Position) {
+            this.position = position
+            if (place == null) {
+                clear()
+            } else {
+                typeIcon.visibility = View.VISIBLE
+                text.visibility = View.VISIBLE
+                typeIcon.setImageResource(getTypeImage(place))
+            }
         }
 
         private fun getTypeImage(place: DungeonPlace): Int {

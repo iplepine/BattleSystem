@@ -1,16 +1,20 @@
 package com.zs.mol.view.dungeon
 
 import android.content.Context
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.zs.mol.MainActivity
 import com.zs.mol.databinding.FragmentDungeonBinding
 import com.zs.mol.view.base.MainTabFragment
 import kotlinx.android.synthetic.main.fragment_dungeon.*
+
 
 class DungeonTabFragment : MainTabFragment() {
     lateinit var binding: FragmentDungeonBinding
@@ -43,7 +47,7 @@ class DungeonTabFragment : MainTabFragment() {
     }
 
     private fun init() {
-        viewModel.currentPlace.observe(viewLifecycleOwner, Observer { onChangePlace() })
+        viewModel.currentPosition.observe(viewLifecycleOwner, Observer { onChangePlace() })
         viewModel.enterDungeon()
 
         initDungeonMap()
@@ -53,6 +57,7 @@ class DungeonTabFragment : MainTabFragment() {
         viewModel.dungeon.observe(viewLifecycleOwner, Observer {
             dungeonMapView?.apply {
                 adapter = DungeonMapAdapter(viewModel)
+                addItemDecoration(SpacesItemDecoration(8))
             }
         })
     }
@@ -62,9 +67,19 @@ class DungeonTabFragment : MainTabFragment() {
         dungeonMapView?.apply {
             adapter = DungeonMapAdapter(viewModel)
         }
+    }
 
-        viewModel.currentPlace.value?.position?.apply {
-            showToast("이동 ($x, $y)")
+    class SpacesItemDecoration(private val mSpacing: Int) : ItemDecoration() {
+        override fun getItemOffsets(
+            outRect: Rect,
+            view: View,
+            parent: RecyclerView,
+            state: RecyclerView.State
+        ) {
+            outRect.left = mSpacing
+            outRect.top = mSpacing
+            outRect.right = mSpacing
+            outRect.bottom = mSpacing
         }
     }
 }
