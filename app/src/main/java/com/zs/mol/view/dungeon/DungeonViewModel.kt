@@ -5,7 +5,6 @@ import com.zs.lib.view.liverecyclerview.LiveViewModel
 import com.zs.mol.model.common.DefaultLiveData
 import com.zs.mol.model.common.Position
 import com.zs.mol.model.dungeon.SimpleDungeon
-import com.zs.mol.model.dungeon.generator.TileAndGraphBasedMaker
 
 class DungeonViewModel : LiveViewModel() {
 
@@ -28,5 +27,6 @@ class DungeonViewModel : LiveViewModel() {
 
     fun changePosition(position: Position) {
         currentPosition.value = position
+        actionLimit.value = (actionLimit.value - 1).coerceAtLeast(0)
     }
 }

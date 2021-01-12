@@ -5,7 +5,7 @@
     <FrameLayout
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:background="#ffffff"
+        android:background="#717171"
         tools:context=".MainActivity">
 
         <ImageView
