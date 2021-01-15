@@ -64,7 +64,7 @@ class UnitDetailFragment : BaseFragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (requireActivity() as MainActivity).component.unitTabComponent().create().inject(this)
+        (requireActivity() as MainActivity).gameComponent.unitTabComponent().create().inject(this)
     }
 
     private fun init() {

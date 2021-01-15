@@ -37,6 +37,7 @@ class TownTabFragment : MainTabFragment() {
     private fun init() {
         binding.viewModel = viewModel
         dungeon.setOnClickListener { onClickDungeon() }
+        adventure.setOnClickListener { onClickAdventure() }
     }
 
     private fun onClickDungeon() {
@@ -44,6 +45,13 @@ class TownTabFragment : MainTabFragment() {
         findNavController().navigate(
             R.id.action_town_to_dungeon,
             bundleOf("dungeonId" to "0000")
+        )
+    }
+
+    private fun onClickAdventure() {
+        // TODO dungeon Id 세팅 제대로 해야 함
+        findNavController().navigate(
+            R.id.action_town_to_adventure
         )
     }
 }

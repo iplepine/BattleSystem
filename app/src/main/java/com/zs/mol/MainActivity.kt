@@ -23,7 +23,7 @@ class MainActivity : BaseActivity() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    lateinit var component: GameComponent
+    lateinit var gameComponent: GameComponent
     lateinit var questTabComponent: QuestTabComponent
     lateinit var unitTabComponent: UnitTabComponent
 
@@ -31,11 +31,11 @@ class MainActivity : BaseActivity() {
     var time = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        component = (applicationContext as MolApp).gameComponent
-        component.inject(this)
+        gameComponent = (applicationContext as MolApp).gameComponent
+        gameComponent.inject(this)
 
-        questTabComponent = component.questTabComponent().create()
-        unitTabComponent = component.unitTabComponent().create()
+        questTabComponent = gameComponent.questTabComponent().create()
+        unitTabComponent = gameComponent.unitTabComponent().create()
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

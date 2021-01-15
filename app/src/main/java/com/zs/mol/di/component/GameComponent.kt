@@ -9,6 +9,7 @@ import com.zs.mol.model.quest.QuestRepository
 import com.zs.mol.model.quest.factory.QuestFactory
 import com.zs.mol.model.unit.BattleUnitFactory
 import com.zs.mol.model.unit.UnitRepository
+import com.zs.mol.view.adventure.AdventureFragment
 import com.zs.mol.view.base.BaseDialogFragment
 import com.zs.mol.view.base.BaseFragment
 import com.zs.mol.view.base.MainTabFragment
@@ -35,6 +36,7 @@ interface GameComponent {
     fun inject(fragment: BaseFragment)
     fun inject(fragment: BaseDialogFragment)
     fun inject(fragment: MainTabFragment)
+    fun inject(fragment: AdventureFragment)
 
     fun unitTabComponent(): UnitTabComponent.Factory
     fun questTabComponent(): QuestTabComponent.Factory

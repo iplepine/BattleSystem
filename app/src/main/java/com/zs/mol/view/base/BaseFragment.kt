@@ -1,7 +1,6 @@
 package com.zs.mol.view.base
 
 import android.app.Activity
-import android.app.AppComponentFactory
 import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -10,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.zs.mol.MainActivity
 import com.zs.mol.model.common.Logger
-import com.zs.mol.view.ViewModelFactory
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
@@ -36,7 +34,7 @@ open class BaseFragment : Fragment(), BaseGameView {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (requireActivity() as MainActivity).component.inject(this)
+        (requireActivity() as MainActivity).gameComponent.inject(this)
     }
 
     protected fun addDisposable(disposable: Disposable) {

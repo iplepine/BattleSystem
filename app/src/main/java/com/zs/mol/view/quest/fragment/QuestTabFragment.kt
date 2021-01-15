@@ -57,7 +57,7 @@ class QuestTabFragment : MainTabFragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (requireActivity() as MainActivity).component.questTabComponent().create().inject(this)
+        (requireActivity() as MainActivity).gameComponent.questTabComponent().create().inject(this)
     }
 
     fun init() {

@@ -47,7 +47,7 @@ class UnitHireFragment : BaseDialogFragment(), QuestView {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (requireActivity() as MainActivity).component.questTabComponent().create().inject(this)
+        (requireActivity() as MainActivity).gameComponent.questTabComponent().create().inject(this)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

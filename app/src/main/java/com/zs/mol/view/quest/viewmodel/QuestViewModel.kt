@@ -37,7 +37,7 @@ class QuestViewModel @Inject constructor(
 
     fun getQuests(): ArrayList<Quest> {
         // TODO 타입이 NEW 일 때 값 제대로 넣어야 함
-        return when (listType) {
+        return when (listType.value) {
             QuestListType.ACCEPTED -> questRepository.acceptedQuests
             QuestListType.NEW -> questRepository.acceptedQuests    // 이거 임시값
             else -> ArrayList()

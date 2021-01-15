@@ -31,7 +31,7 @@ open class BaseDialogFragment : DialogFragment(), BaseGameView {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (requireActivity() as MainActivity).component.inject(this)
+        (requireActivity() as MainActivity).gameComponent.inject(this)
     }
 
     protected fun addDisposable(disposable: Disposable) {

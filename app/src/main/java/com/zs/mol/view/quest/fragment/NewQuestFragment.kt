@@ -57,7 +57,7 @@ open class NewQuestFragment : BaseDialogFragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (requireActivity() as MainActivity).component.questTabComponent().create().inject(this)
+        (requireActivity() as MainActivity).gameComponent.questTabComponent().create().inject(this)
     }
 
     private fun handleArguments() {

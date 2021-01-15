@@ -12,7 +12,7 @@ open class MainTabFragment : BaseFragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (requireActivity() as MainActivity).component.inject(this)
+        (requireActivity() as MainActivity).gameComponent.inject(this)
     }
 
     override fun onStop() {

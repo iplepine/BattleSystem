@@ -104,6 +104,13 @@
 
         </action>
 
+        <action
+            android:id="@+id/action_town_to_adventure"
+            app:destination="@id/adventureFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:popEnterAnim="@anim/fragment_fade_enter">
+        </action>
+
     </fragment>
 
     <fragment
@@ -132,5 +139,10 @@
         android:id="@+id/dungeonFragment"
         android:name="com.zs.mol.view.dungeon.DungeonTabFragment"
         tools:layout="@layout/fragment_dungeon" />
+
+    <fragment
+        android:id="@+id/adventureFragment"
+        android:name="com.zs.mol.view.adventure.AdventureFragment"
+        tools:layout="@layout/fragment_adventure" />
 
 </navigation>

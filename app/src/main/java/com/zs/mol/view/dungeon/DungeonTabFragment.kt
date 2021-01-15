@@ -3,6 +3,7 @@ package com.zs.mol.view.dungeon
 import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +31,7 @@ class DungeonTabFragment : MainTabFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.e("ttest", "dungeonTabFragment")
         binding = FragmentDungeonBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
         }
@@ -38,7 +40,7 @@ class DungeonTabFragment : MainTabFragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (requireActivity() as MainActivity).component.dungeonTabComponent().create().inject(this)
+        (requireActivity() as MainActivity).gameComponent.dungeonTabComponent().create().inject(this)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
