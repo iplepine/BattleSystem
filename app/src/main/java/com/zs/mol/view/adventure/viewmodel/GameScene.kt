@@ -1,11 +1,15 @@
 package com.zs.mol.view.adventure.viewmodel
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.util.Log
+import android.view.MotionEvent
 import androidx.lifecycle.ViewModel
 import com.zs.mol.R
 import com.zs.mol.game.common.*
-import com.zs.mol.game.common.Camera
+import com.zs.mol.model.common.MonoBehaviour
+import com.zs.mol.model.consts.Screen.TOUCH_IGNORE
 import com.zs.mol.view.adventure.data.TileData
 import com.zs.mol.view.adventure.data.TileData.Companion.TYPE_CLAY
 import com.zs.mol.view.adventure.data.TileData.Companion.TYPE_DESERT
@@ -15,9 +19,10 @@ import com.zs.mol.view.adventure.data.TileData.Companion.TYPE_WATER
 import com.zs.mol.view.adventure.data.TileData.Companion.TYPE_WHEAT
 import com.zs.mol.view.adventure.data.TileData.Companion.TYPE_WOOD
 import javax.inject.Inject
+import kotlin.math.abs
 import kotlin.random.Random
 
-class GameSceneViewModel @Inject constructor(
+class GameScene @Inject constructor(
     context: Context
 ) : ViewModel() {
     private val drawingLayers = HashMap<Int, DrawingLayer>()
@@ -25,6 +30,8 @@ class GameSceneViewModel @Inject constructor(
 
     private val mapWidth = 10
     private val mapHeight = 10
+
+    private val monoBehaviours = ArrayList<MonoBehaviour>()
 
     private val tileData = ArrayList<TileData>().apply {
         add(TileData(TYPE_SHEEP, R.drawable.tile_sheep, context))
@@ -44,21 +51,32 @@ class GameSceneViewModel @Inject constructor(
         }
     }
 
+    private val player = Player(context.resources)
+
+    private var previousX = 0f
+    private var previousY = 0f
+
     init {
+        initDrawingLayer()
         initBackground(context)
         initTiles()
+        initPlayer()
+    }
+
+    private fun initDrawingLayer() {
+        drawingLayers[DrawingLayer.BACKGROUND] = DrawingLayer(false)
+        drawingLayers[DrawingLayer.MAP] = DrawingLayer(true)
+        drawingLayers[DrawingLayer.DEFAULT] = DrawingLayer(true)
+        drawingLayers[DrawingLayer.CHARACTER] = DrawingLayer(true)
     }
 
     private fun initBackground(context: Context) {
-        val backgroundLayer = DrawingLayer(false)
-        drawingLayers[DrawingLayer.BACKGROUND] = backgroundLayer
-
         val bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.wood10)
         val background = BitmapGameObject(bitmap, DrawingLayer.BACKGROUND)
-        addGameObject(background)
+        addDrawableObject(background)
     }
 
-    private fun initTiles(){
+    private fun initTiles() {
         val tiles = Array(mapHeight) {
             Array(mapWidth) { Tile(tileData.random()) }
         }
@@ -68,14 +86,24 @@ class GameSceneViewModel @Inject constructor(
                     data = tileData[tileType]
                     position = getTilePosition(x, y)
 
-                    addGameObject(this)
+                    addDrawableObject(this)
                 }
             }
         }
     }
 
-    fun draw(canvas: Canvas) {
-        drawingLayers.forEach{
+    private fun initPlayer() {
+        player.position = getTilePosition(4, 4)
+        addDrawableObject(player)
+        monoBehaviours.add(player)
+    }
+
+    fun update(canvas: Canvas, time: Long) {
+        monoBehaviours.forEach {
+            it.updateTime(time)
+        }
+
+        drawingLayers.forEach {
             it.value.apply {
                 if (useCamera) {
                     draw(canvas, camera)
@@ -86,7 +114,7 @@ class GameSceneViewModel @Inject constructor(
         }
     }
 
-    private fun addGameObject(obj: BitmapGameObject) {
+    private fun addDrawableObject(obj: BitmapGameObject) {
         val layer = obj.layer
         if (drawingLayers.contains(layer)) {
             drawingLayers[layer]?.addObject(obj)
@@ -113,6 +141,30 @@ class GameSceneViewModel @Inject constructor(
     }
 
     fun moveCamera(x: Float, y: Float) {
-        camera.move(x, y)
+        camera.position.x += x
+        camera.position.y += y
+    }
+
+    fun onTouchEvent(event: MotionEvent): Boolean {
+        Log.d("event x, y", "${event.rawX}, ${event.rawY}")
+
+        if (event.action == MotionEvent.ACTION_DOWN) {
+            previousX = event.rawX
+            previousY = event.rawY
+        }
+        if (event.action == MotionEvent.ACTION_MOVE) {
+            moveCamera(previousX - event.rawX, previousY - event.rawY)
+            previousX = event.rawX
+            previousY = event.rawY
+        }
+
+        if (event.action == MotionEvent.ACTION_UP) {
+            if (abs(previousX - event.rawX) < TOUCH_IGNORE && abs(previousY - event.rawY) < TOUCH_IGNORE) {
+                player.moveTo.x = event.rawX
+                player.moveTo.y = event.rawY
+            }
+        }
+
+        return true
     }
 }

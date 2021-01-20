@@ -1,12 +1,11 @@
 package com.zs.mol.game.common
 
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Paint
+import android.graphics.*
 import com.zs.mol.model.consts.Screen
 
 class DrawingLayer(val useCamera: Boolean = true) {
-    private val bitmap: Bitmap = Bitmap.createBitmap(Screen.width, Screen.height, Bitmap.Config.ARGB_4444)
+    private val bitmap: Bitmap =
+        Bitmap.createBitmap(Screen.WIDTH, Screen.HEIGHT, Bitmap.Config.ARGB_4444)
     private val gameObjects: ArrayList<BitmapGameObject> = ArrayList()
 
     private val paint = Paint().apply {
@@ -17,11 +16,11 @@ class DrawingLayer(val useCamera: Boolean = true) {
 
     fun draw(canvas: Canvas, camera: Camera? = null) {
         val bitmapCanvas = Canvas(bitmap)
-        gameObjects.forEach{
-            val obj = (it)
-            if (obj.hasChanged) {
-                obj.draw(bitmapCanvas, paint)
-                obj.hasChanged = false
+        if (gameObjects.any { it.hasChanged }) {
+            bitmapCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
+            gameObjects.forEach {
+                it.draw(bitmapCanvas, paint)
+                it.hasChanged = false
             }
         }
 
@@ -37,7 +36,9 @@ class DrawingLayer(val useCamera: Boolean = true) {
     }
 
     companion object Layer {
-        const val BACKGROUND = -1
-        const val MAP = 0
+        const val BACKGROUND = -2
+        const val MAP = 1
+        const val DEFAULT = 0
+        const val CHARACTER = 2
     }
 }

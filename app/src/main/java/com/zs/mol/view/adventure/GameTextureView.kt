@@ -5,17 +5,20 @@ import android.graphics.Canvas
 import android.graphics.SurfaceTexture
 import android.util.AttributeSet
 import android.view.TextureView
-import com.zs.mol.view.adventure.viewmodel.GameSceneViewModel
+import com.zs.mol.view.adventure.viewmodel.GameScene
 
 class GameTextureView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : TextureView(context, attrs, defStyleAttr), TextureView.SurfaceTextureListener {
 
-    lateinit var gameSceneViewModel: GameSceneViewModel
-    var renderingThread : SurfaceRenderingThread? = null
+    lateinit var gameScene: GameScene
+    var renderingThread: SurfaceRenderingThread? = null
 
     init {
         surfaceTextureListener = this
+        setOnTouchListener { v, event ->
+            gameScene.onTouchEvent(event)
+        }
     }
 
     override fun onSurfaceTextureSizeChanged(surface: SurfaceTexture?, width: Int, height: Int) {
@@ -29,21 +32,22 @@ class GameTextureView @JvmOverloads constructor(
         // TODO 이거 조인 왜하지?
         try {
             renderingThread?.join()
-        } catch(e: InterruptedException) {
+        } catch (e: InterruptedException) {
             e.printStackTrace()
         }
         return true
     }
 
     override fun onSurfaceTextureAvailable(surface: SurfaceTexture?, width: Int, height: Int) {
-        renderingThread = SurfaceRenderingThread(this, gameSceneViewModel)
+        renderingThread = SurfaceRenderingThread(this, gameScene)
         renderingThread?.start()
     }
 
-    class SurfaceRenderingThread(val textureView: TextureView, val gameSceneViewModel: GameSceneViewModel)
-        : Thread() {
+    class SurfaceRenderingThread(val textureView: TextureView, val gameScene: GameScene) :
+        Thread() {
 
         var isRunning = false
+        var lastTime = System.currentTimeMillis()
 
         override fun run() {
             var canvas: Canvas?
@@ -51,10 +55,12 @@ class GameTextureView @JvmOverloads constructor(
                 canvas = textureView.lockCanvas()
                 try {
                     synchronized(textureView) {
-                        gameSceneViewModel.draw(canvas)
+                        val pastTime = System.currentTimeMillis() - lastTime
+                        lastTime = System.currentTimeMillis()
+                        gameScene.update(canvas, pastTime)
                     }
                 } finally {
-                    if(canvas == null) return
+                    if (canvas == null) return
                     textureView.unlockCanvasAndPost(canvas)
                 }
             }
