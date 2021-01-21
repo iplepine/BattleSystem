@@ -8,11 +8,7 @@ class DrawingLayer(val useCamera: Boolean = true) {
         Bitmap.createBitmap(Screen.WIDTH, Screen.HEIGHT, Bitmap.Config.ARGB_4444)
     private val gameObjects: ArrayList<BitmapGameObject> = ArrayList()
 
-    private val paint = Paint().apply {
-        isAntiAlias = true
-        isFilterBitmap = true
-        isDither = true
-    }
+    private val paint = Paint()
 
     fun draw(canvas: Canvas, camera: Camera? = null) {
         val bitmapCanvas = Canvas(bitmap)

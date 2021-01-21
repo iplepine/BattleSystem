@@ -53,6 +53,8 @@ class GameScene @Inject constructor(
 
     private val player = Player(context.resources)
 
+    private var downX = 0f
+    private var downY = 0f
     private var previousX = 0f
     private var previousY = 0f
 
@@ -130,7 +132,7 @@ class GameScene @Inject constructor(
         var positionY = y * TileData.tileHeight.toFloat()
 
         if (y % 2 == 1) {
-            positionX += TileData.tileWidth / 2
+            positionX += TileData.tileWidthHalf
         }
 
         if (y > 0) {
@@ -140,7 +142,7 @@ class GameScene @Inject constructor(
         return PositionF(positionX, positionY)
     }
 
-    fun moveCamera(x: Float, y: Float) {
+    private fun moveCamera(x: Float, y: Float) {
         camera.position.x += x
         camera.position.y += y
     }
@@ -149,22 +151,27 @@ class GameScene @Inject constructor(
         Log.d("event x, y", "${event.rawX}, ${event.rawY}")
 
         if (event.action == MotionEvent.ACTION_DOWN) {
+            downX = event.rawX
+            downY = event.rawY
             previousX = event.rawX
             previousY = event.rawY
         }
+
+        if (event.action == MotionEvent.ACTION_UP) {
+            if (abs(downX - event.rawX) < TOUCH_IGNORE
+                && abs(downY - event.rawY) < TOUCH_IGNORE) {
+                player.moveTo.x = event.rawX
+                player.moveTo.y = event.rawY
+            }
+        }
+
         if (event.action == MotionEvent.ACTION_MOVE) {
             moveCamera(previousX - event.rawX, previousY - event.rawY)
             previousX = event.rawX
             previousY = event.rawY
         }
 
-        if (event.action == MotionEvent.ACTION_UP) {
-            if (abs(previousX - event.rawX) < TOUCH_IGNORE && abs(previousY - event.rawY) < TOUCH_IGNORE) {
-                player.moveTo.x = event.rawX
-                player.moveTo.y = event.rawY
-            }
-        }
-
+        Log.e("touch event", "${event.rawX}, ${event.rawY}")
         return true
     }
 }

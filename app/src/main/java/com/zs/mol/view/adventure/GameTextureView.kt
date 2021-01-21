@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.SurfaceTexture
 import android.util.AttributeSet
+import android.util.Log
 import android.view.TextureView
 import com.zs.mol.view.adventure.viewmodel.GameScene
 
@@ -12,7 +13,10 @@ class GameTextureView @JvmOverloads constructor(
 ) : TextureView(context, attrs, defStyleAttr), TextureView.SurfaceTextureListener {
 
     lateinit var gameScene: GameScene
-    var renderingThread: SurfaceRenderingThread? = null
+    var renderingThread: RenderingThread? = null
+    var isRunning = true
+
+    var lastTime = System.currentTimeMillis()
 
     init {
         surfaceTextureListener = this
@@ -39,11 +43,11 @@ class GameTextureView @JvmOverloads constructor(
     }
 
     override fun onSurfaceTextureAvailable(surface: SurfaceTexture?, width: Int, height: Int) {
-        renderingThread = SurfaceRenderingThread(this, gameScene)
+        renderingThread = RenderingThread(this, gameScene)
         renderingThread?.start()
     }
 
-    class SurfaceRenderingThread(val textureView: TextureView, val gameScene: GameScene) :
+    class RenderingThread(val textureView: TextureView, val gameScene: GameScene) :
         Thread() {
 
         var isRunning = false
@@ -58,6 +62,10 @@ class GameTextureView @JvmOverloads constructor(
                         val pastTime = System.currentTimeMillis() - lastTime
                         lastTime = System.currentTimeMillis()
                         gameScene.update(canvas, pastTime)
+
+                        if (16 < pastTime) {
+                            Log.e("WARNING", "TOO SLOW, time past $pastTime ms")
+                        }
                     }
                 } finally {
                     if (canvas == null) return

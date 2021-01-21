@@ -23,5 +23,8 @@ class TileData(private val tileType: Int, private val resourceId: Int, context: 
 
         const val tileWidth = 55 * 3
         const val tileHeight = 64 * 3
+
+        const val tileWidthHalf = tileWidth / 2
+        const val tileHeightHalf = tileHeight / 2
     }
 }

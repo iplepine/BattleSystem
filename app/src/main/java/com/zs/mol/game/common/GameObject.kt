@@ -1,6 +1,5 @@
 package com.zs.mol.game.common
 
-import android.util.Log
 import com.zs.mol.model.common.MonoBehaviour
 import kotlin.math.abs
 import kotlin.math.min
@@ -8,8 +7,8 @@ import kotlin.math.min
 abstract class GameObject : MonoBehaviour {
     var position = PositionF()
         set(value) {
-            moveTo = PositionF(position)
             field = value
+            moveTo = PositionF(position)
         }
     var moveTo: PositionF = PositionF(position)
 
@@ -18,7 +17,6 @@ abstract class GameObject : MonoBehaviour {
 
     override fun updateTime(time: Long) {
         if (position != moveTo) {
-            Log.e("position", "$position to $moveTo")
             move(time)
         }
     }
